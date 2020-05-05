@@ -1,0 +1,87 @@
+% -*-coding: utf-8 -*-
+\NeedsTeXFormat{LaTeX2e}[1995/12/01]
+\ProvidesPackage{mybook}[2020/02/22, mura's notes style version 3.0]
+
+%%% utility
+%% \RequirePackage{ifthen}
+\RequirePackage{xparse}
+\RequirePackage{etoolbox}
+\RequirePackage{pgfopts}
+
+%%% define and parse options
+\pgfkeys{/mybook/.cd,
+  % lang
+  lang/.store in = \mybook@lang,
+  % style
+  book style/.store in = \mybook@style,
+  style/.is choice,
+  style/tufte/.style = {book style = tufte},
+  style/plain/.style = {book style = plain},
+  % default values
+  lang = jp, 
+  style = tufte,
+}
+\ProcessPgfPackageOptions*
+
+%%% language/encoding
+\RequirePackage{textcomp} % latex3 encoding
+\RequirePackage[T1]{fontenc}
+\RequirePackage[utf8]{inputenc}
+\RequirePackage{polyglossia} % まだ若干あやしい
+%%
+\ifdefstring{\mybook@lang}{jp}{ % for japanese
+%\ifthenelse{\equal{jp}{\mybook@lang}}{ % for japanese
+  \RequirePackage[hiragino-pron]{luatexja-preset}
+  \setlength\parindent{1\zw}
+  % \RequirePackage[main=japanese,english]{babel} % 枯れてる
+  \setdefaultlanguage{japanese} % for polyglossia
+  \let\japanese@capsformat=\relax % 余計なことはさせない
+  \setotherlanguage{english} % for polyglossia
+}{ % for non-japanese
+  % \RequirePackage[english]{babel} 
+  \setdefaultlanguage{english} % for polyglossia
+  \setotherlanguage{japanese} % for polyglossia
+}
+
+%%% my default definitions
+\RequirePackage{mycolor}
+\RequirePackage[lang=\mybook@lang]{mymath} 
+
+%%% graphics
+\RequirePackage{grffile} % graphics file 名の拡張
+\RequirePackage{graphicx}
+% \graphicspath{{example/},{fig/}}
+
+%%% index/hyperlink
+\RequirePackage{makeidx}
+\RequirePackage[hyphens]{url}
+\RequirePackage[pdfencoding=auto]{hyperref}
+%%
+\hypersetup{%
+  bookmarks=true,%
+  bookmarksnumbered=true,%
+  bookmarkstype=toc,%
+  colorlinks=true,%
+  urlcolor=[named]myDarkGreen,%black,%
+  linkcolor=[named]myDarkBlue,%black,%
+  citecolor=[named]myDarkRed,%black,%
+  % linktocpage=true,%
+  unicode=true,%
+  % pdftitle={},%
+  pdfauthor={Noboru Murata},%
+  % pdfsubject={Lecture Notes},%
+  % pdfkeywords={;}
+}
+
+%%% page layout
+\ifdefstring{\mybook@style}{tufte}{%
+  \RequirePackage{mytufte}
+  \RequirePackage{mytuftebook}
+}
+
+%%
+\endinput
+%% 参考
+%% tufte package
+%% https://github.com/fmarotta/kaobook
+%% https://bedienhaptik.de

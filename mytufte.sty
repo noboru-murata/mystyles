@@ -1,0 +1,244 @@
+\NeedsTeXFormat{LaTeX2e}[1995/12/01]
+\ProvidesPackage{mytufte}[2020/02/25, mura's tufte style version 1.0]
+
+%%% misc packages
+\RequirePackage{float} % float の拡張 (H) 
+\RequirePackage{capt-of} % float の外に caption
+\RequirePackage{wrapfig} % 文章のまわり込み
+\RequirePackage{rotating} % 回転
+\RequirePackage{booktabs} % table の拡張
+\RequirePackage{longtable} % 複数頁の table
+\RequirePackage[normalem]{ulem} % 消し線
+\RequirePackage{subcaption} % subfig/subtab
+
+%%% layout
+\RequirePackage{scrlayer-scrpage}
+\RequirePackage{scrlayer-notecolumn}
+\RequirePackage{scrhack}
+\RequirePackage{geometry}
+%% 
+\geometry{% 
+  % showframe=true, % for debug
+  a4paper,
+  top=27.4mm,
+  bottom=27.4mm,
+  inner=24.8mm,
+  textwidth=107mm,
+  marginparsep=8.2mm,
+  marginparwidth=49.4mm,
+  includemp,
+}
+
+%%% page layout setup
+\newlength{\myheadlen} % length for page headers
+\DeclareDocumentCommand{\recalcHeadLen}{}{%
+  \setlength{\myheadlen}{\linewidth}
+  \addtolength{\myheadlen}{\marginparsep}
+  \addtolength{\myheadlen}{\marginparwidth}
+}
+\recalcHeadLen
+
+%% choose from possible layouts
+\DeclareDocumentCommand{\myPageLayout}{m}{%
+  \edef\myArg{#1}
+  \ifdefstring{\myArg}{margin}{\marginlayout}{}%
+  \ifdefstring{\myArg}{wide}{\widelayout}{}%
+  \ifdefstring{\myArg}{fullwidth}{\fullwidthlayout}{}%
+  % \ifthenelse{\equal{margin}{#1}}{\marginlayout}{}%
+  % \ifthenelse{\equal{wide}{#1}}{\widelayout}{}%
+  % \ifthenelse{\equal{fullwidth}{#1}}{\fullwidthlayout}{}%
+}
+%% large margins
+\newcommand{\marginlayout}{%
+  \newgeometry{
+    a4paper,
+    top=27.4mm,
+    bottom=27.4mm,
+    inner=24.8mm,
+    textwidth=107mm,
+    marginparsep=8.2mm,
+    marginparwidth=49.4mm,
+    includemp,
+  }%
+  \recalcHeadLen
+}
+%% no margins at all
+\newcommand{\widelayout}{%
+  \newgeometry{
+    a4paper,
+    top=27.4mm,
+    bottom=27.4mm,
+    inner=24.8mm,
+    outer=24.8mm,
+    marginparsep=0mm,
+    marginparwidth=0mm,
+    ignoremp,
+  }%
+  \recalcHeadLen
+}
+%% no margins and no space above or below the body
+\newcommand{\fullwidthpage}{%
+  \newgeometry{
+    a4paper,
+    top=0cm,
+    bottom=0cm,
+    inner=0cm,
+    outer=0cm,
+    marginparwidth=0cm,
+    marginparsep=0cm,
+    ignoremp,
+  }%
+  \recalcHeadLen
+}
+
+%%% headings style
+\setlength{\headheight}{115pt} % Enlarge the header
+\DeclareDocumentCommand{\myPageStyle}{m}{%
+  % \DeclarePageStyleAlias{headings}{#1}
+  \pagestyle{#1}
+  \DeclarePageStyleAlias{plain}{plain.#1}
+}
+\DeclareDocumentCommand{\pagemarkrule}{}{%
+  \setlength{\unitlength}{4\baselineskip}%
+  \begin{picture}(0,0)%
+    \put(0,-1){%
+      \makebox(0,0)[lb]{%
+        \rule{0.4pt}{1.25\unitlength}}}%
+  \end{picture}%
+}
+%% kao style with chapter number, chapter title, and page in the header
+\renewpagestyle{scrheadings}{%
+  {\hspace{-\marginparwidth}\hspace{-\marginparsep}%
+    \makebox[\myheadlen][l]{%
+      \parbox[t][1.7cm][c]{2em}{\hfill\thepage}%
+      \makebox[2em][c]{\rule[-1.15cm]{1pt}{1.55cm}}%
+      \parbox[t][1.7cm][c]{\textwidth}{\leftmark}}}%
+  {\makebox[\myheadlen][r]{%
+      \parbox[t][1.7cm][c]{\textwidth}{\hfill\rightmark}%
+      \makebox[2em][c]{\rule[-1.15cm]{1pt}{1.55cm}}%
+      \parbox[t][1.7cm][c]{2em}{\thepage}}}%
+  {\makebox[\myheadlen][r]{%
+      \parbox[t][1.7cm][c]{\textwidth}{\hfill\rightmark}%
+      \makebox[2em][c]{\rule[-1.15cm]{1pt}{1.55cm}}%
+      \parbox[t][1.7cm][c]{2em}{\thepage}}}%
+}{%
+  {}%
+  {}%
+  {}%
+}
+\renewpagestyle{plain.scrheadings}{%
+  {}%
+  {}%
+  {}%
+}{%
+  {}%
+  {}%
+  {}%
+}
+%% page number in the footer
+\newpairofpagestyles{pagenum}{}
+\renewpagestyle{pagenum}{%
+  {}%
+  {}%
+  {}%
+}{%
+  {\hspace{-\marginparwidth}\hspace{-\marginparsep}%
+    \makebox[\myheadlen][l]{\thepage\space\pagemarkrule}}%
+  {\makebox[\myheadlen][r]{\pagemarkrule\space\thepage}}%
+  {\makebox[\myheadlen][r]{\pagemarkrule\space\thepage}}%
+}
+\renewpagestyle{plain.pagenum}{%
+  {}%
+  {}%
+  {}%
+}{%
+  {\hspace{-\marginparwidth}\hspace{-\marginparsep}%
+    \makebox[\myheadlen][l]{\thepage\space\pagemarkrule}}%
+  {\makebox[\myheadlen][r]{\pagemarkrule\space\thepage}}%
+  {\makebox[\myheadlen][r]{\pagemarkrule\space\thepage}}%
+}
+%% decorated page style
+\newpairofpagestyles{decor}{}
+\renewpagestyle{decor}{%
+  {\hspace{-\marginparwidth}\hspace{-\marginparsep}%
+    \makebox[\myheadlen][l]{%
+      \makebox[0pt][l]{\rule[-1.15cm]{\myheadlen}{0.5pt}}
+      \parbox[t][1.7cm][c]{\textwidth}{\leftmark}
+    }}%
+  {\makebox[\myheadlen][r]{%
+      \parbox[t][1.7cm][c]{\textwidth}{\hfill\rightmark}%
+      \makebox[0pt][r]{\rule[-1.15cm]{\myheadlen}{0.5pt}}
+    }}%
+  {\makebox[\myheadlen][r]{%
+      \parbox[t][1.7cm][c]{\textwidth}{\hfill\rightmark}%
+    }}%
+}{%
+  {\hspace{-\marginparwidth}\hspace{-\marginparsep}%
+    \makebox[\myheadlen][l]{\pagemark\space\pagemarkrule}}%
+  {\makebox[\myheadlen][r]{\pagemarkrule\space\pagemark}}%
+  {\makebox[\myheadlen][r]{\pagemarkrule\space\pagemark}}%
+}
+\renewpagestyle{plain.decor}{%
+  {}%
+  {}%
+  {}%
+}{%
+  {\hspace{-\marginparwidth}\hspace{-\marginparsep}%
+    \makebox[\myheadlen][l]{\thepage\space\pagemarkrule}}%
+  {\makebox[\myheadlen][r]{\pagemarkrule\space\thepage}}%
+  {\makebox[\myheadlen][r]{\pagemarkrule\space\thepage}}%
+}
+
+%%% side notes
+\RequirePackage{sidenotes}
+\renewcommand*{\marginfont}{\footnotesize\sffamily}
+\renewcommand*{\raggedleftmarginnote}{}
+\renewcommand*{\raggedrightmarginnote}{}
+%% marginpar を使わないように定義
+\NewDocumentCommand \@makenotes@placemarginal { m m }
+{ 
+  \IfNoValueOrEmptyTF{#1}
+  {\makenote{#2}} % notecolumnを使う
+  {\marginnote{#2}[#1]}
+}
+\RenewDocumentCommand \sidenotetext { o o +m }
+{
+  \IfNoValueOrEmptyTF{#1}
+  {
+    \@makenotes@placemarginal{#2}{\textsuperscript{\thesidenote}{}~#3}
+    \refstepcounter{sidenote}
+  }
+  {\@makenotes@placemarginal{#2}{\textsuperscript{#1}~#3}}
+}
+
+%%% margin note (notecolumn による実装)
+\setkomafont{notecolumn.marginpar}{\footnotesize\sffamily}
+\NewDocumentEnvironment{note}{o b}{%
+  \IfNoValueOrEmptyTF{#1}{
+    \makenote{#2}
+  }{
+    \marginnote{#2}[#1]
+  }
+}{}
+
+%%% margin excercise
+\newcommand{\xcbname}{練習問題}
+\newcommand{\xcbsymbol}{% 
+  \color{myGrey} % color
+  {\large$\mathwitch*$} % eye catch
+  % \Coffeecup[2]
+  % \dbend
+  \space\xcbname\space}
+\NewDocumentCommand\exercise{m O{-.5\baselineskip}}{%
+  % \NewDocumentCommand\exercise{m o}{%
+  \IfNoValueOrEmptyTF{#2}{
+    \marginnote{\xcbsymbol%
+      \foreach \xcb in {#1} {(\ref{xcb:\xcb}\space)}}
+  }{
+    \marginnote{\xcbsymbol%
+      \foreach \xcb in {#1} {(\ref{xcb:\xcb})\space}}[#2]
+  }
+}
+
+%%
+\endinput

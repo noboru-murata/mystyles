@@ -1,0 +1,581 @@
+#+TITLE: My Talk Style
+#+AUTHOR: Noboru Murata
+#+EMAIL: noboru.murata@gmail.com
+#+DATE: 2020.05.05 16:24:52
+#+STARTUP: hidestars content
+#+OPTIONS: date:t H:4 num:nil toc:nil \n:nil
+#+OPTIONS: @:t ::t |:t ^:t -:t f:t *:t TeX:t LaTeX:t 
+#+OPTIONS: skip:nil d:nil todo:t pri:nil tags:not-in-toc
+#+PROPERTY: header-args+ :tangle mytalk.sty
+# C-c C-v t tangle
+
+* Main
+#+begin_src latex
+\NeedsTeXFormat{LaTeX2e}[1995/12/01]
+\ProvidesPackage{mytalk}[2019/04/01, mura's talk style 3.0]
+
+%%% 
+%%% Load Packages
+%%%
+\RequirePackage{appendixnumberbeamer}
+
+\RequirePackage{booktabs}
+\RequirePackage[scale=1.2]{ccicons}
+
+\RequirePackage{pgfplots}
+\usepgfplotslibrary{dateplot}
+
+\RequirePackage{xspace}
+\newcommand{\themename}{\textbf{\textsc{metropolis}}\xspace}
+
+%% reference
+\RequirePackage[%
+  bibencoding=latin1,
+  style=authoryear,
+  url=false,isbn=false,
+  backend=biber,
+]{biblatex} 
+\renewcommand*{\bibfont}{\footnotesize}
+\newcommand{\mycite}[1]%
+{\citeauthor{#1}: \citetitle{#1} (\citeyear{#1})}
+\newcommand{\myCite}[1]%
+{\citeauthor{#1} (\citeyear{#1}). \citetitle{#1}.}
+
+%% hyperref
+\hypersetup{pdfencoding=auto}
+
+% amstex
+\RequirePackage{amsthm}
+\RequirePackage{amscd}
+\RequirePackage{amssymb}
+\RequirePackage{amsbsy}
+\RequirePackage[fleqn,tbtags]{mathtools} % amsmathの拡張
+\mathtoolsset{showonlyrefs,showmanualtags}
+
+% algorithm
+\RequirePackage{algorithm}
+\RequirePackage{algpseudocode}
+
+% misc
+\RequirePackage{fancyvrb}
+\RequirePackage{enumerate}
+%\usepackage{psfrag}
+%\usepackage{mediabb}
+%\usepackage{enumitem}
+\RequirePackage{pifont}% http://ctan.org/pkg/pifont
+\newcommand{\cmark}{\ding{51}}%51/52 check mark (OK)
+\newcommand{\xmark}{\ding{55}}%55/56 cross mark (NG)
+
+%%% 
+%%% Parse Options
+%%%
+\RequirePackage{pgfopts}
+\pgfkeys{/mytalk/.cd,
+  .search also={
+    /mytalk/font,
+    /mytalk/math,
+    /mytalk/header,
+    /mytalk/footer,
+    /mytalk/block,
+    /mytalk/lang,
+  }
+}
+\pgfkeys{
+  /mytalk/font/.cd,
+  .is choice,
+  regular/.code={%
+    \relax
+  },
+  heavy/.code={%
+    \setsansfont[BoldFont={Fira Sans Semibold},Numbers={OldStyle}]{Fira Sans Book}
+  },
+  source/.code={%
+    \setsansfont[BoldFont={Source Sans Pro Semibold},Numbers={OldStyle}]{Source Sans Pro}
+  },
+  % ubuntu/.code={%
+  %   usepackage{fontspec}
+  %   \setsansfont{Ubuntu}
+  %   \setmonofont{Ubuntu Mono}
+  % },
+}
+\pgfkeys{
+  /mytalk/math/.cd,
+  .is choice,
+  metropolis/.code={%
+    \relax
+  },
+  serif/.code={%
+    \usefonttheme{professionalfonts} 
+    % \usefonttheme{serif}
+  },
+  sans/.code={%
+    \RequirePackage{newtxsf}
+  },
+  arev/.code={%
+    \RequirePackage{arevmath}
+  },
+  euler/.code={%
+    \RequirePackage[OT1]{fontenc}
+    \RequirePackage{eulervm}
+  },
+  times/.code={%
+    \usefonttheme{professionalfonts} 
+    \RequirePackage{newtxmath}
+  },
+}
+\pgfkeys{
+  /mytalk/header/.cd,
+  .is choice,
+  right/.code={%
+    \relax
+  },
+  waseda/.code={%
+    \setbeamertemplate{frametitle}[plain]
+    \setbeamercolor{frametitle}{fg=myLightGrey,bg=wasedaRed}
+  },
+}
+\pgfkeys{
+  /mytalk/footer/.cd,
+  .is choice,
+  none/.code={%
+    \setbeamertemplate{footline}[none]
+  },
+  symbol/.code={%
+    \setbeamertemplate{footline}[symbol]
+  },
+  progress/.code={%
+    \setbeamertemplate{footline}[progress]
+  },
+}
+\pgfkeys{
+  /mytalk/block/.cd,
+  .is choice,
+  none/.code={%
+    \mytalk@block
+    \mytalk@block@none
+  },
+  grey/.code={%
+    \mytalk@block
+    \mytalk@block@grey
+  },
+  color/.code={%
+    \mytalk@block
+    \mytalk@block@color
+  },
+  greys/.code={%
+    \setbeamertemplate{blocks}[rounded][shadow=true]
+    \mytalk@block@grey
+  },
+  colors/.code={%
+    \setbeamertemplate{blocks}[rounded][shadow=true]
+    \mytalk@block@color
+  },
+}
+\pgfkeys{
+  /mytalk/lang/.cd,
+  .is choice,
+  en/.code={%
+    \relax
+  },
+  jp/.code={%
+    \RequirePackage[hiragino-pron]{luatexja-preset}
+    \setmainjfont[BoldFont=HiraKakuProN-W6]{HiraMaruProN-W4}
+    \setsansjfont{HiraKakuProN-W3}
+    %%% begin translate
+    \uselanguage{japanese}
+    \languagepath{japanese}
+    \deftranslation[to=japanese]{Theorem}{定理}
+    \deftranslation[to=japanese]{Lemma}{補題}
+    \deftranslation[to=japanese]{Proposition}{命題}
+    \deftranslation[to=japanese]{Example}{例}
+    \deftranslation[to=japanese]{Examples}{例}
+    \deftranslation[to=japanese]{Definition}{定義}
+    \deftranslation[to=japanese]{Definitions}{定義}
+    \deftranslation[to=japanese]{Problem}{問題}
+    \deftranslation[to=japanese]{Solution}{解}
+    \deftranslation[to=japanese]{Fact}{事実}
+    \deftranslation[to=japanese]{Proof}{証明}
+    \def\proofname{証明}
+    %%% end translate
+  },
+}
+\newcommand{\mytalk@setdefaults}{
+  \pgfkeys{/mytalk/.cd,
+    font=regular,
+    math=metropolis,
+    header=right,
+    footer=progress,
+    block=grey,
+    lang=en,
+  }
+}  
+\newcommand{\mytalkset}[1]{\pgfkeys{/mytalk/.cd,#1}}
+
+%%% 
+%%% Base Theme 
+%%%
+\usetheme[%
+titleformat=smallcaps,%
+outer/numbering=fraction,%
+outer/progressbar=frametitle]%
+{metropolis}
+\setlength{\metropolis@titleseparator@linewidth}{1.0pt}%1pt
+\setlength{\metropolis@progressonsectionpage@linewidth}{1.0pt}%1pt
+\setlength{\metropolis@progressinheadfoot@linewidth}{1.8pt}%1.2pt
+
+%%% 
+%%% Colors
+%%%
+\RequirePackage{mycolor}
+
+%% General
+% \setbeamercolor{normal text}{fg=myGrey}
+\setbeamercolor{structure}{fg=myDarkBlue}
+% \setbeamercolor{alerted text}{fg=myDarkOrange}
+% \setbeamercolor{example text}{fg=myDarkGreen}
+\setbeamercolor{copyright text}{fg=myGrey}
+
+%% Palettes
+\setbeamercolor{palette primary}{fg=myLightGrey,bg=myGrey}
+\setbeamercolor{palette secondary}{fg=myGrey,bg=myLightGrey}
+\setbeamercolor{palette tertiary}{fg=myLightBlue,bg=myGrey}
+\setbeamercolor{palette quaternary}{fg=myLightGrey,bg=myBlue}
+\setbeamercolor{mini frame}{bg=myLightGrey}
+\setbeamercolor{section in head/foot}{fg=myGrey,bg=myLightGrey}
+
+%% Titlepage
+\setbeamercolor{title}{parent=normal text,fg=myDarkPurple}
+\setbeamercolor{subtitle}{fg=myDarkBlue}
+\setbeamercolor{institute}{parent=normal text}
+
+%% Content
+\setbeamercolor{frametitle}{fg=myDarkPurple,bg=normal text.bg}
+% \setbeamercolor{frametitle}{parent=palette primary}
+\setbeamercolor{section title}{parent=title}
+\defbeamertemplate*{frametitle}{right}{%
+  \nointerlineskip%
+  \begin{beamercolorbox}[%
+    wd=\paperwidth,%
+    sep=0pt,%
+    leftskip=\metropolis@frametitle@padding,%
+    rightskip=\metropolis@frametitle@padding,%
+    ]{frametitle}%
+    \metropolis@frametitlestrut@start%
+    \hfill\insertframetitle%
+    \nolinebreak%
+    \metropolis@frametitlestrut@end%
+  \end{beamercolorbox}%
+}
+% \setbeamertemplate{frametitle}[right]
+\addtobeamertemplate{frametitle}{}{%
+  \usebeamertemplate*{progress bar in head/foot}
+}
+
+% %% Blocks
+\newcommand{\mytalk@block}{%
+  \setbeamertemplate{block begin}{\metropolis@block{}}
+  \setbeamertemplate{block alerted begin}{\metropolis@block{ alerted}}
+  \setbeamertemplate{block example begin}{\metropolis@block{ example}}
+  \setbeamertemplate{block end}{\end{beamercolorbox}\vspace*{0.2ex}}
+  \setbeamertemplate{block alerted end}{\end{beamercolorbox}\vspace*{0.2ex}}
+  \setbeamertemplate{block example end}{\end{beamercolorbox}\vspace*{0.2ex}}
+}
+\newcommand{\mytalk@block@color}{%
+  \setbeamercolor{block title}{fg=white,bg=myBlue}
+  \setbeamercolor{block body}{fg=myGrey, bg=myLightBlue}
+  \setbeamercolor{block title example}{fg=white, bg=myGreen}
+  \setbeamercolor{block body example}{fg=myGrey, bg=myLightGreen}
+  \setbeamercolor{block title alerted}{fg=white, bg=myOrange}
+  \setbeamercolor{block body alerted}{fg=myGrey, bg=myLightOrange}
+}
+\newcommand{\mytalk@block@none}{%
+  \setbeamercolor{block title}{%
+    use=normal text,
+    fg=normal text.fg,
+    bg=
+  }
+  \setbeamercolor{block body}{%
+    bg=
+  }
+  \setbeamercolor{block title alerted}{%
+    use={block title, alerted text},
+    bg=block title.bg,
+    fg=alerted text.fg
+  }
+  \setbeamercolor{block title example}{%
+    use={block title, example text},
+    bg=block title.bg,
+    fg=example text.fg
+  }
+  \setbeamercolor{block body alerted}{%
+    bg=
+  }
+  \setbeamercolor{block body example}{%
+    bg=
+  }
+}
+\newcommand{\mytalk@block@grey}{%
+  \setbeamercolor{block title}{%
+    use=normal text,
+    fg=normal text.fg,
+    bg=normal text.bg!85!fg
+  }
+  \setbeamercolor{block body}{%
+    use={block title, normal text},
+    bg=block title.bg!50!normal text.bg
+  }
+  \setbeamercolor{block title alerted}{%
+    use={block title, alerted text},
+    bg=block title.bg,
+    fg=alerted text.fg
+  }
+  \setbeamercolor{block title example}{%
+    use={block title, example text},
+    bg=block title.bg,
+    fg=example text.fg
+  }
+  \setbeamercolor{block body alerted}{%
+    use={block title, normal text},
+    bg=block title.bg!50!normal text.bg
+  }
+  \setbeamercolor{block body example}{%
+    use={block title, normal text},
+    bg=block title.bg!50!normal text.bg
+  }
+}
+  
+%% Notes
+\setbeamercolor{note page}{fg=myGrey,bg=myLightGrey}
+\setbeamercolor{note title}{fg=white, bg=myGrey}
+\setbeamercolor{note date}{parent=note title}
+
+%% Page Number
+\setbeamercolor{page number in head/foot}{fg=myGrey}
+\setbeamercolor{qed}{fg=myGreen}
+\setbeamercolor{itemize item}{fg=myBlue}
+\setbeamercolor{itemize subitem}{fg=myRed}
+\setbeamercolor{itemize subsubitem}{fg=myPurple}
+
+%% Progress Bar
+\setbeamercolor{progress bar}{%
+  fg=myPurple,
+  bg=myLightPurple
+}
+% \setbeamercolor{progress bar}{ ... }
+% \setbeamercolor{title separator}{ ... }
+% \setbeamercolor{progress bar in head/foot}{ ... }
+% \setbeamercolor{progress bar in section page}{ ... }
+
+%%%
+%%% Fonts
+%%%
+% \usefonttheme{professionalfonts} % required for mathspec
+% \usefonttheme{serif}
+% \usepackage[english]{babel}
+% \usepackage[latin1]{inputenc}
+% \usepackage{times}
+% \RequirePackage[T1]{fontenc}
+% \RequirePackage[full]{textcomp}
+% \RequirePackage[osf]{newpxtext} % osf for text, not math
+% \RequirePackage{cantarell} % sans serif
+% \RequirePackage[varqu,varl]{inconsolata} % sans serif mono font
+% \RequirePackage[bigdelims,vvarbb]{newpxmath} % bb from STIX
+% \RequirePackage[cal=boondoxo]{mathalfa} %\mathcal, \mathbb, \mathfrak
+
+%% Main Fonts 
+% \setsansfont[BoldFont={Fira Sans}, Numbers={OldStyle}]{Fira Sans Light}
+% \setsansfont[BoldFont={Fira Sans Semibold}, Numbers={OldStyle}]{Fira Sans}
+% \setsansfont[BoldFont={Source Sans Pro Semibold}, Numbers={OldStyle}]{Source Sans Pro}
+% \setsansfont[BoldFont={Fira Sans Semibold}, Numbers={OldStyle}]{Fira Sans Book}
+
+%% Title Page
+% \setbeamerfont{title}{family=\sffamily, size=\huge}
+% \setbeamerfont{subtitle}{size=\Large}
+% \setbeamerfont{date}{size=\large}
+% \setbeamerfont{author}{size=\large}
+% \setbeamerfont{institute}{size=\large}
+
+%% Section
+% \setbeamerfont{section title}{size=\Large}
+
+%% Content
+% \setbeamerfont{frametitle}{family=\sffamily, size=\Large}
+% \setbeamerfont{copyright text}{size=\tiny}
+% \setbeamerfont{block title}{series=\sffamily, size=\large}
+% \setbeamerfont{block title alerted}{family=\sffamily, size=\large}
+% \setbeamerfont{block title example}{family=\sffamily, size=\large}
+% \setbeamerfont{caption}{size=\small}
+% \setbeamerfont{caption name}{family=\small}
+% \setbeamerfont{page number in head/foot}{size=\scriptsize}
+
+%%% 
+%%% Navigation
+%%% cf. https://tex.stackexchange.com/questions/59742/progress-bar-for-latex-beamer
+%%%
+\newcommand{\my@bigsize}{9}
+\newcommand{\my@medsize}{7}
+\newcommand{\my@smallsize}{5}
+
+\newlength{\my@tempsize}
+
+\newcounter{my@sectnum}
+
+\newcommand{\my@lastdigit}[1]{%
+  \loop\ifnum\value{#1}>9\addtocounter{#1}{-10}\repeat
+  \arabic{#1}%
+}
+
+\newcommand\my@fixedbox[2]{%
+  \makebox[#1]{\rule[-1ex]{0pt}{3.25ex}#2}%
+}
+
+\RequirePackage{tcolorbox}
+\newtcbox{\mybox}[1][red]{on line,
+  arc=2pt,colback=#1!50!white,colframe=#1!90!black,
+  boxrule=.5pt,boxsep=0pt,
+  left=0pt,right=0pt,top=-1pt,bottom=-.5pt
+}
+\newcommand\my@colorbox[3]{%
+  {\setlength{\fboxsep}{0pt}\mybox[#1]{\my@fixedbox{#2}{#3}}}%
+}
+
+\let\my@temptext\relax
+\newcommand{\my@navbox}[1][]{%
+  \if\relax\detokenize{#1}\relax
+  \def\my@tempbox{\my@fixedbox}%
+  \else
+  \def\my@tempbox{\my@colorbox{#1}}%
+  \fi
+  \ifx\my@box\my@bigbox
+  \def\my@temptext{\my@lastdigit{my@sectnum}}%
+  \fi
+  \ifx\my@box\my@medbox
+  \def\my@temptext{$\circ$}%
+  \fi
+  \ifx\my@box\my@smallbox
+  \def\my@temptext{$\cdot$}%
+  \fi
+  \my@tempbox{\my@tempsize}{\my@temptext}%
+}
+
+\defbeamertemplate{navigation box}{title}{%
+  \setlength{\my@tempsize}{\my@box@size pt}%
+  \my@fixedbox{\my@tempsize}{\ccShareAlike}%\ccbysa}%\diamondsuit
+}
+
+\defbeamertemplate{navigation box}{cur}{%
+  \setlength{\my@tempsize}{\my@box@size pt}%
+  \my@navbox[myPaleBlue]%
+}
+
+\defbeamertemplate{navigation box}{todo}{%
+  \setlength{\my@tempsize}{\my@box@size pt}%
+  \my@navbox
+}
+
+\newcommand{\my@bigbox}{\global\let\my@box@size=\my@bigsize\usebeamertemplate{navigation box}}
+\newcommand{\my@medbox}{\global\let\my@box@size=\my@medsize\usebeamertemplate{navigation box}}
+\newcommand{\my@smallbox}{\global\let\my@box@size=\my@smallsize\usebeamertemplate{navigation box}}
+
+\renewcommand{\sectionentry}[5]{\global\let\my@box=\my@bigbox\setcounter{my@sectnum}{#1}}
+\renewcommand{\beamer@subsectionentry}[5]{\global\let\my@box=\my@medbox}
+
+\renewcommand{\slideentry}[6]{%
+  \def\my@temp@i{1/1}%
+  \def\my@temp@ii{#4}%
+  \ifx\my@temp@i\my@temp@ii % title page
+  \setbeamertemplate{navigation box}[title]%
+  \else
+  \setbeamertemplate{navigation box}[todo]%
+  \fi
+  \ifnum\c@section=#1
+  \ifnum\c@subsection=#2
+  \ifnum\c@subsectionslide=#3%
+  \setbeamertemplate{navigation box}[cur]%
+  \fi
+  \fi
+  \fi
+  \ifx\my@temp@i\my@temp@ii % title page
+  \beamer@link(#4){\my@bigbox}%
+  \else
+  \beamer@link(#4){\my@box}%
+  \fi
+  \global\let\my@box=\my@smallbox
+}
+
+\defbeamertemplate{footline}{progress}
+{%
+  % {\color{teal}\hrule}
+  \hbox{%
+    \begin{beamercolorbox}[wd=.8\paperwidth,ht=2.25ex,dp=1ex,left]{footline}%
+      \kern2em\dohead
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[wd=.2\paperwidth,ht=2.25ex,dp=1ex,right]{footline}%
+      \insertframenumber{}/\inserttotalframenumber\kern2em
+    \end{beamercolorbox}%
+  }%
+}
+\defbeamertemplate{footline}{symbol}
+{%
+  \setbeamertemplate{navigation symbols}[default]%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.8\paperwidth,ht=2.25ex,dp=1ex,left]{footline}%
+    \kern2em\usebeamertemplate***{navigation symbols}%
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.2\paperwidth,ht=2.25ex,dp=1ex,right]{footline}%
+    \insertframenumber{}/\inserttotalframenumber\kern2em
+  \end{beamercolorbox}%
+  }%
+}
+\defbeamertemplate{footline}{none}
+{%
+  \setbeamertemplate{navigation symbols}{}
+  \begin{beamercolorbox}[wd=\paperwidth,ht=2.25ex,dp=1ex,right]{footline}%
+    \insertframenumber{}/\inserttotalframenumber\kern2em
+  \end{beamercolorbox}%
+}
+
+% \AtBeginSection[]
+% {
+%   \begin{frame}<beamer>
+%     \frametitle{outline}
+%     \tableofcontents[sectionstyle=show/shaded,subsectionstyle=show/show/hide]
+%     % \tableofcontents[sectionstyle=show/hide,subsectionstyle=show/show/hide]
+%   \end{frame}
+% }
+
+%   \AtBeginSubsection[]
+% {
+%   \begin{frame}<beamer>
+%     \frametitle{Outline}
+%     \tableofcontents[sectionstyle=show/shaded,subsectionstyle=show/shaded/hide]
+%   \end{frame}
+% }
+% \beamerdefaultoverlayspecification{<+->}
+
+%%%
+%%% process options
+%%%
+\mytalk@setdefaults
+\ProcessPgfOptions{/mytalk}
+
+%%% 
+\endinput
+#+end_src
+
+* References
+  - tufte package
+  - https://github.com/fmarotta/kaobook
+  - https://bedienhaptik.de
+* COMMENT Local file settings for Emacs
+
+# Local Variables:
+# time-stamp-line-limit: 1000
+# time-stamp-format: "%04y.%02m.%02d %02H:%02M:%02S"
+# time-stamp-active: t
+# time-stamp-start: "#\\+DATE:[ \t]*"
+# time-stamp-end: "$"
+# org-src-preserve-indentation: t
+# org-edit-src-content-indentation: 0
+# End:
+

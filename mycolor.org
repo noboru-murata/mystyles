@@ -1,0 +1,83 @@
+#+TITLE: My Color Style
+#+AUTHOR: Noboru Murata
+#+EMAIL: noboru.murata@gmail.com
+#+DATE: 2020.05.05 16:24:52
+#+STARTUP: hidestars content
+#+OPTIONS: date:t H:4 num:nil toc:nil \n:nil
+#+OPTIONS: @:t ::t |:t ^:t -:t f:t *:t TeX:t LaTeX:t 
+#+OPTIONS: skip:nil d:nil todo:t pri:nil tags:not-in-toc
+#+PROPERTY: header-args+ :tangle mycolor.sty
+# C-c C-v t tangle
+
+* Main
+#+begin_src latex
+\NeedsTeXFormat{LaTeX2e}[1995/12/01]
+\ProvidesPackage{mycolor}[2019/04/09, mura's color style version 1.0]
+
+%%% 
+%%% Load Packages
+%%%
+\RequirePackage{xcolor}
+%%% 
+%%% Colors
+%%%   cf. http://www.colordic.org/w/
+%%%
+\definecolor{myDarkRed}{HTML}{d7003a}%紅
+\definecolor{myRed}{HTML}{e7609e}%牡丹色 
+\definecolor{myLightRed}{HTML}{fef4f4}%桜色
+\definecolor{myDarkBlue}{HTML}{192f60}%紺青{1e50a2}%瑠璃色
+\definecolor{myBlue}{HTML}{19448e}%瑠璃紺{5383c3}%薄群青{38a1db}%露草色
+\definecolor{myLightBlue}{HTML}{f7fcfe}%卯の花色{eaf4fc}%月白
+\definecolor{myPaleBlue}{HTML}{bbc8e6}%淡藤色{f7fcfe}%卯の花色{eaf4fc}%月白
+% {89c3eb}%勿忘草色% {2ca9e1}%天色{0095d9}%青
+% {007bbb}%紺碧 {4c6cb3}%群青色{8491c3}%紅掛空色{4d5aaf}%花色はないろ% {bbc8e6}%淡藤色
+\definecolor{myDarkGreen}{HTML}{028760}%常磐緑
+\definecolor{myGreen}{HTML}{68be8d}%若竹色{98d98e}%若緑{3eb370}%緑
+\definecolor{myLightGreen}{HTML}{f8fbf8}%白磁
+\definecolor{myGrey}{HTML}{383c3c}%羊羹色
+\definecolor{myLightGrey}{HTML}{f3f3f2}%白練
+\definecolor{myDarkOrange}{HTML}{f08300}%蜜柑色
+\definecolor{myOrange}{HTML}{f8b862}%萱草色{f6ad49}%柑子色
+\definecolor{myLightOrange}{HTML}{fbfaf5}%生成り色
+\definecolor{myDarkPurple}{HTML}{17184b}%鉄紺 
+%{65318e}%本紫{460e44}% 紫紺 {674598}%青紫 {493759}%深紫 {594255}%滅紫
+\definecolor{myPurple}{HTML}{4d4398}%紅桔梗
+% {5654a2}% 桔梗色 {9d5b8b}%京紫{824880}%茄子紺{bc64a4}%若紫
+\definecolor{myLightPurple}{HTML}{bbbcde}%{84a2d4}% 青藤色 {dbd0e6}%白藤色
+\definecolor{myYellow}{HTML}{fef263}%黄檗色
+\definecolor{myLightYellow}{HTML}{f8f4e6}%象牙色
+% possible main color (dark purple)
+% {522f60}%葡萄色{9d5b8b}% 京紫
+% {cmyk}{0.62,0.96,0.30,0.27} % 京紫(改)
+% {cmyk}{0.60,0.90,0.20,0.10} % 紫(改)
+% {cmyk}{0.46,0.64,0.02,0.02} % 藤紫(改)
+% possible sub color (blue/orange)
+% {89c3eb}%勿忘草色 {007bbb}
+% 紺碧 %{RGB}{61,110,218}
+% {cmyk}{1.0,0.85,0.11,0.04} % 群青(改)
+% {cmyk}{0.0,0.64,0.99,0.0} % 蜜柑茶
+% {RGB}{249,110,91} 
+% {RGB}{2,25,72} 
+\definecolor{wasedaRed}{cmyk}{0,.98,.74,.45}
+\definecolor{wasedaGrey}{cmyk}{.82,.72,.75,.10}
+
+%%% 
+\endinput
+#+end_src
+
+* References
+  - tufte package
+  - https://github.com/fmarotta/kaobook
+  - https://bedienhaptik.de
+* COMMENT Local file settings for Emacs
+
+# Local Variables:
+# time-stamp-line-limit: 1000
+# time-stamp-format: "%04y.%02m.%02d %02H:%02M:%02S"
+# time-stamp-active: t
+# time-stamp-start: "#\\+DATE:[ \t]*"
+# time-stamp-end: "$"
+# org-src-preserve-indentation: t
+# org-edit-src-content-indentation: 0
+# End:
+

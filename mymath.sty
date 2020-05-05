@@ -1,0 +1,161 @@
+% -*-coding: utf-8 -*-
+\NeedsTeXFormat{LaTeX2e}[1995/12/01]
+\ProvidesPackage{mymath}[2020/02/10, mura's math style 1.0]
+
+%% utility
+\RequirePackage{pgfopts}
+%% \RequirePackage{ifthen}
+\RequirePackage{xparse}
+\RequirePackage{etoolbox}
+
+%% ams
+\RequirePackage{amsmath}
+\RequirePackage{amsthm}
+\RequirePackage{amscd}
+\RequirePackage{amssymb}
+\RequirePackage{amsbsy}
+\RequirePackage[fleqn,tbtags]{mathtools} % amsmathの拡張
+\mathtoolsset{
+  showonlyrefs,
+  showmanualtags,
+}
+\RequirePackage{nicematrix}
+
+%% fonts
+\RequirePackage[ % boldのあるものを選択
+cal=euler, % upright
+scr=boondoxo, % 小文字がある
+bb=px, % pazoの代理
+]{mathalfa}
+\RequirePackage{pifont} % http://ctan.org/pkg/pifont
+\RequirePackage{tikzsymbols} %\Coffeecup
+\RequirePackage{manfnt} % \dbend
+\RequirePackage{halloweenmath} % \mathwitch
+
+%% misc
+\RequirePackage{algorithm}
+\RequirePackage{algpseudocode}
+\RequirePackage{fancyvrb}
+\RequirePackage{enumerate}
+% \RequirePackage{enumitem}
+% \RequirePackage{psfrag}
+% \RequirePackage{mediabb}
+
+%% parse options
+\pgfkeys{/mymath/.cd,
+  % lang
+  lang/.store in = \mymath@lang,
+  % default value
+  lang = jp, 
+}
+\ProcessPgfOptions*
+
+\ifundef{\chapter}{ % for article
+  % \ifthenelse{\isundefined{\chapter}}{ % for article
+  \newtheorem{theorem}{\textbf{定理}}
+}{ % for book
+  \numberwithin{section}{chapter}
+  \numberwithin{equation}{chapter}
+  \newtheorem{theorem}{定理}[chapter]
+}
+\ifdefstring{\mymath@lang}{jp}{ % for japanese
+  % \ifthenelse{\equal{jp}{\mymath@lang}}{ % for japanese
+  \newtheorem{lemma}[theorem]{補題}
+  \newtheorem{corollary}[theorem]{系}
+  \newtheorem{proposition}[theorem]{命題}
+  \theoremstyle{definition}
+  \newtheorem{definition}[theorem]{定義}
+  \newtheorem{example}[theorem]{例}
+%  \newtheorem{xca}[theorem]{演習}
+  \theoremstyle{remark}
+  \newtheorem{remark}[theorem]{注意}
+}{ % for non-japanese
+  \newtheorem{lemma}[theorem]{Lemma}
+  \newtheorem{corollary}[theorem]{Corollary}
+  \newtheorem{proposition}[theorem]{Proposition}
+  \theoremstyle{definition}
+  \newtheorem{definition}[theorem]{Definition}
+  \newtheorem{example}[theorem]{Example}
+  \newtheorem{xca}[theorem]{Exercise}
+  \theoremstyle{remark}
+  \newtheorem{remark}[theorem]{Remark}
+}
+
+%% 
+\NewDocumentCommand\cmark{}{\ding{51}} %51/52 check mark (OK)
+\NewDocumentCommand\xmark{}{\ding{55}} %55/56 cross mark (NG)
+
+\NewDocumentCommand\Dat{o}{ % dataset symbol 
+  \IfValueTF{#1}{\mathcal{D}_{#1}}{\mathcal{D}}}
+\NewDocumentCommand\trans{}{\mathsf{T}} % transpose 
+\DeclareMathOperator{\trace}{tr} % trace operator
+\DeclareMathOperator{\sign}{sign} % sign function
+\DeclareMathOperator{\rank}{rank} % rank for matrix
+
+%% functions/operators
+% just to make sure it exists
+\providecommand\given{}
+% can be useful to refer to this outside \Set
+\newcommand\SetSymbol[1][]{%
+  \nonscript\:#1\vert\allowbreak\nonscript\:\mathopen{}}
+\DeclarePairedDelimiterX\parens[1]\lparen\rparen{%
+  \renewcommand\given{\SetSymbol[\delimsize]}#1}
+\DeclarePairedDelimiterX\angles[1]\langle\rangle{%
+  \renewcommand\given{\SetSymbol[\delimsize]}#1}
+\DeclarePairedDelimiterX\brackets[1]\lbrack\rbrack{%
+  \renewcommand\given{\SetSymbol[\delimsize]}#1}
+\DeclarePairedDelimiterX\bracks[1]\lbrack\rbrack{%
+  \renewcommand\given{\SetSymbol[\delimsize]}#1}
+\DeclarePairedDelimiterX\braces[1]\{\}{%
+  \renewcommand\given{\SetSymbol[\delimsize]}#1}
+\DeclarePairedDelimiterX\abs[1]\lvert\rvert{
+  \ifblank{#1}{\:\cdot\:}{#1}}
+\DeclarePairedDelimiterX\norm[1]\lVert\rVert{
+  \ifblank{#1}{\:\cdot\:}{#1}}
+%% Landau's O
+\NewDocumentCommand\Ord{o d()}{
+  \mathscr{O}\IfValueT{#1}{_\mathrm{#1}}
+  \IfValueT{#2}{\parens*{#2}}}
+\NewDocumentCommand\ord{o d()}{
+  \mathscr{o}\IfValueT{#1}{_\mathrm{#1}}
+  \IfValueT{#2}{\parens*{#2}}}
+%% probability
+\DeclarePairedDelimiterXPP\Prob[1]{\mathrm{Pr}}(){}{
+  \renewcommand\given{
+    \nonscript\:\delimsize\vert\nonscript\:\mathopen{}}#1}
+%% expectation
+\DeclarePairedDelimiterXPP\mEx[3]{\mathbb{E}_{#1}^{#2}}[]{}{
+  \renewcommand\given{%
+    \nonscript\:\delimsize\vert\nonscript\:\mathopen{}}#3}
+\NewDocumentCommand\Ex{s o m O{\relax} D(){\relax}}{
+  \IfBooleanTF{#1}{%
+    \mEx*{#4}{#5}{#3}}{% \Ex*{main}[sub](sup)
+    \IfValueTF{#2}{%
+      \mEx[#2]{#4}{#5}{#3}}{% \Ex[size]{main}[sub](sup)
+      \mEx{#4}{#5}{#3}}}% \Ex{main}[sub](sup)
+}
+%% variance
+\DeclarePairedDelimiterXPP\mVar[3]{\mathrm{Var}_{#1}^{#2}}(){}{
+  \renewcommand\given{%
+    \nonscript\:\delimsize\vert\nonscript\:\mathopen{}}#3}
+\NewDocumentCommand\Var{s o m O{\relax} D(){\relax}}{
+  \IfBooleanTF{#1}{%
+    \mVar*{#4}{#5}{#3}}{% \Var*{main}[sub](sup)
+    \IfValueTF{#2}{%
+      \mVar[#2]{#4}{#5}{#3}}{% \Var[size]{main}[sub](sup)
+      \mVar{#4}{#5}{#3}}}% \Var{main}[sub](sup)
+}
+%% covariance
+\DeclarePairedDelimiterXPP\mCov[3]{\mathrm{Cov}_{#1}^{#2}}(){}{
+  \renewcommand\given{%
+    \nonscript\:\delimsize\vert\nonscript\:\mathopen{}}#3}
+\NewDocumentCommand\Cov{s o m O{\relax} D(){\relax}}{
+  \IfBooleanTF{#1}{%
+    \mCov*{#4}{#5}{#3}}{% \Cov*{main}[sub](sup)
+    \IfValueTF{#2}{%
+      \mCov[#2]{#4}{#5}{#3}}{% \Cov[size]{main}[sub](sup)
+      \mCov{#4}{#5}{#3}}}% \Cov{main}[sub](sup)
+}
+
+%%
+\endinput

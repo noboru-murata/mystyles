@@ -1,0 +1,83 @@
+% -*-coding: utf-8 -*-
+\NeedsTeXFormat{LaTeX2e}[1995/12/01]
+\ProvidesPackage{mylist}[2020/03/20, mura's list style version 1.0]
+
+%% including R scripts and graphics
+\RequirePackage{xparse}
+\RequirePackage{subcaption}
+\RequirePackage{tcolorbox}
+\tcbuselibrary{breakable,skins}
+
+\newcommand{\codename}{Rscript}
+\providecommand{\baseurl}{}
+\providecommand{\codedir}{}
+
+\NewDocumentEnvironment{myCode}{s o} % no fig version
+{% begin
+  \small\renewcommand{\baselinestretch}{.92}%
+  \begin{tcolorbox}[
+    enhanced jigsaw,
+    breakable,
+    size=small,
+    colback=[named]myLightOrange,
+    colframe=[named]myDarkOrange,
+    % colback=red!5!white,
+    % colframe=red!75!black,
+    fonttitle=\ttfamily,
+    % fonttitle=\bfseries,
+    % title=My breakable box,
+    pad at break=2mm,
+    drop fuzzy shadow,
+    % height fixed for=all,
+    % break at=11.4cm
+    ]
+    \IfValueT{#2}{\marginnote{%
+        \codename:\space\href{\baseurl\codedir/#2.r}{\texttt{#2.r}}%
+      }}\nobreak%
+    \vspace*{6pt}
+    \IfBooleanF{#1}{%
+      \underline{\bfseries\figurename\space\ref{fig:#2}\space 参照}}
+  }{ % end
+    \vspace*{6pt}
+  \end{tcolorbox}
+} 
+\ExplSyntaxOn
+\cs_new:cpn {myCode*} {\myCode*}
+\cs_new_eq:cN {endmyCode*} \endmyCode
+\ExplSyntaxOff
+
+%% PDF file handling
+\newcounter{GraphPage}
+\NewDocumentCommand\GraphFile{m}{
+  \gdef\myFile{#1}
+  \setcounter{GraphPage}{1}
+}
+\newlength{\GraphWidth}
+\NewDocumentCommand\myGraph{s O{.45} m}{%
+  \IfBooleanTF{#1}
+  {% if starred, set GraphWidth with extra margin
+    \setlength{\GraphWidth}{\linewidth}
+    \addtolength{\GraphWidth}{\marginparwidth}
+    \addtolength{\GraphWidth}{\marginparsep}
+  }
+  {\setlength{\GraphWidth}{\linewidth}}
+  \IfNoValueOrEmptyTF{#3}
+  {% no caption
+    \includegraphics[page=\value{GraphPage},
+    width=#2\GraphWidth]{\myFile}
+  }{ 
+    \begin{subfigure}[b]{#2\GraphWidth}
+      \centering
+      \includegraphics[page=\value{GraphPage},
+      width=\linewidth]{\myFile}
+      \caption{#3}
+    \end{subfigure}
+  }
+  \stepcounter{GraphPage}
+}
+\NewDocumentCommand\emptyGraph{O{.45}}{%
+  \parbox{#1\linewidth}{\strut} % 空の箱
+}
+
+\endinput
+% end of mystyle.sty
