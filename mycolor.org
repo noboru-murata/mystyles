@@ -9,11 +9,14 @@
 #+PROPERTY: header-args+ :tangle mycolor.sty
 # C-c C-v t tangle
 
-* Main
+* ヘッダ
 #+begin_src latex
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
 \ProvidesPackage{mycolor}[2019/04/09, mura's color style version 1.0]
+#+end_src
 
+* パッケージ
+#+begin_src latex
 %%% 
 %%% Load Packages
 %%%
