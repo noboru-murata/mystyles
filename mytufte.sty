@@ -188,6 +188,25 @@
   {\makebox[\myheadlen][r]{\pagemarkrule\space\thepage}}%
   {\makebox[\myheadlen][r]{\pagemarkrule\space\thepage}}%
 }
+\newpairofpagestyles{simple}{}
+\renewpagestyle{simple}{% header
+  {}% twoside even
+  {}% towside odd
+  {}% oneside
+}{% footer
+  {\makebox[\myheadlen][l]{\space\thepage}}% twoside even
+  {\makebox[\myheadlen][r]{\thepage\space}}% towside odd
+  {\makebox[\myheadlen][c]{\thepage}}% onside
+}
+\renewpagestyle{plain.simple}{% header
+  {}%
+  {}%
+  {}%
+}{% footer
+  {}%
+  {}%
+  {}%
+}
 
 %%% side notes
 \RequirePackage{sidenotes}

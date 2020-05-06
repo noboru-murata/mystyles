@@ -1,7 +1,7 @@
 #+TITLE: My Tufte Style
 #+AUTHOR: Noboru Murata
 #+EMAIL: noboru.murata@gmail.com
-#+DATE: 2020.05.05 16:20:54
+#+DATE: 2020.05.05 23:02:52
 #+STARTUP: hidestars content
 #+OPTIONS: date:t H:4 num:nil toc:nil \n:nil
 #+OPTIONS: @:t ::t |:t ^:t -:t f:t *:t TeX:t LaTeX:t 
@@ -9,17 +9,16 @@
 #+PROPERTY: header-args+ :tangle mytufte.sty
 # C-c C-v t tangle
 
-* Preamble
+* ヘッダ
 #+begin_src latex
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
 \ProvidesPackage{mytufte}[2020/02/25, mura's tufte style version 1.0]
 #+end_src
 
-* Packages
-
-必要なpackageを準備
-floatrowよりfloatの方が良さそう
-\RequirePackage{floatrow} % float の拡張 (H) % sidenotes系?とぶつかる
+* パッケージ
+  必要なpackageを準備
+  - floatrowよりfloatの方が良さそう
+    \RequirePackage{floatrow} % float の拡張 (H) % sidenotes系?とぶつかる
 
 #+begin_src latex
 %%% misc packages
@@ -220,6 +219,25 @@ floatrowよりfloatの方が良さそう
   {\makebox[\myheadlen][r]{\pagemarkrule\space\thepage}}%
   {\makebox[\myheadlen][r]{\pagemarkrule\space\thepage}}%
 }
+\newpairofpagestyles{simple}{}
+\renewpagestyle{simple}{% header
+  {}% twoside even
+  {}% towside odd
+  {}% oneside
+}{% footer
+  {\makebox[\myheadlen][l]{\space\thepage}}% twoside even
+  {\makebox[\myheadlen][r]{\thepage\space}}% towside odd
+  {\makebox[\myheadlen][c]{\thepage}}% onside
+}
+\renewpagestyle{plain.simple}{% header
+  {}%
+  {}%
+  {}%
+}{% footer
+  {}%
+  {}%
+  {}%
+}
 #+end_src
 
 #+begin_src latex
@@ -283,7 +301,6 @@ floatrowよりfloatの方が良さそう
 %%
 \endinput
 #+end_src
-
 
 * References
   - tufte package

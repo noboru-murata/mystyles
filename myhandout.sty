@@ -1,4 +1,3 @@
-% -*-coding: utf-8 -*-
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
 \ProvidesPackage{myhandout}[2020/02/25, mura's handout style 1.0]
 
@@ -8,6 +7,7 @@
 \RequirePackage{pgfopts}
 %% \RequirePackage{ifthen} % obsolete
 %% \RequirePackage{regexpatch} % experimental
+
 %%% define and parse options
 \pgfkeys{/myhandout/.cd,
   % lang
@@ -38,13 +38,14 @@
 \ProcessPgfPackageOptions*
 
 %%% language/encoding
+\RequirePackage{textcomp} % latex3 encoding
 \RequirePackage[T1]{fontenc}
 \RequirePackage[utf8]{inputenc}
-% \RequirePackage[main=japanese,english]{babel} % 枯れてる
 \RequirePackage{polyglossia} % 若干あやしい
-%%
+% \RequirePackage[main=japanese,english]{babel} % 枯れてる
+
+%%% parse language
 \ifdefstring{\myhandout@lang}{jp}{ % for japanese
-  % \ifthenelse{\equal{jp}{\myhandout@lang}}{ % for japanese
   \RequirePackage[hiragino-pron]{luatexja-preset}
   \setlength\parindent{1\zw}
   \setdefaultlanguage{japanese}
@@ -86,43 +87,52 @@
   % pdfkeywords={;}
 }
 
-%%% page layout
+%%% page, title and font styles
+%% load tufte setup
 \RequirePackage{mytufte}
-\ifdefstring{\myhandout@style}{tufte}{%
-  \RequirePackage{mytuftehandout}
-}{}
-\ifdefstring{\myhandout@style}{plain}{%
-  \RequirePackage{myplainhandout}
-}{}
+
+%% choose from possible styles 
+\DeclareDocumentCommand{\myStyle}{m}{%
+  \edef\myArg{#1}
+  \ifdefstring{\myArg}{tufte}{%
+    \let\orgfootnote=\footnote % 念のため取っておく
+    \RenewDocumentCommand \footnote { o o +m }{
+      \sidenotemark[##1]
+      \sidenotetext[##1][##2]{##3\medskip}p
+      \@sidenotes@multimarker
+    }
+    \AtBeginDocument{
+      \myPageLayout{margin}
+      \myPageStyle{pagenum}
+    }
+  }{}
+  \ifdefstring{\myArg}{plain}{%
+    \AtBeginDocument{
+      \myPageLayout{wide}
+      \myPageStyle{simple}
+    }
+  }{}
+}
 
 %% choose from possible title styles
 \DeclareDocumentCommand{\myTitleStyle}{m}{%
-  % \ifthenelse{\equal{left}{#1}}{%
-  %   % \xpatchcmd*{\@maketitle}{\cB\{center\cE\}}{\cB\{flushleft\cE\}}{}{}
-  %   % \patchcmd{\@maketitle}{\end{center}}{\end{flushleft}}{}{}
-  % }{}%
   \edef\myArg{#1}
   \ifdefstring{\myArg}{left}{%
-%  \ifthenelse{\equal{left}{#1}}{%
     \patchcmd{\@maketitle}{\begin{center}}{\begin{flushleft}}{}{}
     \patchcmd{\@maketitle}{\end{center}}{\end{flushleft}}{}{}
   }{}%
   \ifdefstring{\myArg}{right}{%
-    % \ifthenelse{\equal{right}{#1}}{%
     \patchcmd{\@maketitle}{\begin{center}}{\begin{flushright}}{}{}
     \patchcmd{\@maketitle}{\end{center}}{\end{flushright}}{}{}
   }{}%
   \ifdefstring{\myArg}{center}{\relax}{}
-    %\ifthenelse{\equal{center}{#1}}{\relax}{}
 }
 
 %% choose from possible font weights
 \DeclareDocumentCommand{\myFontWeight}{m}{%
   \edef\myArg{#1}
   \ifdefstring{\myArg}{regular}{%
-    % \ifthenelse{\equal{regular}{#1}}{%
     \ifundef{\mgfamily}%
-    % \ifthenelse{\isundefined{\mgfamily}}%
     {\def\mgfamily{\jfontspec{HiraMaruProN-W4}}}{}
     \setkomafont{subject}{\mgfamily\itshape}
     \setkomafont{title}{\mgfamily\itshape}
@@ -132,7 +142,6 @@
     \relax
   }{}%
   \ifdefstring{\myArg}{light}{%
-    % \ifthenelse{\equal{light}{#1}}{%
     \setkomafont{subject}{\normalfont}
     \setkomafont{title}{\normalfont\scshape}
     \setkomafont{subtitle}{\normalfont}
@@ -140,13 +149,14 @@
     \setkomafont{date}{\normalfont}
   }{}%
   \ifdefstring{\myArg}{heavy}{%
-    % \ifthenelse{\equal{heavy}{#1}}{%
     \relax
   }{}%
 }
 
-%%% set default page style
+%%% set page style and layout
+\myStyle{\myhandout@style}
 \myTitleStyle{\myhandout@title}
 \myFontWeight{\myhandout@font}
 
+%%
 \endinput

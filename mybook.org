@@ -1,7 +1,7 @@
 #+TITLE: My Book Style
 #+AUTHOR: Noboru Murata
 #+EMAIL: noboru.murata@gmail.com
-#+DATE: 2020.05.05 16:24:52
+#+DATE: 2020.05.06 11:16:28
 #+STARTUP: hidestars content
 #+OPTIONS: date:t H:4 num:nil toc:nil \n:nil
 #+OPTIONS: @:t ::t |:t ^:t -:t f:t *:t TeX:t LaTeX:t 
@@ -9,16 +9,20 @@
 #+PROPERTY: header-args+ :tangle mybook.sty
 # C-c C-v t tangle
 
-* Main
+* ヘッダ
 #+begin_src latex
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
 \ProvidesPackage{mybook}[2020/02/22, mura's notes style version 3.0]
+#+end_src
 
+* オプション処理
+#+begin_src latex
 %%% utility
-%% \RequirePackage{ifthen}
 \RequirePackage{xparse}
 \RequirePackage{etoolbox}
 \RequirePackage{pgfopts}
+%% \RequirePackage{ifthen} % obsolete
+%% \RequirePackage{regexpatch} % experimental
 
 %%% define and parse options
 \pgfkeys{/mybook/.cd,
@@ -34,15 +38,18 @@
   style = tufte,
 }
 \ProcessPgfPackageOptions*
+#+end_src
 
+* 言語
+#+begin_src latex
 %%% language/encoding
 \RequirePackage{textcomp} % latex3 encoding
 \RequirePackage[T1]{fontenc}
 \RequirePackage[utf8]{inputenc}
 \RequirePackage{polyglossia} % まだ若干あやしい
-%%
+
+%%% parse language
 \ifdefstring{\mybook@lang}{jp}{ % for japanese
-%\ifthenelse{\equal{jp}{\mybook@lang}}{ % for japanese
   \RequirePackage[hiragino-pron]{luatexja-preset}
   \setlength\parindent{1\zw}
   % \RequirePackage[main=japanese,english]{babel} % 枯れてる
@@ -54,16 +61,26 @@
   \setdefaultlanguage{english} % for polyglossia
   \setotherlanguage{japanese} % for polyglossia
 }
+#+end_src
 
+* 自前の定義
+#+begin_src latex
 %%% my default definitions
 \RequirePackage{mycolor}
 \RequirePackage[lang=\mybook@lang]{mymath} 
+\RequirePackage{mylist}
+#+end_src
 
+* グラフィクス
+#+begin_src latex
 %%% graphics
 \RequirePackage{grffile} % graphics file 名の拡張
 \RequirePackage{graphicx}
 % \graphicspath{{example/},{fig/}}
+#+end_src
 
+* ハイパーリンク 
+#+begin_src latex
 %%% index/hyperlink
 \RequirePackage{makeidx}
 \RequirePackage[hyphens]{url}
@@ -84,13 +101,162 @@
   % pdfsubject={Lecture Notes},%
   % pdfkeywords={;}
 }
+#+end_src
 
-%%% page layout
-\ifdefstring{\mybook@style}{tufte}{%
-  \RequirePackage{mytufte}
-  \RequirePackage{mytuftebook}
+* 設定関数
+#+begin_src latex
+%%% page, title and font styles
+%% load tufte setup
+\RequirePackage{mytufte}
+
+%% colors
+\addtokomafont{chapterentrypagenumber}{\color{myDarkBlue}}
+\addtokomafont{chapterentry}{\color{myDarkBlue}}
+\addtokomafont{chapter}{\color{myDarkBlue}}
+\addtokomafont{section}{\color{myDarkBlue}}
+\addtokomafont{subsection}{\color{myDarkBlue}}
+\addtokomafont{subsubsection}{\color{myDarkBlue}}
+\addtokomafont{paragraph}{\color{myDarkBlue}}
+\addtokomafont{subparagraph}{\color{myDarkBlue}}
+
+%% choose from possible styles 
+\DeclareDocumentCommand{\myStyle}{m}{%
+  \edef\myArg{#1}
+  \ifdefstring{\myArg}{tufte}{%
+    %% front matter
+    \let\oldfrontmatter\frontmatter % store old command
+    \renewcommand{\frontmatter}{
+      \oldfrontmatter % call old command
+      \myPageLayout{wide} % Use a wide page layout
+      \myPageStyle{pagenum}
+      \myChapterStyle{plain}
+    }
+    %% main matter
+    \let\oldmainmatter\mainmatter % store old command
+    \renewcommand{\mainmatter}{
+      \oldmainmatter % call old command
+      \myPageLayout{margin} % with-margin layout
+      \myPageStyle{decor} % fancy headings
+      \myChapterStyle{decor} % designed chapter title
+    }
+    %% appendix
+    \let\oldappendix\appendix % store old command
+    \renewcommand{\appendix}{
+      \oldappendix % call old command
+      \bookmarksetup{startatroot} % reset bookmark depth
+    }
+    %% back matter
+    \let\oldbackmatter\backmatter % store old command
+    \renewcommand{\backmatter}{
+      \oldbackmatter % call old command
+      \bookmarksetup{startatroot} % reset bookmark depth
+      \myPageLayout{wide} % wide page layout
+      \myPageStyle{pagenum}
+      \myChapterStyle{plain} % plain chapter title
+    }
+    %%% quick hack for part style
+    \let\orgpart=\part
+    \renewcommand\part[1]{
+      \myPageLayout{wide}
+      \orgpart{##1}
+      \myPageLayout{margin}
+    }
+    \AtBeginDocument{\myPageLayout{wide}}
+  }{}
+  \ifdefstring{\myArg}{plain}{%
+    \AtBeginDocument{\myPageLayout{wide}}
+  }{}
 }
 
+%% choose from possible chapterstyle
+\DeclareDocumentCommand{\myChapterStyle}{m}{%
+  \edef\myArg{#1}
+  \ifdefstring{\myArg}{plain}{\plainchapter}{}%
+  \ifdefstring{\myArg}{decor}{\decorchapter}{}%
+  % \ifthenelse{\equal{plain}{#1}}{\plainchapter}{}%
+  % \ifthenelse{\equal{decor}{#1}}{\decorchapter}{}%
+}
+%% The default definition in KOMA script
+\DeclareDocumentCommand{\plainchapter}{}{%
+  \renewcommand{\chapterlinesformat}[3]{%
+    \@hangfrom{##2}{##3}}
+  \renewcommand*{\chapterformat}{%
+    \mbox{\chapappifchapterprefix{\nobreakspace}\thechapter%
+      \autodot\IfUsePrefixLine{}{\enskip}}}
+  \RedeclareSectionCommand[beforeskip=0cm,afterskip=1cm]{chapter}
+  \setlength{\mtocshift}{-3.2cm}
+}
+%% designed version (based on kao style)
+\newcommand\chapterleft[1]{\flushright{#1}}
+\newcommand\chapterstrut{\rule[-.35cm]{0pt}{5.7cm}\rule[-.35cm]{3pt}{2.6cm}}
+\newcommand\chapterright[1]{\flushleft{#1}}
+\DeclareDocumentCommand{\decorchapter}{}{%
+  \renewcommand*{\chapterformat}{%
+    \mbox{\chapappifchapterprefix{\nobreakspace}\scalebox{2.85}{\thechapter\autodot}}%
+  }
+  \renewcommand\chapterlinesformat[3]{%
+    \vspace*{-4.5cm}%
+    \makebox[\textwidth+\marginparsep+\marginparwidth]{%
+      \parbox[b]{\textwidth}{\chapterleft{##3}}%
+      \makebox[\marginparsep][c]{\chapterstrut}
+      \parbox[b]{\marginparwidth}{\chapterright{##2}}%
+    }
+  }
+  \RedeclareSectionCommand[beforeskip=0cm,afterskip=1cm]{chapter}
+  \setlength{\mtocshift}{0mm}
+}
+
+%% margin toc for chapter
+\RequirePackage{etoc} % local tables of contents
+\newcounter{margintocdepth}
+\setcounter{margintocdepth}{\subsectiontocdepth}
+\newlength{\mtocshift} % vertical offset 
+\setlength{\mtocshift}{-5.2cm}
+% print a table of contents in the margin
+\newcommand{\margintoc}[1][\mtocshift]{ % orijinal
+  \begingroup
+  % set the style for section entries
+  \etocsetstyle{section}
+  {\parindent -5pt \parskip 0pt}
+  {\leftskip 0pt}
+  {\makebox[.5cm]{\etocnumber\autodot}
+    \etocname\nobreak\leaders
+    \hbox{\hbox to 1.5ex {\hss.\hss}}\hfill\nobreak
+    \etocpage\par}
+  {}
+  % set the style for subsection entries
+  \etocsetstyle{subsection}
+  {\parindent -5pt \parskip 0pt}
+  {\leftskip 0pt}
+  {\makebox[.5cm]{}
+    \etocname\nobreak\leaders
+    \hbox{\hbox to 1.5ex {\hss.\hss}}\hfill\nobreak
+    \etocpage\par}
+  {}
+  % set the global style of the toc
+  % \etocsettocstyle{}{}
+  % \etocsettocstyle{\normalfont\sffamily\normalsize}{}
+  \etocsettocstyle{\usekomafont{section}\small}{}
+  \etocsetnexttocdepth{\themargintocdepth}
+  % Print the table of contents in the margin
+  \marginnote[#1]{\localtableofcontents}% original
+  \endgroup
+}
+\DeclareDocumentCommand{\mtoc}{}{%
+  \setchapterpreamble[u]{\margintoc} % below heading
+}
+#+end_src
+
+* スタイル設定
+#+begin_src latex
+%%% page layout
+\myStyle{\mybook@style}
+\myPageStyle{pagenum}
+\myChapterStyle{plain}
+#+end_src
+
+* フッタ
+#+begin_src latex
 %%
 \endinput
 #+end_src

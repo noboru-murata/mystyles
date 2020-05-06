@@ -2,39 +2,29 @@
 
 * TODO mybook
   scrbook を base に整理
-  Tufte流にする場合は mytufte を include
-** mybook
-   本体
+  mytufte を include
 
 * TODO myhandout
   scrartcl を base に整理
-** myhandout.sty
-   本体
-** myplainhandout.sty
-   ページレイアウトの設定
+  mytufte を include
 
 * TODO mytufte
   Tufte 流の配置の実装
-** mytufte.sty
-   Tufteがらみでいろいろ定義
-** mytuftebook.sty
-   book用ページレイアウトの設定
-** mytuftehandout.sty
-   handout用ページレイアウトの設定
+  いろいろ定義
 
 * TODO mytalk
   beamer スライド用
   metropolis sytle を base にいろいろ定義
-** mytalk.sty
-   本体
+  option parse の部分を書き換える必要あり
 
-* TODO tools
-** mymath.sty
-   数式関係
-   amsmath を base にいろいろ定義
-** mycolor.sty
-   共通で使う色ものを整理
-** mylist.sty
-   code listing用
+* TODO mymath
+  数式関係
+  amsmath を base にいろいろ定義
+
+* TODO mycolor
+  共通で使う色ものを整理
+
+* TODO mylist
+  code listing用
 
 
