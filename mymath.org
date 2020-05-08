@@ -1,7 +1,7 @@
 #+TITLE: My Math Style
 #+AUTHOR: Noboru Murata
 #+EMAIL: noboru.murata@gmail.com
-#+DATE: 2020.05.05 16:24:52
+#+DATE: 2020.05.08 11:16:10
 #+STARTUP: hidestars content
 #+OPTIONS: date:t H:4 num:nil toc:nil \n:nil
 #+OPTIONS: @:t ::t |:t ^:t -:t f:t *:t TeX:t LaTeX:t 
@@ -9,17 +9,32 @@
 #+PROPERTY: header-args+ :tangle mymath.sty
 # C-c C-v t tangle
 
-* Main
+* ヘッダ
 #+begin_src latex
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
 \ProvidesPackage{mymath}[2020/02/10, mura's math style 1.0]
+#+end_src
 
+* オプション処理
+#+begin_src latex
 %% utility
 \RequirePackage{pgfopts}
 %% \RequirePackage{ifthen}
 \RequirePackage{xparse}
 \RequirePackage{etoolbox}
 
+%% parse options
+\pgfkeys{/mymath/.cd,
+  % lang
+  lang/.store in = \mymath@lang,
+  % default value
+  lang = jp, 
+}
+\ProcessPgfOptions*
+#+end_src
+
+* AMS関連
+#+begin_src latex
 %% ams
 \RequirePackage{amsmath}
 \RequirePackage{amsthm}
@@ -32,18 +47,24 @@
   showmanualtags,
 }
 \RequirePackage{nicematrix}
+#+end_src
 
+* フォント
+#+begin_src latex
 %% fonts
 \RequirePackage[ % boldのあるものを選択
-cal=euler, % upright
-scr=boondoxo, % 小文字がある
-bb=px, % pazoの代理
+  cal=euler, % upright
+  scr=boondoxo, % 小文字がある
+  bb=px, % pazoの代理
 ]{mathalfa}
 \RequirePackage{pifont} % http://ctan.org/pkg/pifont
 \RequirePackage{tikzsymbols} %\Coffeecup
 \RequirePackage{manfnt} % \dbend
 \RequirePackage{halloweenmath} % \mathwitch
+#+end_src
 
+* その他
+#+begin_src latex
 %% misc
 \RequirePackage{algorithm}
 \RequirePackage{algpseudocode}
@@ -52,45 +73,48 @@ bb=px, % pazoの代理
 % \RequirePackage{enumitem}
 % \RequirePackage{psfrag}
 % \RequirePackage{mediabb}
+#+end_src
 
-%% parse options
-\pgfkeys{/mymath/.cd,
-  % lang
-  lang/.store in = \mymath@lang,
-  % default value
-  lang = jp, 
-}
-\ProcessPgfOptions*
-
-\ifundef{\chapter}{ % for article
-  % \ifthenelse{\isundefined{\chapter}}{ % for article
-  \newtheorem{theorem}{\textbf{定理}}
-}{ % for book
-  \numberwithin{section}{chapter}
-  \numberwithin{equation}{chapter}
-  \newtheorem{theorem}{定理}[chapter]
-}
-\ifdefstring{\mymath@lang}{jp}{ % for japanese
-  % \ifthenelse{\equal{jp}{\mymath@lang}}{ % for japanese
-  \newtheorem{lemma}[theorem]{補題}
-  \newtheorem{corollary}[theorem]{系}
-  \newtheorem{proposition}[theorem]{命題}
-  \theoremstyle{definition}
-  \newtheorem{definition}[theorem]{定義}
-  \newtheorem{example}[theorem]{例}
-%  \newtheorem{xca}[theorem]{演習}
-  \theoremstyle{remark}
-  \newtheorem{remark}[theorem]{注意}
-}{ % for non-japanese
-  \newtheorem{lemma}[theorem]{Lemma}
-  \newtheorem{corollary}[theorem]{Corollary}
-  \newtheorem{proposition}[theorem]{Proposition}
-  \theoremstyle{definition}
-  \newtheorem{definition}[theorem]{Definition}
-  \newtheorem{example}[theorem]{Example}
-  \newtheorem{xca}[theorem]{Exercise}
-  \theoremstyle{remark}
-  \newtheorem{remark}[theorem]{Remark}
+* 諸々の設定
+#+begin_src latex
+\ifundef{\theorem}{ 
+  \ifdefstring{\mymath@lang}{jp}{ % for japanese
+    \ifundef{\chapter}{ % for article
+      \newtheorem{theorem}{\textbf{定理}}
+    }{ % for book
+      \numberwithin{section}{chapter}
+      \numberwithin{equation}{chapter}
+      \newtheorem{theorem}{定理}[chapter]
+    }
+    \newtheorem{lemma}[theorem]{補題}
+    \newtheorem{corollary}[theorem]{系}
+    \newtheorem{proposition}[theorem]{命題}
+    \theoremstyle{definition}
+    \newtheorem{definition}[theorem]{定義}
+    \newtheorem{example}[theorem]{例}
+    %  \newtheorem{xca}[theorem]{演習}
+    \theoremstyle{remark}
+    \newtheorem{remark}[theorem]{注意}
+  }{ % for non-japanese
+    \ifundef{\chapter}{ % for article
+      \newtheorem{theorem}{Theorem}
+    }{ % for book
+      \numberwithin{section}{chapter}
+      \numberwithin{equation}{chapter}
+      \newtheorem{theorem}{Theorem}[chapter]
+    }
+    \newtheorem{lemma}[theorem]{Lemma}
+    \newtheorem{corollary}[theorem]{Corollary}
+    \newtheorem{proposition}[theorem]{Proposition}
+    \theoremstyle{definition}
+    \newtheorem{definition}[theorem]{Definition}
+    \newtheorem{example}[theorem]{Example}
+    % \newtheorem{xca}[theorem]{Exercise}
+    \theoremstyle{remark}
+    \newtheorem{remark}[theorem]{Remark}
+  }
+}{ % for beamer etc
+  \relax
 }
 
 %% 
@@ -168,15 +192,16 @@ bb=px, % pazoの代理
       \mCov[#2]{#4}{#5}{#3}}{% \Cov[size]{main}[sub](sup)
       \mCov{#4}{#5}{#3}}}% \Cov{main}[sub](sup)
 }
+#+end_src
 
+* フッタ
+#+begin_src latex
 %%
 \endinput
 #+end_src
 
 * References
-  - tufte package
-  - https://github.com/fmarotta/kaobook
-  - https://bedienhaptik.de
+  - AMS
 * COMMENT Local file settings for Emacs
 
 # Local Variables:

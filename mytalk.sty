@@ -1,20 +1,124 @@
-% -*-coding: utf-8 -*-
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
 \ProvidesPackage{mytalk}[2019/04/01, mura's talk style 3.0]
 
-%%% 
-%%% Load Packages
-%%%
+%%% utility
+\RequirePackage{xparse}
+\RequirePackage{etoolbox}
+\RequirePackage{pgfopts}
+%% \RequirePackage{ifthen} % obsolete
+%% \RequirePackage{regexpatch} % experimental
+
+%%% define and parse options
+\pgfkeys{/mytalk/.cd,
+  % lang
+  lang/.store in = \mytalk@lang,
+  % font
+  font weight/.store in = \mytalk@font,
+  font/.is choice,
+  font/regular/.style = {font weight = heavy},
+  font/heavy/.style = {font weight = heavy},
+  font/source/.style = {font weight = source},
+  % math
+  math style/.store in = \mytalk@math,
+  math/.is choice,
+  math/metropolis/.style = {math style = metropolis},
+  math/serif/.style = {math style = serif},
+  math/sans/.style = {math style = sans},
+  math/arev/.style = {math style = arev},
+  math/euler/.style = {math style = euler},
+  math/times/.style = {math style = times},
+  % header
+  header style/.store in = \mytalk@header,
+  header/.is choice,
+  header/right/.style = {header style = right},
+  header/waseda/.style = {header style = waseda},
+  % footer
+  footer style/.store in = \mytalk@footer,
+  footer/.is choice,
+  footer/none/.style = {footer style = none},
+  footer/symbol/.style = {footer style = symbol},
+  footer/progress/.style = {footer style = progress},
+  % block
+  block style/.store in = \mytalk@block,
+  block/.is choice,
+  block/none/.style = {block style = none},
+  block/grey/.style = {block style = grey},
+  block/color/.style = {block style = color},
+  block/greys/.style = {block style = greys},
+  block/colors/.style = {block style = colors},
+  % default values
+  lang = en,
+  font = regular,
+  math = metropolis,
+  header = right,
+  footer = progress,
+  block = grey,
+}
+\ProcessPgfPackageOptions*
+
+%%% language/encoding
+\RequirePackage{textcomp} % latex3 encoding
+\RequirePackage[T1]{fontenc}
+\RequirePackage[utf8]{inputenc}
+\RequirePackage{polyglossia} % 若干あやしい
+% \RequirePackage[main=japanese,english]{babel} % 枯れてる
+
+%%% parse language
+\ifdefstring{\mytalk@lang}{jp}{ % for japanese
+  \RequirePackage[hiragino-pron]{luatexja-preset}
+  \setlength\parindent{1\zw}
+  \setdefaultlanguage{japanese}
+  \let\japanese@capsformat=\relax % 余計なことはさせない
+  \setotherlanguage{english}
+  % font setup
+  \setmainjfont[BoldFont=HiraKakuProN-W6]{HiraMaruProN-W4}
+  \setsansjfont{HiraKakuProN-W3}
+}{ % for non-japanese
+  \setdefaultlanguage{english}
+  \setotherlanguage{japanese}
+}
+
+%%% my default definitions
+\RequirePackage{mycolor}
+\RequirePackage[lang=\mytalk@lang]{mymath} 
+%% % amstex mymathを整理すること
+%% \RequirePackage{amsthm}
+%% \RequirePackage{amscd}
+%% \RequirePackage{amssymb}
+%% \RequirePackage{amsbsy}
+%% \RequirePackage[fleqn,tbtags]{mathtools} % amsmathの拡張
+%% \mathtoolsset{showonlyrefs,showmanualtags}
+
+%% % algorithm
+%% \RequirePackage{algorithm}
+%% \RequirePackage{algpseudocode}
+
+%% % misc
+%% \RequirePackage{fancyvrb}
+%% \RequirePackage{enumerate}
+%% %\usepackage{psfrag}
+%% %\usepackage{mediabb}
+%% %\usepackage{enumitem}
+%% \RequirePackage{pifont}% http://ctan.org/pkg/pifont
+%% \newcommand{\cmark}{\ding{51}}%51/52 check mark (OK)
+%% \newcommand{\xmark}{\ding{55}}%55/56 cross mark (NG)
+%%
+\RequirePackage{mylist}
+
 \RequirePackage{appendixnumberbeamer}
-
 \RequirePackage{booktabs}
+%% cc mark
 \RequirePackage[scale=1.2]{ccicons}
-
-\RequirePackage{pgfplots}
-\usepgfplotslibrary{dateplot}
-
+%% space 
 \RequirePackage{xspace}
 \newcommand{\themename}{\textbf{\textsc{metropolis}}\xspace}
+
+%%% graphics
+\RequirePackage{grffile} % graphics file 名の拡張
+% \RequirePackage{graphicx} % beamer が読み込んでいる?
+% \graphicspath{{example/},{fig/}}
+\RequirePackage{pgfplots}
+\usepgfplotslibrary{dateplot}
 
 %% reference
 \RequirePackage[%
@@ -29,175 +133,116 @@
 \newcommand{\myCite}[1]%
 {\citeauthor{#1} (\citeyear{#1}). \citetitle{#1}.}
 
-%% hyperref
-\hypersetup{pdfencoding=auto}
-
-% amstex
-\RequirePackage{amsthm}
-\RequirePackage{amscd}
-\RequirePackage{amssymb}
-\RequirePackage{amsbsy}
-\RequirePackage[fleqn,tbtags]{mathtools} % amsmathの拡張
-\mathtoolsset{showonlyrefs,showmanualtags}
-
-% algorithm
-\RequirePackage{algorithm}
-\RequirePackage{algpseudocode}
-
-% misc
-\RequirePackage{fancyvrb}
-\RequirePackage{enumerate}
-%\usepackage{psfrag}
-%\usepackage{mediabb}
-%\usepackage{enumitem}
-\RequirePackage{pifont}% http://ctan.org/pkg/pifont
-\newcommand{\cmark}{\ding{51}}%51/52 check mark (OK)
-\newcommand{\xmark}{\ding{55}}%55/56 cross mark (NG)
-
-%%% 
-%%% Parse Options
-%%%
-\RequirePackage{pgfopts}
-\pgfkeys{/mytalk/.cd,
-  .search also={
-    /mytalk/font,
-    /mytalk/math,
-    /mytalk/header,
-    /mytalk/footer,
-    /mytalk/block,
-    /mytalk/lang,
-  }
+%%% index/hyperlink
+\RequirePackage{makeidx}
+\RequirePackage{url} 
+% \RequirePackage[hyphens]{url} % beamer ?
+% \RequirePackage[pdfencoding=auto]{hyperref} % beamerから?
+%%
+\hypersetup{%
+  pdfencoding=auto,% 他のもこちらに移すべきか?
+  bookmarks=true,%
+  bookmarksnumbered=true,%
+  bookmarkstype=toc,%
+  colorlinks=true,%
+  urlcolor=[named]myDarkGreen,%black,%
+  linkcolor=[named]myDarkBlue,%black,%
+  citecolor=[named]myDarkRed,%black,%
+  % linktocpage=true,%
+  unicode=true,%
+  % pdftitle={},%
+  pdfauthor={Noboru Murata},%
+  % pdfsubject={Lecture Notes},%
+  % pdfkeywords={;}
 }
-\pgfkeys{
-  /mytalk/font/.cd,
-  .is choice,
-  regular/.code={%
-    \relax
-  },
-  heavy/.code={%
+%\hypersetup{pdfencoding=auto}
+
+%%% font, math, header, footer and block styles
+
+%% choose from possible title styles
+\DeclareDocumentCommand{\myFontStyle}{m}{%
+  \edef\myArg{#1}
+  \ifdefstring{\myArg}{regular}{\relax}{}%
+  \ifdefstring{\myArg}{heavy}{%
     \setsansfont[BoldFont={Fira Sans Semibold},Numbers={OldStyle}]{Fira Sans Book}
-  },
-  source/.code={%
+  }{}%
+  \ifdefstring{\myArg}{source}{%
     \setsansfont[BoldFont={Source Sans Pro Semibold},Numbers={OldStyle}]{Source Sans Pro}
-  },
-  % ubuntu/.code={%
-  %   usepackage{fontspec}
-  %   \setsansfont{Ubuntu}
-  %   \setmonofont{Ubuntu Mono}
-  % },
+  }{}%
 }
-\pgfkeys{
-  /mytalk/math/.cd,
-  .is choice,
-  metropolis/.code={%
-    \relax
-  },
-  serif/.code={%
+
+%% choose from possible math styles
+\DeclareDocumentCommand{\myMathStyle}{m}{%
+  \edef\myArg{#1}
+  \ifdefstring{\myArg}{metropolis}{\relax}{}
+  \ifdefstring{\myArg}{serif}{%
     \usefonttheme{professionalfonts} 
     % \usefonttheme{serif}
-  },
-  sans/.code={%
+  }{}%
+  \ifdefstring{\myArg}{sans}{%
     \RequirePackage{newtxsf}
-  },
-  arev/.code={%
+  }{}%
+  \ifdefstring{\myArg}{arev}{%
     \RequirePackage{arevmath}
-  },
-  euler/.code={%
+  }{}%
+  \ifdefstring{\myArg}{euler}{%
     \RequirePackage[OT1]{fontenc}
     \RequirePackage{eulervm}
-  },
-  times/.code={%
+  }{}%
+  \ifdefstring{\myArg}{times}{%
     \usefonttheme{professionalfonts} 
     \RequirePackage{newtxmath}
-  },
+  }{}%
 }
-\pgfkeys{
-  /mytalk/header/.cd,
-  .is choice,
-  right/.code={%
-    \relax
-  },
-  waseda/.code={%
+
+%% choose from possible header styles
+\DeclareDocumentCommand{\myHeadStyle}{m}{%
+  \edef\myArg{#1}
+  \ifdefstring{\myArg}{right}{\relax}{}
+  \ifdefstring{\myArg}{waseda}{%
     \setbeamertemplate{frametitle}[plain]
     \setbeamercolor{frametitle}{fg=myLightGrey,bg=wasedaRed}
-  },
+  }{}%
 }
-\pgfkeys{
-  /mytalk/footer/.cd,
-  .is choice,
-  none/.code={%
+
+%% choose from possible footer styles
+\DeclareDocumentCommand{\myFootStyle}{m}{%
+  \edef\myArg{#1}
+  \ifdefstring{\myArg}{none}{%
     \setbeamertemplate{footline}[none]
-  },
-  symbol/.code={%
+  }{}%
+  \ifdefstring{\myArg}{symbol}{%
     \setbeamertemplate{footline}[symbol]
-  },
-  progress/.code={%
+  }{}%
+  \ifdefstring{\myArg}{progress}{%
     \setbeamertemplate{footline}[progress]
-  },
+  }{}%
 }
-\pgfkeys{
-  /mytalk/block/.cd,
-  .is choice,
-  none/.code={%
-    \mytalk@block
-    \mytalk@block@none
-  },
-  grey/.code={%
-    \mytalk@block
-    \mytalk@block@grey
-  },
-  color/.code={%
-    \mytalk@block
-    \mytalk@block@color
-  },
-  greys/.code={%
+
+%% choose from possible block styles
+\DeclareDocumentCommand{\myBlockStyle}{m}{%
+  \edef\myArg{#1}
+  \ifdefstring{\myArg}{none}{%
+    \mytalk@blockstyle
+    \mytalk@blockstyle@none
+  }{}%
+  \ifdefstring{\myArg}{grey}{%
+    \mytalk@blockstyle
+    \mytalk@blockstyle@grey
+  }{}%
+  \ifdefstring{\myArg}{color}{%
+    \mytalk@blockstyle
+    \mytalk@blockstyle@color
+  }{}%
+  \ifdefstring{\myArg}{greys}{%
     \setbeamertemplate{blocks}[rounded][shadow=true]
-    \mytalk@block@grey
-  },
-  colors/.code={%
+    \mytalk@blockstyle@grey
+  }{}%
+  \ifdefstring{\myArg}{colors}{%
     \setbeamertemplate{blocks}[rounded][shadow=true]
-    \mytalk@block@color
-  },
+    \mytalk@blockstyle@color
+  }{}%
 }
-\pgfkeys{
-  /mytalk/lang/.cd,
-  .is choice,
-  en/.code={%
-    \relax
-  },
-  jp/.code={%
-    \RequirePackage[hiragino-pron]{luatexja-preset}
-    \setmainjfont[BoldFont=HiraKakuProN-W6]{HiraMaruProN-W4}
-    \setsansjfont{HiraKakuProN-W3}
-    %%% begin translate
-    \uselanguage{japanese}
-    \languagepath{japanese}
-    \deftranslation[to=japanese]{Theorem}{定理}
-    \deftranslation[to=japanese]{Lemma}{補題}
-    \deftranslation[to=japanese]{Proposition}{命題}
-    \deftranslation[to=japanese]{Example}{例}
-    \deftranslation[to=japanese]{Examples}{例}
-    \deftranslation[to=japanese]{Definition}{定義}
-    \deftranslation[to=japanese]{Definitions}{定義}
-    \deftranslation[to=japanese]{Problem}{問題}
-    \deftranslation[to=japanese]{Solution}{解}
-    \deftranslation[to=japanese]{Fact}{事実}
-    \deftranslation[to=japanese]{Proof}{証明}
-    \def\proofname{証明}
-    %%% end translate
-  },
-}
-\newcommand{\mytalk@setdefaults}{
-  \pgfkeys{/mytalk/.cd,
-    font=regular,
-    math=metropolis,
-    header=right,
-    footer=progress,
-    block=grey,
-    lang=en,
-  }
-}  
-\newcommand{\mytalkset}[1]{\pgfkeys{/mytalk/.cd,#1}}
 
 %%% 
 %%% Base Theme 
@@ -260,7 +305,7 @@ outer/progressbar=frametitle]%
 }
 
 % %% Blocks
-\newcommand{\mytalk@block}{%
+\newcommand{\mytalk@blockstyle}{%
   \setbeamertemplate{block begin}{\metropolis@block{}}
   \setbeamertemplate{block alerted begin}{\metropolis@block{ alerted}}
   \setbeamertemplate{block example begin}{\metropolis@block{ example}}
@@ -268,7 +313,7 @@ outer/progressbar=frametitle]%
   \setbeamertemplate{block alerted end}{\end{beamercolorbox}\vspace*{0.2ex}}
   \setbeamertemplate{block example end}{\end{beamercolorbox}\vspace*{0.2ex}}
 }
-\newcommand{\mytalk@block@color}{%
+\newcommand{\mytalk@blockstyle@color}{%
   \setbeamercolor{block title}{fg=white,bg=myBlue}
   \setbeamercolor{block body}{fg=myGrey, bg=myLightBlue}
   \setbeamercolor{block title example}{fg=white, bg=myGreen}
@@ -276,7 +321,7 @@ outer/progressbar=frametitle]%
   \setbeamercolor{block title alerted}{fg=white, bg=myOrange}
   \setbeamercolor{block body alerted}{fg=myGrey, bg=myLightOrange}
 }
-\newcommand{\mytalk@block@none}{%
+\newcommand{\mytalk@blockstyle@none}{%
   \setbeamercolor{block title}{%
     use=normal text,
     fg=normal text.fg,
@@ -302,7 +347,7 @@ outer/progressbar=frametitle]%
     bg=
   }
 }
-\newcommand{\mytalk@block@grey}{%
+\newcommand{\mytalk@blockstyle@grey}{%
   \setbeamercolor{block title}{%
     use=normal text,
     fg=normal text.fg,
@@ -349,52 +394,6 @@ outer/progressbar=frametitle]%
   fg=myPurple,
   bg=myLightPurple
 }
-% \setbeamercolor{progress bar}{ ... }
-% \setbeamercolor{title separator}{ ... }
-% \setbeamercolor{progress bar in head/foot}{ ... }
-% \setbeamercolor{progress bar in section page}{ ... }
-
-%%%
-%%% Fonts
-%%%
-% \usefonttheme{professionalfonts} % required for mathspec
-% \usefonttheme{serif}
-% \usepackage[english]{babel}
-% \usepackage[latin1]{inputenc}
-% \usepackage{times}
-% \RequirePackage[T1]{fontenc}
-% \RequirePackage[full]{textcomp}
-% \RequirePackage[osf]{newpxtext} % osf for text, not math
-% \RequirePackage{cantarell} % sans serif
-% \RequirePackage[varqu,varl]{inconsolata} % sans serif mono font
-% \RequirePackage[bigdelims,vvarbb]{newpxmath} % bb from STIX
-% \RequirePackage[cal=boondoxo]{mathalfa} %\mathcal, \mathbb, \mathfrak
-
-%% Main Fonts 
-% \setsansfont[BoldFont={Fira Sans}, Numbers={OldStyle}]{Fira Sans Light}
-% \setsansfont[BoldFont={Fira Sans Semibold}, Numbers={OldStyle}]{Fira Sans}
-% \setsansfont[BoldFont={Source Sans Pro Semibold}, Numbers={OldStyle}]{Source Sans Pro}
-% \setsansfont[BoldFont={Fira Sans Semibold}, Numbers={OldStyle}]{Fira Sans Book}
-
-%% Title Page
-% \setbeamerfont{title}{family=\sffamily, size=\huge}
-% \setbeamerfont{subtitle}{size=\Large}
-% \setbeamerfont{date}{size=\large}
-% \setbeamerfont{author}{size=\large}
-% \setbeamerfont{institute}{size=\large}
-
-%% Section
-% \setbeamerfont{section title}{size=\Large}
-
-%% Content
-% \setbeamerfont{frametitle}{family=\sffamily, size=\Large}
-% \setbeamerfont{copyright text}{size=\tiny}
-% \setbeamerfont{block title}{series=\sffamily, size=\large}
-% \setbeamerfont{block title alerted}{family=\sffamily, size=\large}
-% \setbeamerfont{block title example}{family=\sffamily, size=\large}
-% \setbeamerfont{caption}{size=\small}
-% \setbeamerfont{caption name}{family=\small}
-% \setbeamerfont{page number in head/foot}{size=\scriptsize}
 
 %%% 
 %%% Navigation
@@ -544,8 +543,13 @@ outer/progressbar=frametitle]%
 %%%
 %%% process options
 %%%
-\mytalk@setdefaults
-\ProcessPgfOptions{/mytalk}
 
-%%% 
+%%% set page style and layout
+\myFontStyle{\mytalk@font}
+\myMathStyle{\mytalk@math}
+\myHeadStyle{\mytalk@header}
+\myFootStyle{\mytalk@footer}
+\myBlockStyle{\mytalk@block}
+
+%%
 \endinput

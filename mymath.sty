@@ -1,4 +1,3 @@
-% -*-coding: utf-8 -*-
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
 \ProvidesPackage{mymath}[2020/02/10, mura's math style 1.0]
 
@@ -7,6 +6,15 @@
 %% \RequirePackage{ifthen}
 \RequirePackage{xparse}
 \RequirePackage{etoolbox}
+
+%% parse options
+\pgfkeys{/mymath/.cd,
+  % lang
+  lang/.store in = \mymath@lang,
+  % default value
+  lang = jp, 
+}
+\ProcessPgfOptions*
 
 %% ams
 \RequirePackage{amsmath}
@@ -23,9 +31,9 @@
 
 %% fonts
 \RequirePackage[ % boldのあるものを選択
-cal=euler, % upright
-scr=boondoxo, % 小文字がある
-bb=px, % pazoの代理
+  cal=euler, % upright
+  scr=boondoxo, % 小文字がある
+  bb=px, % pazoの代理
 ]{mathalfa}
 \RequirePackage{pifont} % http://ctan.org/pkg/pifont
 \RequirePackage{tikzsymbols} %\Coffeecup
@@ -41,44 +49,44 @@ bb=px, % pazoの代理
 % \RequirePackage{psfrag}
 % \RequirePackage{mediabb}
 
-%% parse options
-\pgfkeys{/mymath/.cd,
-  % lang
-  lang/.store in = \mymath@lang,
-  % default value
-  lang = jp, 
-}
-\ProcessPgfOptions*
-
-\ifundef{\chapter}{ % for article
-  % \ifthenelse{\isundefined{\chapter}}{ % for article
-  \newtheorem{theorem}{\textbf{定理}}
-}{ % for book
-  \numberwithin{section}{chapter}
-  \numberwithin{equation}{chapter}
-  \newtheorem{theorem}{定理}[chapter]
-}
-\ifdefstring{\mymath@lang}{jp}{ % for japanese
-  % \ifthenelse{\equal{jp}{\mymath@lang}}{ % for japanese
-  \newtheorem{lemma}[theorem]{補題}
-  \newtheorem{corollary}[theorem]{系}
-  \newtheorem{proposition}[theorem]{命題}
-  \theoremstyle{definition}
-  \newtheorem{definition}[theorem]{定義}
-  \newtheorem{example}[theorem]{例}
-%  \newtheorem{xca}[theorem]{演習}
-  \theoremstyle{remark}
-  \newtheorem{remark}[theorem]{注意}
-}{ % for non-japanese
-  \newtheorem{lemma}[theorem]{Lemma}
-  \newtheorem{corollary}[theorem]{Corollary}
-  \newtheorem{proposition}[theorem]{Proposition}
-  \theoremstyle{definition}
-  \newtheorem{definition}[theorem]{Definition}
-  \newtheorem{example}[theorem]{Example}
-  \newtheorem{xca}[theorem]{Exercise}
-  \theoremstyle{remark}
-  \newtheorem{remark}[theorem]{Remark}
+\ifundef{\theorem}{ 
+  \ifdefstring{\mymath@lang}{jp}{ % for japanese
+    \ifundef{\chapter}{ % for article
+      \newtheorem{theorem}{\textbf{定理}}
+    }{ % for book
+      \numberwithin{section}{chapter}
+      \numberwithin{equation}{chapter}
+      \newtheorem{theorem}{定理}[chapter]
+    }
+    \newtheorem{lemma}[theorem]{補題}
+    \newtheorem{corollary}[theorem]{系}
+    \newtheorem{proposition}[theorem]{命題}
+    \theoremstyle{definition}
+    \newtheorem{definition}[theorem]{定義}
+    \newtheorem{example}[theorem]{例}
+    %  \newtheorem{xca}[theorem]{演習}
+    \theoremstyle{remark}
+    \newtheorem{remark}[theorem]{注意}
+  }{ % for non-japanese
+    \ifundef{\chapter}{ % for article
+      \newtheorem{theorem}{Theorem}
+    }{ % for book
+      \numberwithin{section}{chapter}
+      \numberwithin{equation}{chapter}
+      \newtheorem{theorem}{Theorem}[chapter]
+    }
+    \newtheorem{lemma}[theorem]{Lemma}
+    \newtheorem{corollary}[theorem]{Corollary}
+    \newtheorem{proposition}[theorem]{Proposition}
+    \theoremstyle{definition}
+    \newtheorem{definition}[theorem]{Definition}
+    \newtheorem{example}[theorem]{Example}
+    % \newtheorem{xca}[theorem]{Exercise}
+    \theoremstyle{remark}
+    \newtheorem{remark}[theorem]{Remark}
+  }
+}{ % for beamer etc
+  \relax
 }
 
 %% 
