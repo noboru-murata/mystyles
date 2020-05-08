@@ -1,10 +1,16 @@
 ###
 ### usage: make push MSG='"first commit"'
 ###
+.SUFFIXES: .org .sty
+MSG	= "debug"
+SRC	= $(shell ls my*.org)
+TARGET	= $(SRC:%.org=%.sty)
+TANGLE	= /bin/sh ./tangle.sh
 
-MSG = "debug"
+all:	$(TARGET)
 
-all:	push
+.org.sty:
+	$(TANGLE) $<
 
 push:
 	git add -u
