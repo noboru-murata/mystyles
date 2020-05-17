@@ -1,7 +1,7 @@
 #+TITLE: My Handout Style
 #+AUTHOR: Noboru Murata
 #+EMAIL: noboru.murata@gmail.com
-#+DATE: 2020.05.05 22:59:14
+#+DATE: 2020.05.15 18:12:22
 #+STARTUP: hidestars content
 #+OPTIONS: date:t H:4 num:nil toc:nil \n:nil
 #+OPTIONS: @:t ::t |:t ^:t -:t f:t *:t TeX:t LaTeX:t 
@@ -127,9 +127,9 @@
   \edef\myArg{#1}
   \ifdefstring{\myArg}{tufte}{%
     \let\orgfootnote=\footnote % 念のため取っておく
-    \RenewDocumentCommand \footnote { o o +m }{
+    \RenewDocumentCommand{\footnote}{ o o +m }{
       \sidenotemark[##1]
-      \sidenotetext[##1][##2]{##3\medskip}p
+      \sidenotetext[##1][##2]{##3\medskip}
       \@sidenotes@multimarker
     }
     \AtBeginDocument{

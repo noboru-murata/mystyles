@@ -96,9 +96,9 @@
   \edef\myArg{#1}
   \ifdefstring{\myArg}{tufte}{%
     \let\orgfootnote=\footnote % 念のため取っておく
-    \RenewDocumentCommand \footnote { o o +m }{
+    \RenewDocumentCommand{\footnote}{ o o +m }{
       \sidenotemark[##1]
-      \sidenotetext[##1][##2]{##3\medskip}p
+      \sidenotetext[##1][##2]{##3\medskip}
       \@sidenotes@multimarker
     }
     \AtBeginDocument{
