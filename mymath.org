@@ -1,7 +1,7 @@
 #+TITLE: My Math Style
 #+AUTHOR: Noboru Murata
 #+EMAIL: noboru.murata@gmail.com
-#+DATE: 2020.05.08 11:16:10
+#+DATE: 2020.06.21 17:56:48
 #+STARTUP: hidestars content
 #+OPTIONS: date:t H:4 num:nil toc:nil \n:nil
 #+OPTIONS: @:t ::t |:t ^:t -:t f:t *:t TeX:t LaTeX:t 
@@ -58,6 +58,7 @@
   bb=px, % pazoの代理
 ]{mathalfa}
 \RequirePackage{pifont} % http://ctan.org/pkg/pifont
+\RequirePackage{dsfont} % double stroke
 \RequirePackage{tikzsymbols} %\Coffeecup
 \RequirePackage{manfnt} % \dbend
 \RequirePackage{halloweenmath} % \mathwitch
