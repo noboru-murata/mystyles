@@ -1,7 +1,7 @@
 #+TITLE: My Listing Style
 #+AUTHOR: Noboru Murata
 #+EMAIL: noboru.murata@gmail.com
-#+DATE: 2020.05.05 16:24:52
+#+DATE: 2020.08.18 14:31:09
 #+STARTUP: hidestars content
 #+OPTIONS: date:t H:4 num:nil toc:nil \n:nil
 #+OPTIONS: @:t ::t |:t ^:t -:t f:t *:t TeX:t LaTeX:t 
@@ -13,6 +13,9 @@
 #+begin_src latex
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
 \ProvidesPackage{mylist}[2020/03/20, mura's list style version 1.0]
+
+%% for simple listings
+\RequirePackage{listings} 
 
 %% including R scripts and graphics
 \RequirePackage{xparse}
@@ -102,7 +105,7 @@
 
 # Local Variables:
 # time-stamp-line-limit: 1000
-# time-stamp-format: "%04y.%02m.%02d %02H:%02M:%02S"
+# time-stamp-format: "%Y.%02m.%02d %02H:%02M:%02S"
 # time-stamp-active: t
 # time-stamp-start: "#\\+DATE:[ \t]*"
 # time-stamp-end: "$"
