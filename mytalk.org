@@ -1,7 +1,7 @@
 #+TITLE: My Talk Style
 #+AUTHOR: Noboru Murata
 #+EMAIL: noboru.murata@gmail.com
-#+DATE: 2020.05.08 11:15:26
+#+DATE: 2020.08.21 00:09:02
 #+STARTUP: hidestars content
 #+OPTIONS: date:t H:4 num:nil toc:nil \n:nil
 #+OPTIONS: @:t ::t |:t ^:t -:t f:t *:t TeX:t LaTeX:t 
@@ -239,7 +239,7 @@
   \ifdefstring{\myArg}{right}{\relax}{}
   \ifdefstring{\myArg}{waseda}{%
     \setbeamertemplate{frametitle}[plain]
-    \setbeamercolor{frametitle}{fg=myLightGrey,bg=wasedaRed}
+    \setbeamercolor{frametitle}{fg=myPaleGrey,bg=wasedaRed}
   }{}%
 }
 
@@ -310,12 +310,12 @@ outer/progressbar=frametitle]%
 \setbeamercolor{copyright text}{fg=myGrey}
 
 %% Palettes
-\setbeamercolor{palette primary}{fg=myLightGrey,bg=myGrey}
-\setbeamercolor{palette secondary}{fg=myGrey,bg=myLightGrey}
-\setbeamercolor{palette tertiary}{fg=myLightBlue,bg=myGrey}
-\setbeamercolor{palette quaternary}{fg=myLightGrey,bg=myBlue}
-\setbeamercolor{mini frame}{bg=myLightGrey}
-\setbeamercolor{section in head/foot}{fg=myGrey,bg=myLightGrey}
+\setbeamercolor{palette primary}{fg=myPaleGrey,bg=myGrey}
+\setbeamercolor{palette secondary}{fg=myGrey,bg=myPaleGrey}
+\setbeamercolor{palette tertiary}{fg=myPaleBlue,bg=myGrey}
+\setbeamercolor{palette quaternary}{fg=myPaleGrey,bg=myBlue}
+\setbeamercolor{mini frame}{bg=myPaleGrey}
+\setbeamercolor{section in head/foot}{fg=myGrey,bg=myPaleGrey}
 
 %% Titlepage
 \setbeamercolor{title}{parent=normal text,fg=myDarkPurple}
@@ -356,11 +356,11 @@ outer/progressbar=frametitle]%
 }
 \newcommand{\mytalk@blockstyle@color}{%
   \setbeamercolor{block title}{fg=white,bg=myBlue}
-  \setbeamercolor{block body}{fg=myGrey, bg=myLightBlue}
+  \setbeamercolor{block body}{fg=myGrey, bg=myPaleBlue}
   \setbeamercolor{block title example}{fg=white, bg=myGreen}
-  \setbeamercolor{block body example}{fg=myGrey, bg=myLightGreen}
+  \setbeamercolor{block body example}{fg=myGrey, bg=myPaleGreen}
   \setbeamercolor{block title alerted}{fg=white, bg=myOrange}
-  \setbeamercolor{block body alerted}{fg=myGrey, bg=myLightOrange}
+  \setbeamercolor{block body alerted}{fg=myGrey, bg=myPaleOrange}
 }
 \newcommand{\mytalk@blockstyle@none}{%
   \setbeamercolor{block title}{%
@@ -419,7 +419,7 @@ outer/progressbar=frametitle]%
 }
   
 %% Notes
-\setbeamercolor{note page}{fg=myGrey,bg=myLightGrey}
+\setbeamercolor{note page}{fg=myGrey,bg=myPaleGrey}
 \setbeamercolor{note title}{fg=white, bg=myGrey}
 \setbeamercolor{note date}{parent=note title}
 
@@ -433,7 +433,7 @@ outer/progressbar=frametitle]%
 %% Progress Bar
 \setbeamercolor{progress bar}{%
   fg=myPurple,
-  bg=myLightPurple
+  bg=myPalePurple
 }
 
 %%% 
@@ -601,13 +601,14 @@ outer/progressbar=frametitle]%
 \endinput
 #+end_src
 
-* References
+* 参考
   - metropolis
 
-* COMMENT Local file settings for Emacs
+* COMMENT ローカル変数
+
 # Local Variables:
 # time-stamp-line-limit: 1000
-# time-stamp-format: "%04y.%02m.%02d %02H:%02M:%02S"
+# time-stamp-format: "%Y.%02m.%02d %02H:%02M:%02S"
 # time-stamp-active: t
 # time-stamp-start: "#\\+DATE:[ \t]*"
 # time-stamp-end: "$"

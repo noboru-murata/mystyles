@@ -1,7 +1,7 @@
 #+TITLE: My Listing Style
 #+AUTHOR: Noboru Murata
 #+EMAIL: noboru.murata@gmail.com
-#+DATE: 2020.08.18 14:49:23
+#+DATE: 2020.08.21 00:18:29
 #+STARTUP: hidestars content
 #+OPTIONS: date:t H:4 num:nil toc:nil \n:nil
 #+OPTIONS: @:t ::t |:t ^:t -:t f:t *:t TeX:t LaTeX:t 
@@ -9,47 +9,88 @@
 #+PROPERTY: header-args+ :tangle mylist.sty
 # C-c C-v t tangle
 
-* Main
+* ヘッダ
 #+begin_src latex
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
 \ProvidesPackage{mylist}[2020/03/20, mura's list style version 1.0]
+#+end_src  
 
-%% simple listings for R
-\RequirePackage{listings} 
-\lstset{ %
-  language=R,                     % the language of the code
-  basicstyle=\footnotesize,       % the size of the fonts that are used for the code
-  % basicstyle=\small,            % print whole listing small
-  numbers=left,                   % where to put the line-numbers
-  numberstyle=\tiny\color{gray},  % the style that is used for the line-numbers
-  stepnumber=1,                   % the step between two line-numbers. If it's 1, each line
-                                  % will be numbered
-  numbersep=5pt,                  % how far the line-numbers are from the code
-  % backgroundcolor=\color{pink}, % choose the background color. You must add \usepackage{color}
-  showspaces=false,               % show spaces adding particular underscores
-  showstringspaces=false,         % underline spaces within strings
-  showtabs=false,                 % show tabs within strings adding particular underscores
-  frame=none,                     % adds a frame around the code
-  rulecolor=\color{black},        % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. commens (green here))
-  tabsize=2,                      % sets default tabsize to 2 spaces
-  captionpos=b,                   % sets the caption-position to bottom
-  breaklines=true,                % sets automatic line breaking
-  breakatwhitespace=false,        % sets if automatic breaks should only happen at whitespace
-  % title=\lstname,               % show the filename of files included with \lstinputlisting;
-  %                               % also try caption instead of title
-  keywordstyle=\color{black}\ttfamily, % keyword style
-  % keywordstyle=\color{black}\bfseries\underbar,
-  commentstyle=\color{blue},      % comment style
-  % commentstyle=\color{white},
-  stringstyle=\color{orange}\ttfamily, % string literal style
-  % stringstyle=\ttfamily,
-  identifierstyle=\ttfamily,
-  escapeinside={\%*}{*)},  % if you want to add a comment within your code
-  morekeywords={*,...},    % if you want to add more keywords to the set
-  alsoletter={.},
-} 
+* オプション処理
+#+begin_src latex
+%%% utility
+\RequirePackage{xparse}
+\RequirePackage{etoolbox}
+\RequirePackage{pgfopts}
 
-%% including R scripts and graphics
+%%% define and parse options
+\pgfkeys{/mylist/.cd,
+  % list
+  list style/.store in = \mylist@list,
+  list/.is choice,
+  list/none/.style = {list style = none},
+  list/minted/.style = {list style = minted},
+  list/listings/.style = {list style = listings},
+  % default values
+  list = none, 
+}
+\ProcessPgfPackageOptions*
+#+end_src
+
+* listing関連
+#+begin_src latex
+%%% simple listings for ox-latex
+\ifdefstring{\mylist@list}{minted}{%
+  \RequirePackage{minted} 
+  \RequirePackage{mdframed}
+  \surroundwithmdframed[%
+  font=\small, %
+  backgroundcolor=myPaleOrange, %
+  linewidth=0pt, %
+  ]{minted}
+}{}%
+\ifdefstring{\mylist@list}{listings}{%
+  \RequirePackage{listings} 
+  \lstset{ %
+    language=R,                     % the language of the code
+    basicstyle=\footnotesize,       % the size of the fonts that are used for the code
+    % basicstyle=\small,            % print whole listing small
+    numbers=left,                   % where to put the line-numbers
+    numberstyle=\tiny\color{gray},  % the style that is used for the line-numbers
+    stepnumber=1,                   % the step between two line-numbers. If it's 1, each line
+    % will be numbered
+    numbersep=5pt,                  % how far the line-numbers are from the code
+    backgroundcolor=\color{myPaleOrange}, % choose the background color. You must add \usepackage{color}
+    showspaces=false,               % show spaces adding particular underscores
+    showstringspaces=false,         % underline spaces within strings
+    showtabs=false,                 % show tabs within strings adding particular underscores
+    frame=none,                     % adds a frame around the code
+    rulecolor=\color{black},        % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. commens (green here))
+    tabsize=8,                      % sets default tabsize to 2 spaces
+    captionpos=b,                   % sets the caption-position to bottom
+    breaklines=true,                % sets automatic line breaking
+    breakatwhitespace=false,        % sets if automatic breaks should only happen at whitespace
+    % title=\lstname,               % show the filename of files included with \lstinputlisting;
+    %                               % also try caption instead of title
+    keywordstyle=\color{black}\ttfamily, % keyword style
+    % keywordstyle=\color{black}\bfseries\underbar,
+    commentstyle=\color{blue}\ttfamily,  % comment style
+    % commentstyle=\color{white},
+    stringstyle=\color{myDarkGreen}\ttfamily, % string literal style
+    % stringstyle=\ttfamily,
+    identifierstyle=\ttfamily,
+    escapeinside={\%*}{*)},  % if you want to add a comment within your code
+    morekeywords={*,...},    % if you want to add more keywords to the set
+    alsoletter={.},
+  } 
+}{}%
+#+end_src  
+
+listings は koma の marginpar/sidenote と conflict するので注意
+koma は minted との方が相性が良い
+
+* R/Sweave環境
+#+begin_src latex
+%%% including R scripts and graphics
 \RequirePackage{xparse}
 \RequirePackage{subcaption}
 \RequirePackage{tcolorbox}
@@ -66,7 +107,7 @@
     enhanced jigsaw,
     breakable,
     size=small,
-    colback=[named]myLightOrange,
+    colback=[named]myPaleOrange,
     colframe=[named]myDarkOrange,
     % colback=red!5!white,
     % colframe=red!75!black,
@@ -92,8 +133,11 @@
 \cs_new:cpn {myCode*} {\myCode*}
 \cs_new_eq:cN {endmyCode*} \endmyCode
 \ExplSyntaxOff
+#+end_src  
 
-%% PDF file handling
+* PDFファイル処理
+#+begin_src latex
+%%% PDF file handling
 \newcounter{GraphPage}
 \NewDocumentCommand\GraphFile{m}{
   \gdef\myFile{#1}
@@ -125,15 +169,19 @@
 \NewDocumentCommand\emptyGraph{O{.45}}{%
   \parbox{#1\linewidth}{\strut} % 空の箱
 }
+#+end_src
 
+* フッタ
+#+begin_src latex
+%% 
 \endinput
 #+end_src
 
-* References
-  - tufte package
+* 参考
   - https://github.com/fmarotta/kaobook
   - https://bedienhaptik.de
-* COMMENT Local file settings for Emacs
+
+* COMMENT ローカル変数
 
 # Local Variables:
 # time-stamp-line-limit: 1000

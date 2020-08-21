@@ -1,42 +1,71 @@
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
 \ProvidesPackage{mylist}[2020/03/20, mura's list style version 1.0]
 
-%% simple listings for R
-\RequirePackage{listings} 
-\lstset{ %
-  language=R,                     % the language of the code
-  basicstyle=\footnotesize,       % the size of the fonts that are used for the code
-  % basicstyle=\small,            % print whole listing small
-  numbers=left,                   % where to put the line-numbers
-  numberstyle=\tiny\color{gray},  % the style that is used for the line-numbers
-  stepnumber=1,                   % the step between two line-numbers. If it's 1, each line
-                                  % will be numbered
-  numbersep=5pt,                  % how far the line-numbers are from the code
-  % backgroundcolor=\color{pink}, % choose the background color. You must add \usepackage{color}
-  showspaces=false,               % show spaces adding particular underscores
-  showstringspaces=false,         % underline spaces within strings
-  showtabs=false,                 % show tabs within strings adding particular underscores
-  frame=none,                     % adds a frame around the code
-  rulecolor=\color{black},        % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. commens (green here))
-  tabsize=2,                      % sets default tabsize to 2 spaces
-  captionpos=b,                   % sets the caption-position to bottom
-  breaklines=true,                % sets automatic line breaking
-  breakatwhitespace=false,        % sets if automatic breaks should only happen at whitespace
-  % title=\lstname,               % show the filename of files included with \lstinputlisting;
-  %                               % also try caption instead of title
-  keywordstyle=\color{black}\ttfamily, % keyword style
-  % keywordstyle=\color{black}\bfseries\underbar,
-  commentstyle=\color{blue},      % comment style
-  % commentstyle=\color{white},
-  stringstyle=\color{orange}\ttfamily, % string literal style
-  % stringstyle=\ttfamily,
-  identifierstyle=\ttfamily,
-  escapeinside={\%*}{*)},  % if you want to add a comment within your code
-  morekeywords={*,...},    % if you want to add more keywords to the set
-  alsoletter={.},
-} 
+%%% utility
+\RequirePackage{xparse}
+\RequirePackage{etoolbox}
+\RequirePackage{pgfopts}
 
-%% including R scripts and graphics
+%%% define and parse options
+\pgfkeys{/mylist/.cd,
+  % list
+  list style/.store in = \mylist@list,
+  list/.is choice,
+  list/none/.style = {list style = none},
+  list/minted/.style = {list style = minted},
+  list/listings/.style = {list style = listings},
+  % default values
+  list = none, 
+}
+\ProcessPgfPackageOptions*
+
+%%% simple listings for ox-latex
+\ifdefstring{\mylist@list}{minted}{%
+  \RequirePackage{minted} 
+  \RequirePackage{mdframed}
+  \surroundwithmdframed[%
+  font=\small, %
+  backgroundcolor=myPaleOrange, %
+  linewidth=0pt, %
+  ]{minted}
+}{}%
+\ifdefstring{\mylist@list}{listings}{%
+  \RequirePackage{listings} 
+  \lstset{ %
+    language=R,                     % the language of the code
+    basicstyle=\footnotesize,       % the size of the fonts that are used for the code
+    % basicstyle=\small,            % print whole listing small
+    numbers=left,                   % where to put the line-numbers
+    numberstyle=\tiny\color{gray},  % the style that is used for the line-numbers
+    stepnumber=1,                   % the step between two line-numbers. If it's 1, each line
+    % will be numbered
+    numbersep=5pt,                  % how far the line-numbers are from the code
+    backgroundcolor=\color{myPaleOrange}, % choose the background color. You must add \usepackage{color}
+    showspaces=false,               % show spaces adding particular underscores
+    showstringspaces=false,         % underline spaces within strings
+    showtabs=false,                 % show tabs within strings adding particular underscores
+    frame=none,                     % adds a frame around the code
+    rulecolor=\color{black},        % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. commens (green here))
+    tabsize=8,                      % sets default tabsize to 2 spaces
+    captionpos=b,                   % sets the caption-position to bottom
+    breaklines=true,                % sets automatic line breaking
+    breakatwhitespace=false,        % sets if automatic breaks should only happen at whitespace
+    % title=\lstname,               % show the filename of files included with \lstinputlisting;
+    %                               % also try caption instead of title
+    keywordstyle=\color{black}\ttfamily, % keyword style
+    % keywordstyle=\color{black}\bfseries\underbar,
+    commentstyle=\color{blue}\ttfamily,  % comment style
+    % commentstyle=\color{white},
+    stringstyle=\color{myDarkGreen}\ttfamily, % string literal style
+    % stringstyle=\ttfamily,
+    identifierstyle=\ttfamily,
+    escapeinside={\%*}{*)},  % if you want to add a comment within your code
+    morekeywords={*,...},    % if you want to add more keywords to the set
+    alsoletter={.},
+  } 
+}{}%
+
+%%% including R scripts and graphics
 \RequirePackage{xparse}
 \RequirePackage{subcaption}
 \RequirePackage{tcolorbox}
@@ -53,7 +82,7 @@
     enhanced jigsaw,
     breakable,
     size=small,
-    colback=[named]myLightOrange,
+    colback=[named]myPaleOrange,
     colframe=[named]myDarkOrange,
     % colback=red!5!white,
     % colframe=red!75!black,
@@ -80,7 +109,7 @@
 \cs_new_eq:cN {endmyCode*} \endmyCode
 \ExplSyntaxOff
 
-%% PDF file handling
+%%% PDF file handling
 \newcounter{GraphPage}
 \NewDocumentCommand\GraphFile{m}{
   \gdef\myFile{#1}
@@ -113,4 +142,5 @@
   \parbox{#1\linewidth}{\strut} % 空の箱
 }
 
+%% 
 \endinput

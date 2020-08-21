@@ -1,7 +1,7 @@
 #+TITLE: My Tufte Style
 #+AUTHOR: Noboru Murata
 #+EMAIL: noboru.murata@gmail.com
-#+DATE: 2020.05.06 22:23:06
+#+DATE: 2020.08.20 19:29:33
 #+STARTUP: hidestars content
 #+OPTIONS: date:t H:4 num:nil toc:nil \n:nil
 #+OPTIONS: @:t ::t |:t ^:t -:t f:t *:t TeX:t LaTeX:t 
@@ -307,15 +307,15 @@
 \endinput
 #+end_src
 
-* References
-  - tufte package
+* 参考
+  - https://www.ctan.org/pkg/tufte-latex
   - https://github.com/fmarotta/kaobook
   - https://bedienhaptik.de
-* COMMENT Local file settings for Emacs
+* COMMENT ローカル変数
 
 # Local Variables:
 # time-stamp-line-limit: 1000
-# time-stamp-format: "%04y.%02m.%02d %02H:%02M:%02S"
+# time-stamp-format: "%Y.%02m.%02d %02H:%02M:%02S"
 # time-stamp-active: t
 # time-stamp-start: "#\\+DATE:[ \t]*"
 # time-stamp-end: "$"

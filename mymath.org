@@ -1,7 +1,7 @@
 #+TITLE: My Math Style
 #+AUTHOR: Noboru Murata
 #+EMAIL: noboru.murata@gmail.com
-#+DATE: 2020.06.21 17:56:48
+#+DATE: 2020.08.20 19:28:46
 #+STARTUP: hidestars content
 #+OPTIONS: date:t H:4 num:nil toc:nil \n:nil
 #+OPTIONS: @:t ::t |:t ^:t -:t f:t *:t TeX:t LaTeX:t 
@@ -17,9 +17,8 @@
 
 * オプション処理
 #+begin_src latex
-%% utility
+%%% utility
 \RequirePackage{pgfopts}
-%% \RequirePackage{ifthen}
 \RequirePackage{xparse}
 \RequirePackage{etoolbox}
 
@@ -32,10 +31,12 @@
 }
 \ProcessPgfOptions*
 #+end_src
+昔は条件分岐に使っていた
+%% \RequirePackage{ifthen}
 
 * AMS関連
 #+begin_src latex
-%% ams
+%%% ams
 \RequirePackage{amsmath}
 \RequirePackage{amsthm}
 \RequirePackage{amscd}
@@ -49,9 +50,9 @@
 \RequirePackage{nicematrix}
 #+end_src
 
-* フォント
+* フォント関係
 #+begin_src latex
-%% fonts
+%%% fonts
 \RequirePackage[ % boldのあるものを選択
   cal=euler, % upright
   scr=boondoxo, % 小文字がある
@@ -66,18 +67,19 @@
 
 * その他
 #+begin_src latex
-%% misc
+%%% misc
 \RequirePackage{algorithm}
 \RequirePackage{algpseudocode}
 \RequirePackage{fancyvrb}
 \RequirePackage{enumerate}
+#+end_src
 % \RequirePackage{enumitem}
 % \RequirePackage{psfrag}
 % \RequirePackage{mediabb}
-#+end_src
 
 * 諸々の設定
 #+begin_src latex
+%%% define private functions
 \ifundef{\theorem}{ 
   \ifdefstring{\mymath@lang}{jp}{ % for japanese
     \ifundef{\chapter}{ % for article
@@ -201,13 +203,14 @@
 \endinput
 #+end_src
 
-* References
-  - AMS
-* COMMENT Local file settings for Emacs
+* 参考
+  - [[https://www.ctan.org/pkg/amsmath]]
+
+* COMMENT ローカル変数
 
 # Local Variables:
 # time-stamp-line-limit: 1000
-# time-stamp-format: "%04y.%02m.%02d %02H:%02M:%02S"
+# time-stamp-format: "%Y.%02m.%02d %02H:%02M:%02S"
 # time-stamp-active: t
 # time-stamp-start: "#\\+DATE:[ \t]*"
 # time-stamp-end: "$"

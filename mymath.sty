@@ -1,9 +1,8 @@
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
 \ProvidesPackage{mymath}[2020/02/10, mura's math style 1.0]
 
-%% utility
+%%% utility
 \RequirePackage{pgfopts}
-%% \RequirePackage{ifthen}
 \RequirePackage{xparse}
 \RequirePackage{etoolbox}
 
@@ -16,7 +15,7 @@
 }
 \ProcessPgfOptions*
 
-%% ams
+%%% ams
 \RequirePackage{amsmath}
 \RequirePackage{amsthm}
 \RequirePackage{amscd}
@@ -29,7 +28,7 @@
 }
 \RequirePackage{nicematrix}
 
-%% fonts
+%%% fonts
 \RequirePackage[ % boldのあるものを選択
   cal=euler, % upright
   scr=boondoxo, % 小文字がある
@@ -41,15 +40,13 @@
 \RequirePackage{manfnt} % \dbend
 \RequirePackage{halloweenmath} % \mathwitch
 
-%% misc
+%%% misc
 \RequirePackage{algorithm}
 \RequirePackage{algpseudocode}
 \RequirePackage{fancyvrb}
 \RequirePackage{enumerate}
-% \RequirePackage{enumitem}
-% \RequirePackage{psfrag}
-% \RequirePackage{mediabb}
 
+%%% define private functions
 \ifundef{\theorem}{ 
   \ifdefstring{\mymath@lang}{jp}{ % for japanese
     \ifundef{\chapter}{ % for article

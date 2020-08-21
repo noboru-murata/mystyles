@@ -17,9 +17,17 @@
   style/.is choice,
   style/tufte/.style = {book style = tufte},
   style/plain/.style = {book style = plain},
+  % list
+  % list
+  list style/.store in = \mybook@list,
+  list/.is choice,
+  list/none/.style = {list style = none},
+  list/minted/.style = {list style = minted},
+  list/listings/.style = {list style = listings},
   % default values
   lang = jp, 
   style = tufte,
+  list = none,
 }
 \ProcessPgfPackageOptions*
 
@@ -46,7 +54,7 @@
 %%% my default definitions
 \RequirePackage{mycolor}
 \RequirePackage[lang=\mybook@lang]{mymath} 
-\RequirePackage{mylist}
+\RequirePackage[list=\mybook@list]{mylist}
 
 %%% graphics
 \RequirePackage{grffile} % graphics file 名の拡張

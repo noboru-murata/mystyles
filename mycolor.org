@@ -1,7 +1,7 @@
 #+TITLE: My Color Style
 #+AUTHOR: Noboru Murata
 #+EMAIL: noboru.murata@gmail.com
-#+DATE: 2020.05.05 16:24:52
+#+DATE: 2020.08.20 19:27:20
 #+STARTUP: hidestars content
 #+OPTIONS: date:t H:4 num:nil toc:nil \n:nil
 #+OPTIONS: @:t ::t |:t ^:t -:t f:t *:t TeX:t LaTeX:t 
@@ -15,40 +15,57 @@
 \ProvidesPackage{mycolor}[2019/04/09, mura's color style version 1.0]
 #+end_src
 
-* パッケージ
+* 色の定義
 #+begin_src latex
-%%% 
-%%% Load Packages
-%%%
+%%% use xcolor package
 \RequirePackage{xcolor}
-%%% 
-%%% Colors
-%%%   cf. http://www.colordic.org/w/
-%%%
+
+%%% define private colors
 \definecolor{myDarkRed}{HTML}{d7003a}%紅
 \definecolor{myRed}{HTML}{e7609e}%牡丹色 
-\definecolor{myLightRed}{HTML}{fef4f4}%桜色
-\definecolor{myDarkBlue}{HTML}{192f60}%紺青{1e50a2}%瑠璃色
-\definecolor{myBlue}{HTML}{19448e}%瑠璃紺{5383c3}%薄群青{38a1db}%露草色
-\definecolor{myLightBlue}{HTML}{f7fcfe}%卯の花色{eaf4fc}%月白
-\definecolor{myPaleBlue}{HTML}{bbc8e6}%淡藤色{f7fcfe}%卯の花色{eaf4fc}%月白
+\definecolor{myLightRed}{HTML}{fdeff2}%薄桜
+\definecolor{myPaleRed}{HTML}{fef4f4}%桜色
+\definecolor{myDarkBlue}{HTML}{192f60}%紺青
+\definecolor{myBlue}{HTML}{19448e}%瑠璃紺
+\definecolor{myLightBlue}{HTML}{f7fcfe}%卯の花色
+\definecolor{myPaleBlue}{HTML}{bbc8e6}%淡藤色
+\definecolor{myDarkGreen}{HTML}{028760}%常磐緑
+\definecolor{myGreen}{HTML}{68be8d}%若竹色
+\definecolor{myLightGreen}{HTML}{d6e9ca}%白緑
+\definecolor{myPaleGreen}{HTML}{f8fbf8}%白磁
+\definecolor{myDarkGrey}{HTML}{2b2b2b}%蝋色
+\definecolor{myGrey}{HTML}{383c3c}%羊羹色
+\definecolor{myLightGrey}{HTML}{adadad}%薄鈍
+\definecolor{myPaleGrey}{HTML}{f3f3f2}%白練
+\definecolor{myDarkOrange}{HTML}{f08300}%蜜柑色
+\definecolor{myOrange}{HTML}{f8b862}%萱草色
+\definecolor{myLightOrange}{HTML}{fddea5}%蜂蜜色
+\definecolor{myPaleOrange}{HTML}{fbfaf5}%生成り色
+\definecolor{myDarkPurple}{HTML}{17184b}%鉄紺 
+\definecolor{myPurple}{HTML}{4d4398}%紅桔梗
+\definecolor{myLightPurple}{HTML}{bbbcde}%藤色
+\definecolor{myPalePurple}{HTML}{dbd0e6}%白藤色
+\definecolor{myDarkYellow}{HTML}{ffd900}%蒲公英色
+\definecolor{myYellow}{HTML}{fef263}%黄檗色
+\definecolor{myLightYellow}{HTML}{f8e58c}%淡黄
+\definecolor{myPaleYellow}{HTML}{f8f4e6}%象牙色
+
+%%% school colors
+\definecolor{wasedaRed}{cmyk}{0,.98,.74,.45}
+\definecolor{wasedaGrey}{cmyk}{.82,.72,.75,.10}
+#+end_src
+
+その他候補となった色の備忘録
+{1e50a2}%瑠璃色
+{5383c3}%薄群青{38a1db}%露草色
+{eaf4fc}%月白
+{f7fcfe}%卯の花色{eaf4fc}%月白
+{98d98e}%若緑{3eb370}%緑{f6ad49}%柑子色
+{84a2d4}% 青藤色 {dbd0e6}%白藤色
 % {89c3eb}%勿忘草色% {2ca9e1}%天色{0095d9}%青
 % {007bbb}%紺碧 {4c6cb3}%群青色{8491c3}%紅掛空色{4d5aaf}%花色はないろ% {bbc8e6}%淡藤色
-\definecolor{myDarkGreen}{HTML}{028760}%常磐緑
-\definecolor{myGreen}{HTML}{68be8d}%若竹色{98d98e}%若緑{3eb370}%緑
-\definecolor{myLightGreen}{HTML}{f8fbf8}%白磁
-\definecolor{myGrey}{HTML}{383c3c}%羊羹色
-\definecolor{myLightGrey}{HTML}{f3f3f2}%白練
-\definecolor{myDarkOrange}{HTML}{f08300}%蜜柑色
-\definecolor{myOrange}{HTML}{f8b862}%萱草色{f6ad49}%柑子色
-\definecolor{myLightOrange}{HTML}{fbfaf5}%生成り色
-\definecolor{myDarkPurple}{HTML}{17184b}%鉄紺 
 %{65318e}%本紫{460e44}% 紫紺 {674598}%青紫 {493759}%深紫 {594255}%滅紫
-\definecolor{myPurple}{HTML}{4d4398}%紅桔梗
 % {5654a2}% 桔梗色 {9d5b8b}%京紫{824880}%茄子紺{bc64a4}%若紫
-\definecolor{myLightPurple}{HTML}{bbbcde}%{84a2d4}% 青藤色 {dbd0e6}%白藤色
-\definecolor{myYellow}{HTML}{fef263}%黄檗色
-\definecolor{myLightYellow}{HTML}{f8f4e6}%象牙色
 % possible main color (dark purple)
 % {522f60}%葡萄色{9d5b8b}% 京紫
 % {cmyk}{0.62,0.96,0.30,0.27} % 京紫(改)
@@ -61,22 +78,21 @@
 % {cmyk}{0.0,0.64,0.99,0.0} % 蜜柑茶
 % {RGB}{249,110,91} 
 % {RGB}{2,25,72} 
-\definecolor{wasedaRed}{cmyk}{0,.98,.74,.45}
-\definecolor{wasedaGrey}{cmyk}{.82,.72,.75,.10}
 
-%%% 
+* フッタ
+#+begin_src latex
+%% 
 \endinput
 #+end_src
 
-* References
-  - tufte package
-  - https://github.com/fmarotta/kaobook
-  - https://bedienhaptik.de
-* COMMENT Local file settings for Emacs
+* 参考
+  - http://www.colordic.org/w/
+
+* COMMENT ローカル変数
 
 # Local Variables:
 # time-stamp-line-limit: 1000
-# time-stamp-format: "%04y.%02m.%02d %02H:%02M:%02S"
+# time-stamp-format: "%Y.%02m.%02d %02H:%02M:%02S"
 # time-stamp-active: t
 # time-stamp-start: "#\\+DATE:[ \t]*"
 # time-stamp-end: "$"

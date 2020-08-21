@@ -1,7 +1,7 @@
 #+TITLE: My Book Style
 #+AUTHOR: Noboru Murata
 #+EMAIL: noboru.murata@gmail.com
-#+DATE: 2020.05.06 11:16:28
+#+DATE: 2020.08.21 00:02:36
 #+STARTUP: hidestars content
 #+OPTIONS: date:t H:4 num:nil toc:nil \n:nil
 #+OPTIONS: @:t ::t |:t ^:t -:t f:t *:t TeX:t LaTeX:t 
@@ -33,9 +33,17 @@
   style/.is choice,
   style/tufte/.style = {book style = tufte},
   style/plain/.style = {book style = plain},
+  % list
+  % list
+  list style/.store in = \mybook@list,
+  list/.is choice,
+  list/none/.style = {list style = none},
+  list/minted/.style = {list style = minted},
+  list/listings/.style = {list style = listings},
   % default values
   lang = jp, 
   style = tufte,
+  list = none,
 }
 \ProcessPgfPackageOptions*
 #+end_src
@@ -68,7 +76,7 @@
 %%% my default definitions
 \RequirePackage{mycolor}
 \RequirePackage[lang=\mybook@lang]{mymath} 
-\RequirePackage{mylist}
+\RequirePackage[list=\mybook@list]{mylist}
 #+end_src
 
 * グラフィクス
@@ -261,15 +269,16 @@
 \endinput
 #+end_src
 
-* References
+* 参考
   - tufte package
   - https://github.com/fmarotta/kaobook
   - https://bedienhaptik.de
-* COMMENT Local file settings for Emacs
+
+* COMMENT ローカル変数
 
 # Local Variables:
 # time-stamp-line-limit: 1000
-# time-stamp-format: "%04y.%02m.%02d %02H:%02M:%02S"
+# time-stamp-format: "%Y.%02m.%02d %02H:%02M:%02S"
 # time-stamp-active: t
 # time-stamp-start: "#\\+DATE:[ \t]*"
 # time-stamp-end: "$"

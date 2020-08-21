@@ -5,8 +5,6 @@
 \RequirePackage{xparse}
 \RequirePackage{etoolbox}
 \RequirePackage{pgfopts}
-%% \RequirePackage{ifthen} % obsolete
-%% \RequirePackage{regexpatch} % experimental
 
 %%% define and parse options
 \pgfkeys{/myhandout/.cd,
@@ -29,11 +27,18 @@
   title/left/.style = {title style = left},
   title/center/.style = {title style = center},
   title/right/.style = {title style = right},
+  % list
+  list style/.store in = \myhandout@list,
+  list/.is choice,
+  list/none/.style = {list style = none},
+  list/minted/.style = {list style = minted},
+  list/listings/.style = {list style = listings},
   % default values
   lang = jp,
   style = tufte,
   font = regular,
   title = left, 
+  list = none, 
 }
 \ProcessPgfPackageOptions*
 
@@ -59,7 +64,7 @@
 %%% my default definitions
 \RequirePackage{mycolor}
 \RequirePackage[lang=\myhandout@lang]{mymath} 
-\RequirePackage{mylist}
+\RequirePackage[list=\myhandout@list]{mylist}
 
 %%% graphics
 \RequirePackage{grffile} % graphics file 名の拡張
