@@ -1,7 +1,7 @@
 #+TITLE: My Tufte Style
 #+AUTHOR: Noboru Murata
 #+EMAIL: noboru.murata@gmail.com
-#+DATE: 2020.08.20 19:29:33
+#+DATE: 2020.08.22 16:02:46
 #+STARTUP: hidestars content
 #+OPTIONS: date:t H:4 num:nil toc:nil \n:nil
 #+OPTIONS: @:t ::t |:t ^:t -:t f:t *:t TeX:t LaTeX:t 
@@ -57,6 +57,10 @@
 
 ** ページレイアウト設定
    本体とマージンの長さを制御する関数
+  % \ifthenelse{\equal{margin}{#1}}{\marginlayout}{}%
+  % \ifthenelse{\equal{wide}{#1}}{\widelayout}{}%
+  % \ifthenelse{\equal{fullwidth}{#1}}{\fullwidthlayout}{}%
+
 #+begin_src latex
 %%% page layout setup
 %% calculate page width
@@ -70,13 +74,10 @@
 
 %% choose from possible layouts
 \DeclareDocumentCommand{\myPageLayout}{m}{%
-  \edef\myArg{#1}
-  \ifdefstring{\myArg}{margin}{\marginlayout}{}%
-  \ifdefstring{\myArg}{wide}{\widelayout}{}%
-  \ifdefstring{\myArg}{fullwidth}{\fullwidthlayout}{}%
-  % \ifthenelse{\equal{margin}{#1}}{\marginlayout}{}%
-  % \ifthenelse{\equal{wide}{#1}}{\widelayout}{}%
-  % \ifthenelse{\equal{fullwidth}{#1}}{\fullwidthlayout}{}%
+  \edef\my@rg{#1}
+  \ifdefstring{\my@rg}{margin}{\marginlayout}{}%
+  \ifdefstring{\my@rg}{wide}{\widelayout}{}%
+  \ifdefstring{\my@rg}{fullwidth}{\fullwidthlayout}{}%
 }
 %% large margins
 \newcommand{\marginlayout}{%
@@ -141,7 +142,8 @@
   \end{picture}%
 }
 %% kao style with chapter number, chapter title, and page in the header
-\renewpagestyle{scrheadings}{%
+\newpairofpagestyles{kaostyle}{}
+\renewpagestyle{kaostyle}{%
   {\hspace{-\marginparwidth}\hspace{-\marginparsep}%
     \makebox[\myheadlen][l]{%
       \parbox[t][1.7cm][c]{2em}{\hfill\thepage}%
@@ -160,7 +162,7 @@
   {}%
   {}%
 }
-\renewpagestyle{plain.scrheadings}{%
+\renewpagestyle{plain.kaostyle}{%
   {}%
   {}%
   {}%
@@ -222,6 +224,7 @@
   {\makebox[\myheadlen][r]{\pagemarkrule\space\thepage}}%
   {\makebox[\myheadlen][r]{\pagemarkrule\space\thepage}}%
 }
+%% simple page style
 \newpairofpagestyles{simple}{}
 \renewpagestyle{simple}{% header
   {}% twoside even
@@ -240,6 +243,53 @@
   {}%
   {}%
   {}%
+}
+%% lines page style
+\newpairofpagestyles{lines}{}
+\renewpagestyle{lines}{% header
+  {\makebox[\myheadlen][l]{%
+      \makebox[0pt][l]{\rule[-1ex]{\myheadlen}{0.5pt}}%
+      \space\leftmark%
+    }}% twoside even
+  {\makebox[\myheadlen][r]{
+      \rightmark\space%
+      \makebox[0pt][r]{\rule[-1ex]{\myheadlen}{0.5pt}}%
+    }}% towside odd
+  {\makebox[\myheadlen][l]{%
+      \makebox[0pt][l]{\rule[-1ex]{\myheadlen}{0.5pt}}%
+      \makebox[\myheadlen][c]{\rightmark}%
+    }}% oneside
+}{% footer
+  {\makebox[\myheadlen][l]{%
+      \makebox[0pt][l]{\rule[2ex]{\myheadlen}{0.5pt}}%
+      \space\thepage%
+    }}% twoside even
+  {\makebox[\myheadlen][r]{%
+      \thepage\space%
+      \makebox[0pt][r]{\rule[2ex]{\myheadlen}{0.5pt}}%
+    }}% towside odd
+  {\makebox[\myheadlen][l]{%
+      \makebox[0pt][l]{\rule[2ex]{\myheadlen}{0.5pt}}%
+      \makebox[\myheadlen][c]{\thepage}%
+    }}% oneside
+}
+\renewpagestyle{plain.lines}{% header
+  {}%
+  {}%
+  {}%
+}{% footer
+  {\makebox[\myheadlen][l]{%
+      \makebox[0pt][l]{\rule[2ex]{\myheadlen}{0.5pt}}%
+      \space\thepage%
+    }}% twoside even
+  {\makebox[\myheadlen][r]{%
+      \thepage\space%
+      \makebox[0pt][r]{\rule[2ex]{\myheadlen}{0.5pt}}%
+    }}% towside odd
+  {\makebox[\myheadlen][l]{%
+      \makebox[0pt][l]{\rule[2ex]{\myheadlen}{0.5pt}}%
+      \makebox[\myheadlen][c]{\thepage}%
+    }}% oneside
 }
 #+end_src
 

@@ -39,7 +39,8 @@
 
 %%% parse language
 \ifdefstring{\mybook@lang}{jp}{ % for japanese
-  \RequirePackage[hiragino-pron]{luatexja-preset}
+  \RequirePackage[hiragino-pron]{luatexja-preset} % for MacOS X
+  % \RequirePackage{luatexja-preset} % for non MacOS X
   \setlength\parindent{1\zw}
   % \RequirePackage[main=japanese,english]{babel} % 枯れてる
   \setdefaultlanguage{japanese} % for polyglossia
@@ -98,8 +99,8 @@
 
 %% choose from possible styles 
 \DeclareDocumentCommand{\myStyle}{m}{%
-  \edef\myArg{#1}
-  \ifdefstring{\myArg}{tufte}{%
+  \edef\my@rg{#1}
+  \ifdefstring{\my@rg}{tufte}{%
     %% front matter
     \let\oldfrontmatter\frontmatter % store old command
     \renewcommand{\frontmatter}{
@@ -140,18 +141,16 @@
     }
     \AtBeginDocument{\myPageLayout{wide}}
   }{}
-  \ifdefstring{\myArg}{plain}{%
+  \ifdefstring{\my@rg}{plain}{%
     \AtBeginDocument{\myPageLayout{wide}}
   }{}
 }
 
 %% choose from possible chapterstyle
 \DeclareDocumentCommand{\myChapterStyle}{m}{%
-  \edef\myArg{#1}
-  \ifdefstring{\myArg}{plain}{\plainchapter}{}%
-  \ifdefstring{\myArg}{decor}{\decorchapter}{}%
-  % \ifthenelse{\equal{plain}{#1}}{\plainchapter}{}%
-  % \ifthenelse{\equal{decor}{#1}}{\decorchapter}{}%
+  \edef\my@rg{#1}
+  \ifdefstring{\my@rg}{plain}{\plainchapter}{}%
+  \ifdefstring{\my@rg}{decor}{\decorchapter}{}%
 }
 %% The default definition in KOMA script
 \DeclareDocumentCommand{\plainchapter}{}{%

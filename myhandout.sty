@@ -98,8 +98,8 @@
 
 %% choose from possible styles 
 \DeclareDocumentCommand{\myStyle}{m}{%
-  \edef\myArg{#1}
-  \ifdefstring{\myArg}{tufte}{%
+  \edef\my@rg{#1}
+  \ifdefstring{\my@rg}{tufte}{%
     \let\orgfootnote=\footnote % 念のため取っておく
     \RenewDocumentCommand{\footnote}{ o o +m }{
       \sidenotemark[##1]
@@ -111,7 +111,7 @@
       \myPageStyle{pagenum}
     }
   }{}
-  \ifdefstring{\myArg}{plain}{%
+  \ifdefstring{\my@rg}{plain}{%
     \AtBeginDocument{
       \myPageLayout{wide}
       \myPageStyle{simple}
@@ -121,24 +121,24 @@
 
 %% choose from possible title styles
 \DeclareDocumentCommand{\myTitleStyle}{m}{%
-  \edef\myArg{#1}
-  \ifdefstring{\myArg}{left}{%
+  \edef\my@rg{#1}
+  \ifdefstring{\my@rg}{left}{%
     \patchcmd{\@maketitle}{\begin{center}}{\begin{flushleft}}{}{}
     \patchcmd{\@maketitle}{\end{center}}{\end{flushleft}}{}{}
   }{}%
-  \ifdefstring{\myArg}{right}{%
+  \ifdefstring{\my@rg}{right}{%
     \patchcmd{\@maketitle}{\begin{center}}{\begin{flushright}}{}{}
     \patchcmd{\@maketitle}{\end{center}}{\end{flushright}}{}{}
   }{}%
-  \ifdefstring{\myArg}{center}{\relax}{}
+  \ifdefstring{\my@rg}{center}{\relax}{}
 }
 
 %% choose from possible font weights
 \DeclareDocumentCommand{\myFontWeight}{m}{%
-  \edef\myArg{#1}
-  \ifdefstring{\myArg}{regular}{%
+  \edef\my@rg{#1}
+  \ifdefstring{\my@rg}{regular}{%
     \ifundef{\mgfamily}%
-    {\def\mgfamily{\jfontspec{HiraMaruProN-W4}}}{}
+    {\def\mgfamily{\jfontspec{HiraMaruProN-W4}}}{} % for MacOS X
     \setkomafont{subject}{\mgfamily\itshape}
     \setkomafont{title}{\mgfamily\itshape}
     \setkomafont{subtitle}{\mgfamily\itshape}
@@ -146,14 +146,14 @@
     \setkomafont{date}{\mgfamily\itshape}
     \relax
   }{}%
-  \ifdefstring{\myArg}{light}{%
+  \ifdefstring{\my@rg}{light}{%
     \setkomafont{subject}{\normalfont}
     \setkomafont{title}{\normalfont\scshape}
     \setkomafont{subtitle}{\normalfont}
     \setkomafont{author}{\normalfont}
     \setkomafont{date}{\normalfont}
   }{}%
-  \ifdefstring{\myArg}{heavy}{%
+  \ifdefstring{\my@rg}{heavy}{%
     \relax
   }{}%
 }

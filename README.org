@@ -1,30 +1,109 @@
 #+TITLE: TeX style files
 
-* TODO mybook
-  scrbook を base に整理
-  mytufte を include
+* mybook
+  - scrbook を base に整理
+  - mytufte を include
+  - オプション (default値は最初の値)
+    - lang :: {ja,それ以外はenとして扱う}
+    - style :: {tufte,plain}
+      - tufte :: 特殊なマージンを取る配置 (Tufte流)
+      - plain :: 特殊なマージンを取らない配置
+    - list :: {none,minted,listings}
+      - none :: listing の環境を読み込まない
+      - mined :: minted style の読み込み (shell-escapeが必要)
+      - listings :: listings style の読み込み (sidenotesと若干矛盾)
+  - 本文内での形式変更
+    - \myChapterStyle{--} :: 章タイトルの形式
+      - plain :: komaの標準
+      - decor :: tufte用
+    - \myPageLayout{--} :: mytuft で定義
+    - \myPageStyle{--} :: mytuft で定義
 
-* TODO myhandout
-  scrartcl を base に整理
-  mytufte を include
+** TODO 課題
+   - font は MacOS X を想定している
+   - ifdefstring/ifstrequal の使い方が不安
+     
+* myhandout
+  - scrartcl を base に整理
+  - mytufte を include
+  - オプション (default値は最初の値)
+    - lang = {ja,それ以外はenとして扱う}
+    - style = {tufte,plain,lines}
+      - tufte :: 特殊なマージンを取る配置 (Tufte流)
+      - plain :: 特殊なマージンを取らない配置
+    - font = {regular,light,heavy}
+      - regular :: 中字
+      - light :: 細字
+      - heavy :: 太字
+    - title = {left,center,right}
+      - left :: タイトルを左詰め
+      - center :: タイトルを中央
+      - right :: タイトルを右詰め
+    - list = {none,minted,listings}
+      - none :: listing の環境を読み込まない
+      - mined :: minted style の読み込み (shell-escapeが必要)
+      - listings :: listings style の読み込み (sidenotesと若干矛盾)
+  - 本文内での形式変更
+    - \myPageLayout{--} :: mytuft で定義
+    - \myPageStyle{--} :: mytuft で定義
+** TODO 課題
+   - font は MacOS X を想定している
+   - ifdefstring/ifstrequal の使い方が不安
 
-* TODO mytufte
-  Tufte 流の配置の実装
-  いろいろ定義
+* mytufte
+  - Tufte 流の配置の実装
+    主に以下の style を利用
+    - scrlayer-scrpage
+    - scrlayer-notecolumn
+    - sidenotes
+  - それ以外のいろいろな関数を定義
+  - 本文内での形式変更
+    - \myPageLayout{--} :: 本文の大きさ 
+      - wide :: マージンを取らず本文を広く
+      - margin :: tufte用にマージンを取る
+    - \myPageStyle{--} :: ヘッダ・フッタの形式 
+      - pagenum :: 頁番号 (縦棒付)
+      - decor :: tufte用
+      - kaostyle :: kao style からの引用
+      - simple :: 頁番号のみ
+      - lines :: headline+running head， footline+page number
+      - scrheadings :: komaの標準
+  - 下記の実装を参考
+    - https://www.ctan.org/pkg/tufte-latex
+    - https://github.com/fmarotta/kaobook
+    - https://bedienhaptik.de
+** TODO 課題
+   - 既存の style を組み合わせているので，
+     latex2とlatex3(experimental)が混在
+   - ifdefstring/ifstrequal の使い方が不安
 
-* TODO mytalk
-  beamer スライド用
-  metropolis sytle を base にいろいろ定義
-  option parse の部分を書き換える必要あり
+* mytalk
+  - beamer スライド用
+  - metropolis sytle を base にいろいろ定義
+** TODO 課題
+  - option parse の部分を書き換える
 
-* TODO mymath
-  数式関係
-  amsmath を base にいろいろ定義
+* mymath
+  - amsmath を base に整理
+  - 数式用のfontの整理
+  - 数式関係でいろいろ定義
+  - オプション (default値は最初の値)
+    - lang = {ja,それ以外はenとして扱う}
 
-* TODO mycolor
-  共通で使う色ものを整理
+* mycolor
+  - 共通で使う色ものを整理
+    - 色名 {red,green,blue,orange,purple,yellow,grey}
+    - 濃淡 {dark,-,light,pale}
+    - e.g. myDarkRed, myPaleOrange
 
-* TODO mylist
-  code listing用
+* mylist
+  - code listing 用
+  - R/Sweave 用の環境を定義
+  - 複数頁のPDFの紙芝居処理のための関数を定義
+  - オプション (default値は最初の値)
+    - list = {none,minted,listings}
+      - none :: listing の環境を読み込まない
+      - mined :: minted style の読み込み (shell-escapeが必要)
+      - listings :: listings style の読み込み (sidenotesと若干矛盾)
 
 
