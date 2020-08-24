@@ -5,12 +5,11 @@
 MSG	= "debug"
 SRC	= $(shell ls my*.org)
 TARGET	= $(SRC:%.org=%.sty)
-TANGLE	= /bin/sh ./tangle.sh
 
 all:	$(TARGET)
 
 .org.sty:
-	$(TANGLE) $<
+	emacs --batch -l org --eval "(org-babel-tangle-file \"$<\")"
 
 push:
 	git add -u
