@@ -1,5 +1,15 @@
 #+TITLE: TeX style files
 
+* 使い方
+  - my*.sty を適当な directory に置く
+  - 環境変数 TEXINPUTS で my*.sty が見えるようにする
+    e.g. 例えば $HOME/tex/inputs の下に複数の directory を置く場合は
+    #+begin_quote
+    export TEXINPUTS=.:$HOME/tex/inputs//:
+    #+end_quote
+    などとすればよい
+  - example 以下のファイルを参考に tex のファイルを作る
+    
 * mybook
   - scrbook を base に整理
   - mytufte を include
@@ -16,8 +26,8 @@
     - \myChapterStyle{--} :: 章タイトルの形式
       - plain :: komaの標準
       - decor :: tufte用
-    - \myPageLayout{--} :: mytuft で定義
-    - \myPageStyle{--} :: mytuft で定義
+    - \myPageLayout{--} :: mytufte で定義
+    - \myPageStyle{--} :: mytufte で定義
 
 ** TODO 課題
    - font は MacOS X を想定している
@@ -44,8 +54,8 @@
       - mined :: minted style の読み込み (shell-escapeが必要)
       - listings :: listings style の読み込み (sidenotesと若干矛盾)
   - 本文内での形式変更
-    - \myPageLayout{--} :: mytuft で定義
-    - \myPageStyle{--} :: mytuft で定義
+    - \myPageLayout{--} :: mytufte で定義
+    - \myPageStyle{--} :: mytufte で定義
 ** TODO 課題
    - font は MacOS X を想定している
    - ifdefstring/ifstrequal の使い方が不安
