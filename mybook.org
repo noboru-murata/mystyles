@@ -1,7 +1,7 @@
 #+TITLE: My Book Style
 #+AUTHOR: Noboru Murata
 #+EMAIL: noboru.murata@gmail.com
-#+DATE: 2020.08.22 15:30:40
+#+DATE: 2020.08.31 17:57:58
 #+STARTUP: hidestars content
 #+OPTIONS: date:t H:4 num:nil toc:nil \n:nil
 #+OPTIONS: @:t ::t |:t ^:t -:t f:t *:t TeX:t LaTeX:t 
@@ -54,6 +54,7 @@
 \RequirePackage{textcomp} % latex3 encoding
 \RequirePackage[T1]{fontenc}
 \RequirePackage[utf8]{inputenc}
+\RequirePackage{csquotes}
 \RequirePackage{polyglossia} % まだ若干あやしい
 
 %%% parse language

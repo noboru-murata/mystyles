@@ -1,7 +1,7 @@
 #+TITLE: My Listing Style
 #+AUTHOR: Noboru Murata
 #+EMAIL: noboru.murata@gmail.com
-#+DATE: 2020.08.21 00:18:29
+#+DATE: 2020.09.04 15:20:18
 #+STARTUP: hidestars content
 #+OPTIONS: date:t H:4 num:nil toc:nil \n:nil
 #+OPTIONS: @:t ::t |:t ^:t -:t f:t *:t TeX:t LaTeX:t 
@@ -107,8 +107,8 @@ koma は minted との方が相性が良い
     enhanced jigsaw,
     breakable,
     size=small,
-    colback=[named]myPaleOrange,
-    colframe=[named]myDarkOrange,
+    colback=myPaleOrange,
+    colframe=myLightOrange,
     % colback=red!5!white,
     % colframe=red!75!black,
     fonttitle=\ttfamily,
