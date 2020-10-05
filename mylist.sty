@@ -74,6 +74,7 @@
 \newcommand{\codename}{Rscript}
 \providecommand{\baseurl}{}
 \providecommand{\codedir}{}
+\providecommand{\codenote}{\marginnote}
 
 \NewDocumentEnvironment{myCode}{s o} % no fig version
 {% begin
@@ -94,7 +95,7 @@
     % height fixed for=all,
     % break at=11.4cm
     ]
-    \IfValueT{#2}{\marginnote{%
+    \IfValueT{#2}{\codenote{%
         \codename:\space\href{\baseurl\codedir/#2.r}{\texttt{#2.r}}%
       }}\nobreak%
     \vspace*{6pt}

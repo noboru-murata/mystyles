@@ -1,7 +1,7 @@
 #+TITLE: My Handout Style
 #+AUTHOR: Noboru Murata
 #+EMAIL: noboru.murata@gmail.com
-#+DATE: 2020.08.22 14:44:41
+#+DATE: 2020.10.05 11:29:09
 #+STARTUP: hidestars content
 #+OPTIONS: date:t H:4 num:nil toc:nil \n:nil
 #+OPTIONS: @:t ::t |:t ^:t -:t f:t *:t TeX:t LaTeX:t 
@@ -69,21 +69,44 @@
 \RequirePackage{textcomp} % latex3 encoding
 \RequirePackage[T1]{fontenc}
 \RequirePackage[utf8]{inputenc}
-\RequirePackage{polyglossia} % 若干あやしい
-% \RequirePackage[main=japanese,english]{babel} % 枯れてる
+\RequirePackage{csquotes}
+\RequirePackage{polyglossia} % まだ若干あやしい
 
 %%% parse language
+%% for non-japanese
+\setdefaultlanguage{english}
+\setotherlanguage{japanese}
+
 \ifdefstring{\myhandout@lang}{jp}{ % for japanese
   \RequirePackage[hiragino-pron]{luatexja-preset}
   \setlength\parindent{1\zw}
   \setdefaultlanguage{japanese}
   \let\japanese@capsformat=\relax % 余計なことはさせない
   \setotherlanguage{english}
-}{ % for non-japanese
-  \setdefaultlanguage{english}
-  \setotherlanguage{japanese}
-}
+}{}
+\ifdefstring{\mybook@lang}{ja}{ % for yet another japanese
+  \RequirePackage[deluxe]{luatexja-preset} 
+  \setlength\parindent{1\zw}
+  \setdefaultlanguage{japanese} % for polyglossia
+  \let\japanese@capsformat=\relax % 余計なことはさせない
+  \setotherlanguage{english} % for polyglossia
+}{}
 #+end_src
+
+古い定義
+# % \RequirePackage[main=japanese,english]{babel} % 枯れてる
+
+# %%% parse language
+# \ifdefstring{\myhandout@lang}{jp}{ % for japanese
+#   \RequirePackage[hiragino-pron]{luatexja-preset}
+#   \setlength\parindent{1\zw}
+#   \setdefaultlanguage{japanese}
+#   \let\japanese@capsformat=\relax % 余計なことはさせない
+#   \setotherlanguage{english}
+# }{ % for non-japanese
+#   \setdefaultlanguage{english}
+#   \setotherlanguage{japanese}
+# }
 
 * 自作関数・定義
 #+begin_src latex

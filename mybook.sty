@@ -39,19 +39,24 @@
 \RequirePackage{polyglossia} % まだ若干あやしい
 
 %%% parse language
+%% for non-japanese 
+\setdefaultlanguage{english} % for polyglossia
+\setotherlanguage{japanese} % for polyglossia
+
 \ifdefstring{\mybook@lang}{jp}{ % for japanese
   \RequirePackage[hiragino-pron]{luatexja-preset} % for MacOS X
-  % \RequirePackage{luatexja-preset} % for non MacOS X
   \setlength\parindent{1\zw}
-  % \RequirePackage[main=japanese,english]{babel} % 枯れてる
   \setdefaultlanguage{japanese} % for polyglossia
   \let\japanese@capsformat=\relax % 余計なことはさせない
   \setotherlanguage{english} % for polyglossia
-}{ % for non-japanese
-  % \RequirePackage[english]{babel} 
-  \setdefaultlanguage{english} % for polyglossia
-  \setotherlanguage{japanese} % for polyglossia
-}
+}{}
+\ifdefstring{\mybook@lang}{ja}{ % for yet another japanese
+  \RequirePackage[deluxe]{luatexja-preset} 
+  \setlength\parindent{1\zw}
+  \setdefaultlanguage{japanese} % for polyglossia
+  \let\japanese@capsformat=\relax % 余計なことはさせない
+  \setotherlanguage{english} % for polyglossia
+}{}
 
 %%% my default definitions
 \RequirePackage{mycolor}

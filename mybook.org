@@ -1,7 +1,7 @@
 #+TITLE: My Book Style
 #+AUTHOR: Noboru Murata
 #+EMAIL: noboru.murata@gmail.com
-#+DATE: 2020.08.31 17:57:58
+#+DATE: 2020.10.05 11:28:57
 #+STARTUP: hidestars content
 #+OPTIONS: date:t H:4 num:nil toc:nil \n:nil
 #+OPTIONS: @:t ::t |:t ^:t -:t f:t *:t TeX:t LaTeX:t 
@@ -58,20 +58,40 @@
 \RequirePackage{polyglossia} % まだ若干あやしい
 
 %%% parse language
+%% for non-japanese 
+\setdefaultlanguage{english} % for polyglossia
+\setotherlanguage{japanese} % for polyglossia
+
 \ifdefstring{\mybook@lang}{jp}{ % for japanese
   \RequirePackage[hiragino-pron]{luatexja-preset} % for MacOS X
-  % \RequirePackage{luatexja-preset} % for non MacOS X
   \setlength\parindent{1\zw}
-  % \RequirePackage[main=japanese,english]{babel} % 枯れてる
   \setdefaultlanguage{japanese} % for polyglossia
   \let\japanese@capsformat=\relax % 余計なことはさせない
   \setotherlanguage{english} % for polyglossia
-}{ % for non-japanese
-  % \RequirePackage[english]{babel} 
-  \setdefaultlanguage{english} % for polyglossia
-  \setotherlanguage{japanese} % for polyglossia
-}
+}{}
+\ifdefstring{\mybook@lang}{ja}{ % for yet another japanese
+  \RequirePackage[deluxe]{luatexja-preset} 
+  \setlength\parindent{1\zw}
+  \setdefaultlanguage{japanese} % for polyglossia
+  \let\japanese@capsformat=\relax % 余計なことはさせない
+  \setotherlanguage{english} % for polyglossia
+}{}
 #+end_src
+
+古い定義
+# \ifdefstring{\mybook@lang}{jp}{ % for japanese
+#   \RequirePackage[hiragino-pron]{luatexja-preset} % for MacOS X
+#   % \RequirePackage{luatexja-preset} % for non MacOS X
+#   \setlength\parindent{1\zw}
+#   % \RequirePackage[main=japanese,english]{babel} % 枯れてる
+#   \setdefaultlanguage{japanese} % for polyglossia
+#   \let\japanese@capsformat=\relax % 余計なことはさせない
+#   \setotherlanguage{english} % for polyglossia
+# }{ % for non-japanese
+#   % \RequirePackage[english]{babel} 
+#   \setdefaultlanguage{english} % for polyglossia
+#   \setotherlanguage{japanese} % for polyglossia
+# }
 
 * 自前の定義
 #+begin_src latex

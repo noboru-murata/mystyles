@@ -46,20 +46,28 @@
 \RequirePackage{textcomp} % latex3 encoding
 \RequirePackage[T1]{fontenc}
 \RequirePackage[utf8]{inputenc}
-\RequirePackage{polyglossia} % 若干あやしい
-% \RequirePackage[main=japanese,english]{babel} % 枯れてる
+\RequirePackage{csquotes}
+\RequirePackage{polyglossia} % まだ若干あやしい
 
 %%% parse language
+%% for non-japanese
+\setdefaultlanguage{english}
+\setotherlanguage{japanese}
+
 \ifdefstring{\myhandout@lang}{jp}{ % for japanese
   \RequirePackage[hiragino-pron]{luatexja-preset}
   \setlength\parindent{1\zw}
   \setdefaultlanguage{japanese}
   \let\japanese@capsformat=\relax % 余計なことはさせない
   \setotherlanguage{english}
-}{ % for non-japanese
-  \setdefaultlanguage{english}
-  \setotherlanguage{japanese}
-}
+}{}
+\ifdefstring{\mybook@lang}{ja}{ % for yet another japanese
+  \RequirePackage[deluxe]{luatexja-preset} 
+  \setlength\parindent{1\zw}
+  \setdefaultlanguage{japanese} % for polyglossia
+  \let\japanese@capsformat=\relax % 余計なことはさせない
+  \setotherlanguage{english} % for polyglossia
+}{}
 
 %%% my default definitions
 \RequirePackage{mycolor}
