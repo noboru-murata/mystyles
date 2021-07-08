@@ -34,11 +34,12 @@
   scr=boondoxo, % 小文字がある
   bb=px, % pazoの代理
 ]{mathalfa}
-\RequirePackage{pifont} % http://ctan.org/pkg/pifont
+\RequirePackage{pifont} % http://ctan.org/pkg/pifont for cmark/xmark
 \RequirePackage{dsfont} % double stroke
 \RequirePackage{tikzsymbols} %\Coffeecup
 \RequirePackage{manfnt} % \dbend
 \RequirePackage{halloweenmath} % \mathwitch
+\RequirePackage{fontawesome5}
 
 %%% misc
 \RequirePackage{algorithm}
@@ -90,6 +91,8 @@
 %% 
 \NewDocumentCommand\cmark{}{\ding{51}} %51/52 check mark (OK)
 \NewDocumentCommand\xmark{}{\ding{55}} %55/56 cross mark (NG)
+\NewDocumentCommand\pros{}{\faIcon{thumbs-up}} 
+\NewDocumentCommand\cons{}{\faIcon{thumbs-down}} 
 
 \NewDocumentCommand\Dat{o}{ % dataset symbol 
   \IfValueTF{#1}{\mathcal{D}_{#1}}{\mathcal{D}}}

@@ -1,7 +1,7 @@
 #+TITLE: My Talk Style
 #+AUTHOR: Noboru Murata
 #+EMAIL: noboru.murata@gmail.com
-#+DATE: 2020.08.21 00:09:02
+#+DATE: 2021.06.18 21:58:28
 #+STARTUP: hidestars content
 #+OPTIONS: date:t H:4 num:nil toc:nil \n:nil
 #+OPTIONS: @:t ::t |:t ^:t -:t f:t *:t TeX:t LaTeX:t 
@@ -135,6 +135,11 @@
 \RequirePackage{booktabs}
 %% cc mark
 \RequirePackage[scale=1.2]{ccicons}
+\RequirePackage[
+type={CC},
+modifier={by-sa},
+version={4.0},
+]{doclicense}
 %% space 
 \RequirePackage{xspace}
 \newcommand{\themename}{\textbf{\textsc{metropolis}}\xspace}
@@ -479,16 +484,21 @@ outer/progressbar=frametitle]%
   \fi
   \ifx\my@box\my@medbox
   \def\my@temptext{$\circ$}%
+  % \def\my@temptext{\faIcon{angle-double-right}}%
+  % \def\my@temptext{$\bullet$}%
   \fi
   \ifx\my@box\my@smallbox
   \def\my@temptext{$\cdot$}%
+  % \def\my@temptext{\faIcon{angle-right}}%
+  % \def\my@temptext{$\circ$}%
   \fi
   \my@tempbox{\my@tempsize}{\my@temptext}%
 }
 
 \defbeamertemplate{navigation box}{title}{%
   \setlength{\my@tempsize}{\my@box@size pt}%
-  \my@fixedbox{\my@tempsize}{\ccShareAlike}%\ccbysa}%\diamondsuit
+  \my@fixedbox{\my@tempsize}{\doclicenseIcon\quad}
+  % \ccbysa%\ccShareAlike%\diamondsuit
 }
 
 \defbeamertemplate{navigation box}{cur}{%

@@ -1,7 +1,7 @@
 #+TITLE: My Math Style
 #+AUTHOR: Noboru Murata
 #+EMAIL: noboru.murata@gmail.com
-#+DATE: 2020.08.20 19:28:46
+#+DATE: 2021.06.18 21:49:58
 #+STARTUP: hidestars content
 #+OPTIONS: date:t H:4 num:nil toc:nil \n:nil
 #+OPTIONS: @:t ::t |:t ^:t -:t f:t *:t TeX:t LaTeX:t 
@@ -58,11 +58,12 @@
   scr=boondoxo, % 小文字がある
   bb=px, % pazoの代理
 ]{mathalfa}
-\RequirePackage{pifont} % http://ctan.org/pkg/pifont
+\RequirePackage{pifont} % http://ctan.org/pkg/pifont for cmark/xmark
 \RequirePackage{dsfont} % double stroke
 \RequirePackage{tikzsymbols} %\Coffeecup
 \RequirePackage{manfnt} % \dbend
 \RequirePackage{halloweenmath} % \mathwitch
+\RequirePackage{fontawesome5}
 #+end_src
 
 * その他
@@ -123,6 +124,8 @@
 %% 
 \NewDocumentCommand\cmark{}{\ding{51}} %51/52 check mark (OK)
 \NewDocumentCommand\xmark{}{\ding{55}} %55/56 cross mark (NG)
+\NewDocumentCommand\pros{}{\faIcon{thumbs-up}} 
+\NewDocumentCommand\cons{}{\faIcon{thumbs-down}} 
 
 \NewDocumentCommand\Dat{o}{ % dataset symbol 
   \IfValueTF{#1}{\mathcal{D}_{#1}}{\mathcal{D}}}
