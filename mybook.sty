@@ -1,5 +1,5 @@
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
-\ProvidesPackage{mybook}[2020/02/22, mura's notes style version 3.0]
+\ProvidesPackage{mybook}[2020/02/22, mura's book style version 3.0]
 
 %%% utility
 \RequirePackage{xparse}
@@ -17,7 +17,13 @@
   style/.is choice,
   style/tufte/.style = {book style = tufte},
   style/plain/.style = {book style = plain},
-  % list
+  % font face
+  font face/.store in = \mybook@face,
+  face/.is choice,
+  face/default/.style = {font face = default},
+  face/custom/.style = {font face = custom},
+  face/newtx/.style = {font face = newtx},
+  face/newpx/.style = {font face = newpx},
   % list
   list style/.store in = \mybook@list,
   list/.is choice,
@@ -27,15 +33,22 @@
   % default values
   lang = jp, 
   style = tufte,
+  face = newtx,
   list = none,
 }
 \ProcessPgfPackageOptions*
 
 %%% language/encoding
-\RequirePackage{textcomp} % latex3 encoding
-\RequirePackage[T1]{fontenc}
-\RequirePackage[utf8]{inputenc}
+% \RequirePackage{textcomp} % latex3 encoding
+% \RequirePackage[T1]{fontenc}
+% \RequirePackage[utf8]{inputenc}
 \RequirePackage{csquotes}
+\DeclareQuoteStyle{japanese}% this is just a copy of American English
+  {\textquotedblleft}
+  {\textquotedblright}
+  [0.05em]
+  {\textquoteleft}
+  {\textquoteright}
 \RequirePackage{polyglossia} % まだ若干あやしい
 
 %%% parse language
@@ -60,7 +73,7 @@
 
 %%% my default definitions
 \RequirePackage{mycolor}
-\RequirePackage[lang=\mybook@lang]{mymath} 
+\RequirePackage[lang=\mybook@lang,face=\mybook@face]{mymath} 
 \RequirePackage[list=\mybook@list]{mylist}
 
 %%% graphics

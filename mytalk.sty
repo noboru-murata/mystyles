@@ -15,7 +15,7 @@
   % font
   font weight/.store in = \mytalk@font,
   font/.is choice,
-  font/regular/.style = {font weight = heavy},
+  font/regular/.style = {font weight = regular},
   font/heavy/.style = {font weight = heavy},
   font/source/.style = {font weight = source},
   % math
@@ -36,6 +36,7 @@
   footer style/.store in = \mytalk@footer,
   footer/.is choice,
   footer/none/.style = {footer style = none},
+  footer/waseda/.style = {footer style = waseda},
   footer/symbol/.style = {footer style = symbol},
   footer/progress/.style = {footer style = progress},
   % block
@@ -57,9 +58,16 @@
 \ProcessPgfPackageOptions*
 
 %%% language/encoding
-\RequirePackage{textcomp} % latex3 encoding
-\RequirePackage[T1]{fontenc}
-\RequirePackage[utf8]{inputenc}
+% \RequirePackage{textcomp} % latex3 encoding
+% \RequirePackage[T1]{fontenc}
+% \RequirePackage[utf8]{inputenc}
+\RequirePackage{csquotes}
+\DeclareQuoteStyle{japanese}% this is just a copy of American English
+  {\textquotedblleft}
+  {\textquotedblright}
+  [0.05em]
+  {\textquoteleft}
+  {\textquoteright}
 \RequirePackage{polyglossia} % 若干あやしい
 % \RequirePackage[main=japanese,english]{babel} % 枯れてる
 
@@ -80,29 +88,7 @@
 
 %%% my default definitions
 \RequirePackage{mycolor}
-\RequirePackage[lang=\mytalk@lang]{mymath} 
-%% % amstex mymathを整理すること
-%% \RequirePackage{amsthm}
-%% \RequirePackage{amscd}
-%% \RequirePackage{amssymb}
-%% \RequirePackage{amsbsy}
-%% \RequirePackage[fleqn,tbtags]{mathtools} % amsmathの拡張
-%% \mathtoolsset{showonlyrefs,showmanualtags}
-
-%% % algorithm
-%% \RequirePackage{algorithm}
-%% \RequirePackage{algpseudocode}
-
-%% % misc
-%% \RequirePackage{fancyvrb}
-%% \RequirePackage{enumerate}
-%% %\usepackage{psfrag}
-%% %\usepackage{mediabb}
-%% %\usepackage{enumitem}
-%% \RequirePackage{pifont}% http://ctan.org/pkg/pifont
-%% \newcommand{\cmark}{\ding{51}}%51/52 check mark (OK)
-%% \newcommand{\xmark}{\ding{55}}%55/56 cross mark (NG)
-%%
+\RequirePackage[lang=\mytalk@lang,face=default]{mymath} 
 \RequirePackage{mylist}
 
 \RequirePackage{appendixnumberbeamer}
@@ -125,7 +111,7 @@ version={4.0},
 \RequirePackage{pgfplots}
 \usepgfplotslibrary{dateplot}
 
-%% reference
+%%% reference
 \RequirePackage[%
   bibencoding=latin1,
   style=authoryear,
@@ -166,35 +152,35 @@ version={4.0},
 
 %% choose from possible title styles
 \DeclareDocumentCommand{\myFontStyle}{m}{%
-  \edef\myArg{#1}
-  \ifdefstring{\myArg}{regular}{\relax}{}%
-  \ifdefstring{\myArg}{heavy}{%
+  \edef\my@rg{#1}
+  \ifdefstring{\my@rg}{regular}{\relax}{}%
+  \ifdefstring{\my@rg}{heavy}{%
     \setsansfont[BoldFont={Fira Sans Semibold},Numbers={OldStyle}]{Fira Sans Book}
   }{}%
-  \ifdefstring{\myArg}{source}{%
+  \ifdefstring{\my@rg}{source}{%
     \setsansfont[BoldFont={Source Sans Pro Semibold},Numbers={OldStyle}]{Source Sans Pro}
   }{}%
 }
 
 %% choose from possible math styles
 \DeclareDocumentCommand{\myMathStyle}{m}{%
-  \edef\myArg{#1}
-  \ifdefstring{\myArg}{metropolis}{\relax}{}
-  \ifdefstring{\myArg}{serif}{%
+  \edef\my@rg{#1}
+  \ifdefstring{\my@rg}{metropolis}{\relax}{}
+  \ifdefstring{\my@rg}{serif}{%
     \usefonttheme{professionalfonts} 
     % \usefonttheme{serif}
   }{}%
-  \ifdefstring{\myArg}{sans}{%
+  \ifdefstring{\my@rg}{sans}{%
     \RequirePackage{newtxsf}
   }{}%
-  \ifdefstring{\myArg}{arev}{%
+  \ifdefstring{\my@rg}{arev}{%
     \RequirePackage{arevmath}
   }{}%
-  \ifdefstring{\myArg}{euler}{%
+  \ifdefstring{\my@rg}{euler}{%
     \RequirePackage[OT1]{fontenc}
     \RequirePackage{eulervm}
   }{}%
-  \ifdefstring{\myArg}{times}{%
+  \ifdefstring{\my@rg}{times}{%
     \usefonttheme{professionalfonts} 
     \RequirePackage{newtxmath}
   }{}%
@@ -202,9 +188,9 @@ version={4.0},
 
 %% choose from possible header styles
 \DeclareDocumentCommand{\myHeadStyle}{m}{%
-  \edef\myArg{#1}
-  \ifdefstring{\myArg}{right}{\relax}{}
-  \ifdefstring{\myArg}{waseda}{%
+  \edef\my@rg{#1}
+  \ifdefstring{\my@rg}{right}{\relax}{}
+  \ifdefstring{\my@rg}{waseda}{%
     \setbeamertemplate{frametitle}[plain]
     \setbeamercolor{frametitle}{fg=myPaleGrey,bg=wasedaRed}
   }{}%
@@ -212,38 +198,41 @@ version={4.0},
 
 %% choose from possible footer styles
 \DeclareDocumentCommand{\myFootStyle}{m}{%
-  \edef\myArg{#1}
-  \ifdefstring{\myArg}{none}{%
+  \edef\my@rg{#1}
+  \ifdefstring{\my@rg}{none}{%
     \setbeamertemplate{footline}[none]
   }{}%
-  \ifdefstring{\myArg}{symbol}{%
+  \ifdefstring{\my@rg}{waseda}{%
+    \setbeamertemplate{footline}[waseda]
+  }{}%
+  \ifdefstring{\my@rg}{symbol}{%
     \setbeamertemplate{footline}[symbol]
   }{}%
-  \ifdefstring{\myArg}{progress}{%
+  \ifdefstring{\my@rg}{progress}{%
     \setbeamertemplate{footline}[progress]
   }{}%
 }
 
 %% choose from possible block styles
 \DeclareDocumentCommand{\myBlockStyle}{m}{%
-  \edef\myArg{#1}
-  \ifdefstring{\myArg}{none}{%
+  \edef\my@rg{#1}
+  \ifdefstring{\my@rg}{none}{%
     \mytalk@blockstyle
     \mytalk@blockstyle@none
   }{}%
-  \ifdefstring{\myArg}{grey}{%
+  \ifdefstring{\my@rg}{grey}{%
     \mytalk@blockstyle
     \mytalk@blockstyle@grey
   }{}%
-  \ifdefstring{\myArg}{color}{%
+  \ifdefstring{\my@rg}{color}{%
     \mytalk@blockstyle
     \mytalk@blockstyle@color
   }{}%
-  \ifdefstring{\myArg}{greys}{%
+  \ifdefstring{\my@rg}{greys}{%
     \setbeamertemplate{blocks}[rounded][shadow=true]
     \mytalk@blockstyle@grey
   }{}%
-  \ifdefstring{\myArg}{colors}{%
+  \ifdefstring{\my@rg}{colors}{%
     \setbeamertemplate{blocks}[rounded][shadow=true]
     \mytalk@blockstyle@color
   }{}%
@@ -257,9 +246,9 @@ titleformat=smallcaps,%
 outer/numbering=fraction,%
 outer/progressbar=frametitle]%
 {metropolis}
-\setlength{\metropolis@titleseparator@linewidth}{1.0pt}%1pt
-\setlength{\metropolis@progressonsectionpage@linewidth}{1.0pt}%1pt
-\setlength{\metropolis@progressinheadfoot@linewidth}{1.8pt}%1.2pt
+\setlength{\metropolis@titleseparator@linewidth}{0.4pt}
+\setlength{\metropolis@progressonsectionpage@linewidth}{0.4pt}%1pt
+\setlength{\metropolis@progressinheadfoot@linewidth}{0.9pt}
 
 %%% 
 %%% Colors
@@ -282,12 +271,12 @@ outer/progressbar=frametitle]%
 \setbeamercolor{section in head/foot}{fg=myGrey,bg=myPaleGrey}
 
 %% Titlepage
-\setbeamercolor{title}{parent=normal text,fg=myDarkPurple}
-\setbeamercolor{subtitle}{fg=myDarkBlue}
+\setbeamercolor{title}{parent=normal text,fg=myDarkBlue}
+\setbeamercolor{subtitle}{fg=myBlue}
 \setbeamercolor{institute}{parent=normal text}
 
 %% Content
-\setbeamercolor{frametitle}{fg=myDarkPurple,bg=normal text.bg}
+\setbeamercolor{frametitle}{fg=myDarkBlue,bg=normal text.bg}
 % \setbeamercolor{frametitle}{parent=palette primary}
 \setbeamercolor{section title}{parent=title}
 \defbeamertemplate*{frametitle}{right}{%
@@ -396,8 +385,8 @@ outer/progressbar=frametitle]%
 
 %% Progress Bar
 \setbeamercolor{progress bar}{%
-  fg=myPurple,
-  bg=myPalePurple
+  fg=myDarkPurple,
+  bg=myLightPurple
 }
 
 %%% 
@@ -423,7 +412,7 @@ outer/progressbar=frametitle]%
 
 \RequirePackage{tcolorbox}
 \newtcbox{\mybox}[1][red]{on line,
-  arc=2pt,colback=#1!50!white,colframe=#1!90!black,
+  arc=3pt,colback=#1!50!white,colframe=#1!90!black,
   boxrule=.5pt,boxsep=0pt,
   left=0pt,right=0pt,top=-1pt,bottom=-.5pt
 }
@@ -456,6 +445,7 @@ outer/progressbar=frametitle]%
 
 \defbeamertemplate{navigation box}{title}{%
   \setlength{\my@tempsize}{\my@box@size pt}%
+  % \my@fixedbox{\my@tempsize}{\doclicenseImage[imagewidth=4em]\quad}
   \my@fixedbox{\my@tempsize}{\doclicenseIcon\quad}
   % \ccbysa%\ccShareAlike%\diamondsuit
 }
@@ -518,6 +508,20 @@ outer/progressbar=frametitle]%
   \hbox{%
   \begin{beamercolorbox}[wd=.8\paperwidth,ht=2.25ex,dp=1ex,left]{footline}%
     \kern2em\usebeamertemplate***{navigation symbols}%
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.2\paperwidth,ht=2.25ex,dp=1ex,right]{footline}%
+    \insertframenumber{}/\inserttotalframenumber\kern2em
+  \end{beamercolorbox}%
+  }%
+}
+\newcommand{\myFootLogo}{Waseda University}
+\defbeamertemplate{footline}{waseda}
+{%
+  {\color{wasedaRed}\hrule}
+  \setbeamertemplate{navigation symbols}{}
+  \hbox{%
+  \begin{beamercolorbox}[wd=.8\paperwidth,ht=2.25ex,dp=1ex,left]{footline}%
+    \kern2em\myFootLogo
   \end{beamercolorbox}%
   \begin{beamercolorbox}[wd=.2\paperwidth,ht=2.25ex,dp=1ex,right]{footline}%
     \insertframenumber{}/\inserttotalframenumber\kern2em

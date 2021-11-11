@@ -1,0 +1,95 @@
+\NeedsTeXFormat{LaTeX2e}[1995/12/01]
+\ProvidesPackage{myletter}[2020/02/22, mura's letter style version 2.0]
+
+%%% utility
+\RequirePackage{xparse}
+\RequirePackage{etoolbox}
+\RequirePackage{pgfopts}
+
+%%% define and parse options
+\pgfkeys{/myletter/.cd,
+  % lang
+  lang/.store in = \myletter@lang,
+  % letterhead
+  style/.store in = \myletter@style,
+  % page style
+  page style/.store in = \myletter@page,
+  page/.is choice,
+  page/regular/.style = {page style = regular},
+  page/custom/.style = {page style = custom},
+  % default values
+  lang = en,
+  style = printed,
+  page = regular,
+}
+\ProcessPgfPackageOptions*
+
+%%% language/encoding
+% \RequirePackage{textcomp} % latex3 encoding
+% \RequirePackage[T1]{fontenc}
+% \RequirePackage[utf8]{inputenc}
+\RequirePackage{csquotes}
+\DeclareQuoteStyle{japanese}% this is just a copy of American English
+  {\textquotedblleft}
+  {\textquotedblright}
+  [0.05em]
+  {\textquoteleft}
+  {\textquoteright}
+\RequirePackage{polyglossia} % まだ若干あやしい
+
+%%% parse language
+%% for non-japanese
+\setdefaultlanguage{english}
+\setotherlanguage{japanese}
+
+\ifdefstring{\myletter@lang}{jp}{ % for japanese
+  \RequirePackage[hiragino-pron]{luatexja-preset}
+  \setlength\parindent{1\zw}
+  \setdefaultlanguage{japanese}
+  \let\japanese@capsformat=\relax % 余計なことはさせない
+  \setotherlanguage{english}
+}{}
+\ifdefstring{\myletter@lang}{ja}{ % for yet another japanese
+  \RequirePackage[deluxe]{luatexja-preset} 
+  \setlength\parindent{1\zw}
+  \setdefaultlanguage{japanese} % for polyglossia
+  \let\japanese@capsformat=\relax % 余計なことはさせない
+  \setotherlanguage{english} % for polyglossia
+}{}
+
+%%% my default definitions
+\RequirePackage{mycolor}
+
+%%% graphics
+\RequirePackage{grffile} % graphics file 名の拡張
+\RequirePackage{graphicx}
+% \graphicspath{{example/},{fig/}}
+
+% page style after second page
+% must be loaded before scrletter
+\ifdefstring{\myletter@page}{custom}{ % for custom page style
+  \usepackage[
+  headsepline=on,%off
+  footsepline=on,%off
+  ]{scrlayer-scrpage}
+  \clearpairofpagestyles
+  \ihead{Kopfzeile innen}
+  \ohead{Kopfzeile außen}
+  \ifoot{Fußzeile innen}
+  \cfoot{\pagemark}
+  \ofoot{Fußzeile außen}
+  \setkomafont{pageheadfoot}{\normalfont}
+  \renewcommand*\pagemark{{\usekomafont{pagenumber}%
+      \textendash\,\pagename~\thepage\,\textendash}}
+}{}
+
+% load scrletter style and setup letterhead with lco files
+\usepackage{scrletter}
+\LoadLetterOption{\myletter@style}
+\ifdefstring{\myletter@page}{custom}{ % for custom page style
+  \renewcommand*\letterpagestyle{scrheadings}
+  \let\letterpagemark\pagemark % 
+}{}
+
+%%
+\endinput

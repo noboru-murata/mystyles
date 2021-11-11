@@ -10,8 +10,16 @@
 \pgfkeys{/mymath/.cd,
   % lang
   lang/.store in = \mymath@lang,
+  % font face
+  font face/.store in = \mymath@face,
+  face/.is choice,
+  face/default/.style = {font face = default},
+  face/custom/.style = {font face = custom},
+  face/newtx/.style = {font face = newtx},
+  face/newpx/.style = {font face = newpx},
   % default value
   lang = jp, 
+  face = newtx,
 }
 \ProcessPgfOptions*
 
@@ -28,12 +36,29 @@
 }
 \RequirePackage{nicematrix}
 
-%%% fonts
-\RequirePackage[ % boldのあるものを選択
+\RequirePackage[T1]{fontenc}
+\RequirePackage[utf8]{inputenc}
+%% choose from possible font face
+\ifdefstring{\mymath@face}{default}{%
+  \RequirePackage{mathalfa} % default fonts
+}{}%
+\ifdefstring{\mymath@face}{custom}{%
+  \RequirePackage[ % boldのあるものを選択
   cal=euler, % upright
   scr=boondoxo, % 小文字がある
   bb=px, % pazoの代理
-]{mathalfa}
+  ]{mathalfa}
+}{}%
+\ifdefstring{\mymath@face}{newtx}{%
+  \RequirePackage{newtxtext} % text fonts
+  \RequirePackage{newtxmath} % math fonts
+}{}%
+\ifdefstring{\mymath@face}{newpx}{%
+  \RequirePackage{newpxtext} % text fonts
+  \RequirePackage{newpxmath} % math fonts
+}{}%
+\RequirePackage{textcomp} % latex3 encoding
+%%% additional fonts
 \RequirePackage{pifont} % http://ctan.org/pkg/pifont for cmark/xmark
 \RequirePackage{dsfont} % double stroke
 \RequirePackage{tikzsymbols} %\Coffeecup

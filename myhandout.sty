@@ -21,6 +21,13 @@
   font/regular/.style = {font weight = regular},
   font/light/.style = {font weight = light},
   font/heavy/.style = {font weight = heavy},
+  % font face
+  font face/.store in = \myhandout@face,
+  face/.is choice,
+  face/default/.style = {font face = default},
+  face/custom/.style = {font face = custom},
+  face/newtx/.style = {font face = newtx},
+  face/newpx/.style = {font face = newpx},
   % title
   title style/.store in = \myhandout@title,
   title/.is choice,
@@ -37,16 +44,23 @@
   lang = jp,
   style = tufte,
   font = regular,
+  face = newtx,
   title = left, 
   list = none, 
 }
 \ProcessPgfPackageOptions*
 
 %%% language/encoding
-\RequirePackage{textcomp} % latex3 encoding
-\RequirePackage[T1]{fontenc}
-\RequirePackage[utf8]{inputenc}
+% \RequirePackage{textcomp} % latex3 encoding
+% \RequirePackage[T1]{fontenc}
+% \RequirePackage[utf8]{inputenc}
 \RequirePackage{csquotes}
+\DeclareQuoteStyle{japanese}% this is just a copy of American English
+  {\textquotedblleft}
+  {\textquotedblright}
+  [0.05em]
+  {\textquoteleft}
+  {\textquoteright}
 \RequirePackage{polyglossia} % まだ若干あやしい
 
 %%% parse language
@@ -61,7 +75,7 @@
   \let\japanese@capsformat=\relax % 余計なことはさせない
   \setotherlanguage{english}
 }{}
-\ifdefstring{\mybook@lang}{ja}{ % for yet another japanese
+\ifdefstring{\myhandout@lang}{ja}{ % for yet another japanese
   \RequirePackage[deluxe]{luatexja-preset} 
   \setlength\parindent{1\zw}
   \setdefaultlanguage{japanese} % for polyglossia
@@ -71,7 +85,7 @@
 
 %%% my default definitions
 \RequirePackage{mycolor}
-\RequirePackage[lang=\myhandout@lang]{mymath} 
+\RequirePackage[lang=\myhandout@lang,face=\myhandout@face]{mymath} 
 \RequirePackage[list=\myhandout@list]{mylist}
 
 %%% graphics

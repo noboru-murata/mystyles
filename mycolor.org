@@ -1,7 +1,7 @@
 #+TITLE: My Color Style
 #+AUTHOR: Noboru Murata
 #+EMAIL: noboru.murata@gmail.com
-#+DATE: 2020.08.20 19:27:20
+#+DATE: 2021.07.29 15:06:06
 #+STARTUP: hidestars content
 #+OPTIONS: date:t H:4 num:nil toc:nil \n:nil
 #+OPTIONS: @:t ::t |:t ^:t -:t f:t *:t TeX:t LaTeX:t 
@@ -16,6 +16,13 @@
 #+end_src
 
 * 色の定義
+  紫系を見直し
+\definecolor{myDarkPurple}{HTML}{17184b}%鉄紺 
+\definecolor{myPurple}{HTML}{4d4398}%紅桔梗
+\definecolor{myLightPurple}{HTML}{bbbcde}%藤色
+\definecolor{myPalePurple}{HTML}{dbd0e6}%白藤色
+
+  
 #+begin_src latex
 %%% use xcolor package
 \RequirePackage{xcolor}
@@ -41,8 +48,8 @@
 \definecolor{myOrange}{HTML}{f8b862}%萱草色
 \definecolor{myLightOrange}{HTML}{fddea5}%蜂蜜色
 \definecolor{myPaleOrange}{HTML}{fbfaf5}%生成り色
-\definecolor{myDarkPurple}{HTML}{17184b}%鉄紺 
-\definecolor{myPurple}{HTML}{4d4398}%紅桔梗
+\definecolor{myDarkPurple}{HTML}{884898}%紫
+\definecolor{myPurple}{HTML}{b44c97}%紅紫
 \definecolor{myLightPurple}{HTML}{bbbcde}%藤色
 \definecolor{myPalePurple}{HTML}{dbd0e6}%白藤色
 \definecolor{myDarkYellow}{HTML}{ffd900}%蒲公英色
