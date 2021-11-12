@@ -19,7 +19,7 @@
   page/custom/.style = {page style = custom},
   % default values
   lang = en,
-  style = printed,
+  style = none,
   page = regular,
 }
 \ProcessPgfPackageOptions*
@@ -73,11 +73,11 @@
   footsepline=on,%off
   ]{scrlayer-scrpage}
   \clearpairofpagestyles
-  \ihead{Kopfzeile innen}
-  \ohead{Kopfzeile außen}
-  \ifoot{Fußzeile innen}
+  \ihead{define ihead}
+  \ohead{define ohead}
+  \ifoot{define ifoot}
   \cfoot{\pagemark}
-  \ofoot{Fußzeile außen}
+  \ofoot{define ofoot}
   \setkomafont{pageheadfoot}{\normalfont}
   \renewcommand*\pagemark{{\usekomafont{pagenumber}%
       \textendash\,\pagename~\thepage\,\textendash}}
@@ -85,7 +85,10 @@
 
 % load scrletter style and setup letterhead with lco files
 \usepackage{scrletter}
-\LoadLetterOption{\myletter@style}
+\ifdefstring{\myletter@style}{none}{}{ % check lco file name
+  \LoadLetterOption{\myletter@style}
+}
+\LoadLetterOption{makelabels}
 \ifdefstring{\myletter@page}{custom}{ % for custom page style
   \renewcommand*\letterpagestyle{scrheadings}
   \let\letterpagemark\pagemark % 

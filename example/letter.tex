@@ -1,0 +1,35 @@
+% Created 2021-11-12 Fri 13:21
+% Intended LaTeX compiler: pdflatex
+\documentclass[12pt]{scrartcl}
+
+
+\usepackage[style=overuse,page=custom]{myletter}
+\makelabels % make envelope label
+\usepackage{lipsum} % for meaningless texts
+\author{N. Murata}
+\date{\today}
+\title{My Letter Style の使い方\\\medskip
+\large mystyle/myletter.sty}
+\begin{document}
+
+\ihead{My Name}
+\ohead{Subject}
+\ifoot{E-mail}
+\ofoot{URL}
+
+\begin{letter}{ % to whom may concern
+    Dr.~Foo Bar\\
+    Department of Homeland Security\\
+    U.S. Citizenship and Immigration Services\\
+}
+
+\opening{Dear Sir,}
+
+\lipsum
+
+\closing{Sincerely yours,}
+\ps PS: I hope ...
+\encl{invoice from ...}
+\cc{those whom may concern}
+\end{letter}
+\end{document}

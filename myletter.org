@@ -1,7 +1,7 @@
 #+TITLE: My Letter Style
 #+AUTHOR: Noboru Murata
 #+EMAIL: noboru.murata@gmail.com
-#+DATE: 2021.11.11 15:20:25
+#+DATE: 2021.11.12 13:06:08
 #+STARTUP: hidestars content
 #+OPTIONS: date:t H:4 num:nil toc:nil \n:nil
 #+OPTIONS: @:t ::t |:t ^:t -:t f:t *:t TeX:t LaTeX:t 
@@ -35,7 +35,7 @@
   page/custom/.style = {page style = custom},
   % default values
   lang = en,
-  style = printed,
+  style = none,
   page = regular,
 }
 \ProcessPgfPackageOptions*
@@ -101,11 +101,11 @@
   footsepline=on,%off
   ]{scrlayer-scrpage}
   \clearpairofpagestyles
-  \ihead{Kopfzeile innen}
-  \ohead{Kopfzeile außen}
-  \ifoot{Fußzeile innen}
+  \ihead{define ihead}
+  \ohead{define ohead}
+  \ifoot{define ifoot}
   \cfoot{\pagemark}
-  \ofoot{Fußzeile außen}
+  \ofoot{define ofoot}
   \setkomafont{pageheadfoot}{\normalfont}
   \renewcommand*\pagemark{{\usekomafont{pagenumber}%
       \textendash\,\pagename~\thepage\,\textendash}}
@@ -113,7 +113,10 @@
 
 % load scrletter style and setup letterhead with lco files
 \usepackage{scrletter}
-\LoadLetterOption{\myletter@style}
+\ifdefstring{\myletter@style}{none}{}{ % check lco file name
+  \LoadLetterOption{\myletter@style}
+}
+\LoadLetterOption{makelabels}
 \ifdefstring{\myletter@page}{custom}{ % for custom page style
   \renewcommand*\letterpagestyle{scrheadings}
   \let\letterpagemark\pagemark % 

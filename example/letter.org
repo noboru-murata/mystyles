@@ -1,0 +1,48 @@
+#+TITLE: My Letter Style の使い方
+#+SUBTITLE: mystyle/myletter.sty
+#+AUTHOR: N. Murata 
+#+SUBJECT: usage
+#+KEYWORD: letter class option
+#+LANGUAGE: japanese
+#+LaTeX_CLASS: scrartcl
+#+LaTeX_CLASS_OPTIONS: [12pt]
+#+LATEX_HEADER: \usepackage[style=overuse,page=custom]{myletter}
+#+LATEX_HEADER: \makelabels % make envelope label
+#+LATEX_HEADER: \usepackage{lipsum} % for meaningless texts  
+#+STARTUP: overview content noindent
+#+OPTIONS: date:t H:4 num:t toc:nil \n:nil
+#+OPTIONS: @:t ::t |:t ^:t -:t f:t *:t TeX:t LaTeX:t 
+#+OPTIONS: skip:nil d:nil todo:t pri:nil tags:not-in-toc
+
+# C-c C-e l p (exporting .tex .pdf)
+
+# if style=name is specified, "name.lco" file is needed
+# if page=custom is specified, followings have to be set
+\ihead{My Name}
+\ohead{Subject}
+\ifoot{E-mail}
+\ofoot{URL}
+
+# letter body
+\begin{letter}{ % to whom may concern
+    Dr.~Foo Bar\\
+    Department of Homeland Security\\
+    U.S. Citizenship and Immigration Services\\
+}
+
+\opening{Dear Sir,}
+
+\lipsum
+
+\closing{Sincerely yours,}
+\ps PS: I hope ...
+\encl{invoice from ...}
+\cc{those whom may concern}
+\end{letter}
+
+* COMMENT ローカル変数
+# Local Variables:
+# org-latex-hyperref-template: nil
+# org-latex-title-command: nil
+# End:
+  

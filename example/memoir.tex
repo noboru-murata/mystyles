@@ -1,55 +1,50 @@
+% Created 2021-11-13 Sat 00:27
+% Intended LaTeX compiler: pdflatex
 \documentclass[10pt,oneside,fleqn]{scrartcl}
-\usepackage{myhandout}
-\usepackage[%
-  backend=biber,
-  bibencoding=latin1,
-  style=ieee, % ieee, nature, numeric, authoryear いろいろある
-  url=false, % 余計な項目は表示しない
-  isbn=false,
-  doi=false,
-  eprint=false,
-]{biblatex}
-\AtEveryBibitem{\clearfield{note}} % note項目を表示しない
-\addbibresource{books.bib} 
-% \addbibresource{papers.bib} % databaseを追加する場合
+                  
 
-%%% 必要なpackageの読み込みの例
-\usepackage{graphicx}
-\graphicspath{{./imgs/}}
+\usepackage{myhandout}
+\usepackage[backend=biber,bibencoding=latin1,style=ieee,url=false,isbn=false,doi=false,eprint=false]{biblatex}
+\AtEveryBibitem{\clearfield{note}} % note項目を表示しない
+\addbibresource{books.bib}
 \usepackage{bxjalipsum} % ダミーの文書
 \usepackage[math]{blindtext} % ダミーの文書
-%%% packageの例の終わり
-
-%%% タイトル
 \author{夏目 漱石}
 \date{\today}
 \title{「我輩」の秘密に関する研究\\\medskip
 \large 私が彼について知っている2,3の事柄}
-
+\hypersetup{
+ pdfauthor={夏目 漱石},
+ pdftitle={「我輩」の秘密に関する研究},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={Emacs 27.2 (Org mode 9.4.6)}, 
+ pdflang={Japanese}}
 \begin{document}
 
 \maketitle
-\section{我輩のこと}
-\jalipsum[1-3]{wagahai}
-\sidenote{\jalipsum{iroha}}
 
-\jalipsum[4-6]{wagahai}
-\sidenote{例えば\cite{吉田2006,竹内1963,杉浦1980,杉浦1985,田中2006}を参照}
+\section{我輩のこと}
+\label{sec:org17b614a}
+\jalipsum[1-3]{wagahai} \footnote{\jalipsum{iroha}}
+
+\jalipsum[4-6]{wagahai} \footnote{例えば\cite{吉田2006,竹内1963,杉浦1980,杉浦1985,田中2006}を参照}
 
 \section{主人の不平}
+\label{sec:orgae60009}
 \jalipsum[7-12]{wagahai}
-%% 図を入れてみる
-\GraphFile{sample_figs} % 紙芝居をする場合
-\begin{figure}[htbp] % 普通の環境
+
+\GraphFile{sample_figs} 
+\begin{figure}[htbp] % 普通の環境 図の上に sidecaption を置く場合
   \sidecaption{東京都の陽性患者数の推移．
     緑は7日移動平均，橙は14日移動平均を表す．
     \label{fig:1}}
   \centering
   \myGraph[1]{} % linewidthの何倍か指定
 \end{figure}
-%% 図の上に sidecaption を置く場合
 
 \section{車屋の黒猫}
+\label{sec:orgafbc8b3}
 \jalipsum[13-18]{wagahai}
 
 \begin{figure*} % 目一杯拡げて2つ並べてみる
@@ -61,6 +56,7 @@
 \end{figure*}
 
 \section{鼠以外の御馳走}
+\label{sec:org35c2a12}
 \jalipsum[19-24]{wagahai}
 \begin{marginfigure}
   \centering
@@ -70,11 +66,11 @@
 \end{marginfigure}
 
 \section{放蕩家について}
+\label{sec:org072125a}
 \jalipsum[25-]{wagahai}
 
 \begin{otherlanguage}{english}
   % babel系が若干悪さをするので英語にして回避
   \printbibliography[title=参考文献]
 \end{otherlanguage}
-
 \end{document}
