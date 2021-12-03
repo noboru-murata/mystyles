@@ -106,10 +106,11 @@ version={4.0},
 
 %%% graphics
 \RequirePackage{grffile} % graphics file 名の拡張
-% \RequirePackage{graphicx} % beamer が読み込んでいる?
-% \graphicspath{{example/},{fig/}}
 \RequirePackage{pgfplots}
 \usepgfplotslibrary{dateplot}
+\RequirePackage{graphicx} % beamer が読み込んでいる?
+\RequirePackage{graphbox}
+\RequirePackage{incgraph}
 
 %%% reference
 \RequirePackage[%

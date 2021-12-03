@@ -1,7 +1,7 @@
 #+TITLE: My Talk Style
 #+AUTHOR: Noboru Murata
 #+EMAIL: noboru.murata@gmail.com
-#+DATE: 2021.09.19 21:54:49
+#+DATE: 2021.12.03 12:54:08
 #+STARTUP: hidestars content
 #+OPTIONS: date:t H:4 num:nil toc:nil \n:nil
 #+OPTIONS: @:t ::t |:t ^:t -:t f:t *:t TeX:t LaTeX:t 
@@ -159,11 +159,13 @@ version={4.0},
 #+begin_src latex
 %%% graphics
 \RequirePackage{grffile} % graphics file 名の拡張
-% \RequirePackage{graphicx} % beamer が読み込んでいる?
-% \graphicspath{{example/},{fig/}}
 \RequirePackage{pgfplots}
 \usepgfplotslibrary{dateplot}
+\RequirePackage{graphicx} % beamer が読み込んでいる?
+\RequirePackage{graphbox}
+\RequirePackage{incgraph}
 #+end_src
+# \graphicspath{{example/},{fig/}}
 
 * 参考文献関係
 #+begin_src latex

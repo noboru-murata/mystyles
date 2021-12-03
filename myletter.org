@@ -1,7 +1,7 @@
 #+TITLE: My Letter Style
 #+AUTHOR: Noboru Murata
 #+EMAIL: noboru.murata@gmail.com
-#+DATE: 2021.11.12 13:06:08
+#+DATE: 2021.12.03 12:52:27
 #+STARTUP: hidestars content
 #+OPTIONS: date:t H:4 num:nil toc:nil \n:nil
 #+OPTIONS: @:t ::t |:t ^:t -:t f:t *:t TeX:t LaTeX:t 
@@ -88,8 +88,10 @@
 %%% graphics
 \RequirePackage{grffile} % graphics file 名の拡張
 \RequirePackage{graphicx}
-% \graphicspath{{example/},{fig/}}
+\RequirePackage{graphbox}
+\RequirePackage{incgraph}
 #+end_src
+# \graphicspath{{example/},{fig/}}
 
 * スタイル設定
 #+begin_src latex
