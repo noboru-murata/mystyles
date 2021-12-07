@@ -1,7 +1,7 @@
 #+TITLE: My Talk Style
 #+AUTHOR: Noboru Murata
 #+EMAIL: noboru.murata@gmail.com
-#+DATE: 2021.12.03 12:54:08
+#+DATE: 2021.12.03 15:02:00
 #+STARTUP: hidestars content
 #+OPTIONS: date:t H:4 num:nil toc:nil \n:nil
 #+OPTIONS: @:t ::t |:t ^:t -:t f:t *:t TeX:t LaTeX:t 
@@ -155,6 +155,33 @@ version={4.0},
 \newcommand{\themename}{\textbf{\textsc{metropolis}}\xspace}
 #+end_src
 
+* ハイパーリンク 
+#+begin_src latex
+%%% index/hyperlink
+\RequirePackage{makeidx}
+\RequirePackage{url} 
+% \RequirePackage[hyphens]{url} % beamer ?
+% \RequirePackage[pdfencoding=auto]{hyperref} % beamerから?
+%%
+\hypersetup{%
+  pdfencoding=auto,% 他のもこちらに移すべきか?
+  bookmarks=true,%
+  bookmarksnumbered=true,%
+  bookmarkstype=toc,%
+  colorlinks=true,%
+  urlcolor=[named]myDarkGreen,%black,%
+  linkcolor=[named]myDarkBlue,%black,%
+  citecolor=[named]myDarkRed,%black,%
+  % linktocpage=true,%
+  unicode=true,%
+  % pdftitle={},%
+  pdfauthor={Noboru Murata},%
+  % pdfsubject={Lecture Notes},%
+  % pdfkeywords={;}
+}
+%\hypersetup{pdfencoding=auto}
+#+end_src
+
 * グラフィクス
 #+begin_src latex
 %%% graphics
@@ -181,33 +208,6 @@ version={4.0},
 {\citeauthor{#1}: \citetitle{#1} (\citeyear{#1})}
 \newcommand{\myCite}[1]%
 {\citeauthor{#1} (\citeyear{#1}). \citetitle{#1}.}
-#+end_src
-
-* ハイパーリンク 
-#+begin_src latex
-%%% index/hyperlink
-\RequirePackage{makeidx}
-\RequirePackage{url} 
-% \RequirePackage[hyphens]{url} % beamer ?
-% \RequirePackage[pdfencoding=auto]{hyperref} % beamerから?
-%%
-\hypersetup{%
-  pdfencoding=auto,% 他のもこちらに移すべきか?
-  bookmarks=true,%
-  bookmarksnumbered=true,%
-  bookmarkstype=toc,%
-  colorlinks=true,%
-  urlcolor=[named]myDarkGreen,%black,%
-  linkcolor=[named]myDarkBlue,%black,%
-  citecolor=[named]myDarkRed,%black,%
-  % linktocpage=true,%
-  unicode=true,%
-  % pdftitle={},%
-  pdfauthor={Noboru Murata},%
-  % pdfsubject={Lecture Notes},%
-  % pdfkeywords={;}
-}
-%\hypersetup{pdfencoding=auto}
 #+end_src
 
 * 設定関数

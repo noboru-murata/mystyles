@@ -1,7 +1,7 @@
 #+TITLE: My Handout Style
 #+AUTHOR: Noboru Murata
 #+EMAIL: noboru.murata@gmail.com
-#+DATE: 2021.12.03 12:52:05
+#+DATE: 2021.12.03 14:54:47
 #+STARTUP: hidestars content
 #+OPTIONS: date:t H:4 num:nil toc:nil \n:nil
 #+OPTIONS: @:t ::t |:t ^:t -:t f:t *:t TeX:t LaTeX:t 
@@ -130,16 +130,6 @@
 \RequirePackage[list=\myhandout@list]{mylist}
 #+end_src
 
-* グラフィクス
-#+begin_src latex
-%%% graphics
-\RequirePackage{grffile} % graphics file 名の拡張
-\RequirePackage{graphicx}
-\RequirePackage{graphbox}
-\RequirePackage{incgraph}
-#+end_src
-# \graphicspath{{example/},{fig/}}
-
 * ハイパーリンク 
 #+begin_src latex
 %%% index/hyperlink
@@ -163,6 +153,15 @@
   % pdfkeywords={;}
 }
 #+end_src
+* グラフィクス
+#+begin_src latex
+%%% graphics
+\RequirePackage{grffile} % graphics file 名の拡張
+\RequirePackage{graphicx}
+\RequirePackage{graphbox}
+\RequirePackage{incgraph}
+#+end_src
+# \graphicspath{{example/},{fig/}}
 
 * 設定関数
 #+begin_src latex

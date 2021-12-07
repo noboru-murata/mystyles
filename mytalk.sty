@@ -104,27 +104,6 @@ version={4.0},
 \RequirePackage{xspace}
 \newcommand{\themename}{\textbf{\textsc{metropolis}}\xspace}
 
-%%% graphics
-\RequirePackage{grffile} % graphics file 名の拡張
-\RequirePackage{pgfplots}
-\usepgfplotslibrary{dateplot}
-\RequirePackage{graphicx} % beamer が読み込んでいる?
-\RequirePackage{graphbox}
-\RequirePackage{incgraph}
-
-%%% reference
-\RequirePackage[%
-  bibencoding=latin1,
-  style=authoryear,
-  url=false,isbn=false,
-  backend=biber,
-]{biblatex} 
-\renewcommand*{\bibfont}{\footnotesize}
-\newcommand{\mycite}[1]%
-{\citeauthor{#1}: \citetitle{#1} (\citeyear{#1})}
-\newcommand{\myCite}[1]%
-{\citeauthor{#1} (\citeyear{#1}). \citetitle{#1}.}
-
 %%% index/hyperlink
 \RequirePackage{makeidx}
 \RequirePackage{url} 
@@ -148,6 +127,27 @@ version={4.0},
   % pdfkeywords={;}
 }
 %\hypersetup{pdfencoding=auto}
+
+%%% graphics
+\RequirePackage{grffile} % graphics file 名の拡張
+\RequirePackage{pgfplots}
+\usepgfplotslibrary{dateplot}
+\RequirePackage{graphicx} % beamer が読み込んでいる?
+\RequirePackage{graphbox}
+\RequirePackage{incgraph}
+
+%%% reference
+\RequirePackage[%
+  bibencoding=latin1,
+  style=authoryear,
+  url=false,isbn=false,
+  backend=biber,
+]{biblatex} 
+\renewcommand*{\bibfont}{\footnotesize}
+\newcommand{\mycite}[1]%
+{\citeauthor{#1}: \citetitle{#1} (\citeyear{#1})}
+\newcommand{\myCite}[1]%
+{\citeauthor{#1} (\citeyear{#1}). \citetitle{#1}.}
 
 %%% font, math, header, footer and block styles
 
