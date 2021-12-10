@@ -280,6 +280,9 @@ outer/progressbar=frametitle]%
 \setbeamercolor{frametitle}{fg=myDarkBlue,bg=normal text.bg}
 % \setbeamercolor{frametitle}{parent=palette primary}
 \setbeamercolor{section title}{parent=title}
+% The \myLogo command
+\def\myLogo{\setbeamertemplate{myLogo}}
+\def\insertMyLogo{\usebeamertemplate*{myLogo}}
 \defbeamertemplate*{frametitle}{right}{%
   \nointerlineskip%
   \begin{beamercolorbox}[%
@@ -289,7 +292,7 @@ outer/progressbar=frametitle]%
     rightskip=\metropolis@frametitle@padding,%
     ]{frametitle}%
     \metropolis@frametitlestrut@start%
-    \hfill\insertframetitle%
+    \insertMyLogo\hfill\insertframetitle%
     \nolinebreak%
     \metropolis@frametitlestrut@end%
   \end{beamercolorbox}%
@@ -297,6 +300,10 @@ outer/progressbar=frametitle]%
 % \setbeamertemplate{frametitle}[right]
 \addtobeamertemplate{frametitle}{}{%
   \usebeamertemplate*{progress bar in head/foot}
+}
+\addtobeamertemplate{frametitle}{}{%
+  \hfill\insertframesubtitle%
+  \nolinebreak%
 }
 
 % %% Blocks
