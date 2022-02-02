@@ -1,7 +1,7 @@
 #+TITLE: My Talk Style
 #+AUTHOR: Noboru Murata
 #+EMAIL: noboru.murata@gmail.com
-#+DATE: 2021.12.10 22:12:11
+#+DATE: 2022.02.02 10:45:13
 #+STARTUP: hidestars content
 #+OPTIONS: date:t H:4 num:nil toc:nil \n:nil
 #+OPTIONS: @:t ::t |:t ^:t -:t f:t *:t TeX:t LaTeX:t 
@@ -341,8 +341,8 @@ outer/progressbar=frametitle]%
 %% General
 % \setbeamercolor{normal text}{fg=myGrey}
 \setbeamercolor{structure}{fg=myDarkBlue}
-% \setbeamercolor{alerted text}{fg=myDarkOrange}
-% \setbeamercolor{example text}{fg=myDarkGreen}
+\setbeamercolor{alerted text}{fg=myDarkOrange}
+\setbeamercolor{example text}{fg=myDarkGreen}
 \setbeamercolor{copyright text}{fg=myGrey}
 
 %% Palettes

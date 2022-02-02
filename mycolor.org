@@ -1,7 +1,7 @@
 #+TITLE: My Color Style
 #+AUTHOR: Noboru Murata
 #+EMAIL: noboru.murata@gmail.com
-#+DATE: 2021.07.29 15:06:06
+#+DATE: 2022.02.02 00:04:12
 #+STARTUP: hidestars content
 #+OPTIONS: date:t H:4 num:nil toc:nil \n:nil
 #+OPTIONS: @:t ::t |:t ^:t -:t f:t *:t TeX:t LaTeX:t 
@@ -21,13 +21,7 @@
 \definecolor{myPurple}{HTML}{4d4398}%紅桔梗
 \definecolor{myLightPurple}{HTML}{bbbcde}%藤色
 \definecolor{myPalePurple}{HTML}{dbd0e6}%白藤色
-
-  
-#+begin_src latex
-%%% use xcolor package
-\RequirePackage{xcolor}
-
-%%% define private colors
+%%
 \definecolor{myDarkRed}{HTML}{d7003a}%紅
 \definecolor{myRed}{HTML}{e7609e}%牡丹色 
 \definecolor{myLightRed}{HTML}{fdeff2}%薄桜
@@ -56,6 +50,40 @@
 \definecolor{myYellow}{HTML}{fef263}%黄檗色
 \definecolor{myLightYellow}{HTML}{f8e58c}%淡黄
 \definecolor{myPaleYellow}{HTML}{f8f4e6}%象牙色
+  
+#+begin_src latex
+%%% use xcolor package
+\RequirePackage{xcolor-material}
+
+%%% define private colors
+\definecolor{myDarkRed}{named}{\XCM@prefix Red900}
+\definecolor{myRed}{named}{\XCM@prefix Red600}
+\definecolor{myLightRed}{named}{\XCM@prefix Red300}
+\definecolor{myPaleRed}{named}{\XCM@prefix Red100}
+\definecolor{myDarkBlue}{named}{\XCM@prefix Indigo900}
+\definecolor{myBlue}{named}{\XCM@prefix Indigo600}
+\definecolor{myLightBlue}{named}{\XCM@prefix Indigo300}
+\definecolor{myPaleBlue}{named}{\XCM@prefix Indigo100}
+\definecolor{myDarkGreen}{named}{\XCM@prefix GreenA700}
+\definecolor{myGreen}{named}{\XCM@prefix GreenA400}
+\definecolor{myLightGreen}{named}{\XCM@prefix GreenA200}
+\definecolor{myPaleGreen}{named}{\XCM@prefix GreenA100}
+\definecolor{myDarkGrey}{named}{\XCM@prefix Grey800}
+\definecolor{myGrey}{named}{\XCM@prefix Grey500}
+\definecolor{myLightGrey}{named}{\XCM@prefix Grey200}
+\definecolor{myPaleGrey}{named}{\XCM@prefix Grey100}
+\definecolor{myDarkOrange}{named}{\XCM@prefix OrangeA700}
+\definecolor{myOrange}{named}{\XCM@prefix OrangeA400}
+\definecolor{myLightOrange}{named}{\XCM@prefix OrangeA200}
+\definecolor{myPaleOrange}{named}{\XCM@prefix OrangeA100}
+\definecolor{myDarkPurple}{named}{\XCM@prefix Purple900}
+\definecolor{myPurple}{named}{\XCM@prefix Purple600}
+\definecolor{myLightPurple}{named}{\XCM@prefix Purple300}
+\definecolor{myPalePurple}{named}{\XCM@prefix Purple100}
+\definecolor{myDarkYellow}{named}{\XCM@prefix YellowA700}
+\definecolor{myYellow}{named}{\XCM@prefix YellowA400}
+\definecolor{myLightYellow}{named}{\XCM@prefix YellowA200}
+\definecolor{myPaleYellow}{named}{\XCM@prefix YellowA100}
 
 %%% school colors
 \definecolor{wasedaRed}{cmyk}{0,.98,.74,.45}
